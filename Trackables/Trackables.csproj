@@ -45,10 +45,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=8.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.8.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -180,9 +186,29 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CaloriesFirstFoodItemListViewModel.cs" />
+    <Compile Include="Models\CaloriesFirstFoodItemViewModel.cs" />
+    <Compile Include="Models\ChartViewModel.cs" />
+    <Compile Include="Models\FavouriteViewModel.cs" />
+    <Compile Include="Models\FoodItemListViewModel.cs" />
+    <Compile Include="Models\FoodItemViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\MacronutrientsViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MealsViewModel.cs" />
+    <Compile Include="Models\MealViewModel.cs" />
+    <Compile Include="Models\MicronutrientsViewModel.cs" />
+    <Compile Include="Models\ProductAutocompleteViewModel.cs" />
+    <Compile Include="Models\ProductsViewModel.cs" />
+    <Compile Include="Models\ProductViewModel.cs" />
+    <Compile Include="Models\TrackableItemListViewModel.cs" />
+    <Compile Include="Models\TrackableItemViewModel.cs" />
+    <Compile Include="Models\TrackablesViewModel.cs" />
+    <Compile Include="Models\TrackableViewModel.cs" />
+    <Compile Include="Models\WeightFirstFoodItemListViewModel.cs" />
+    <Compile Include="Models\WeightFirstFoodItemViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -266,6 +292,20 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Trackables.Data\Trackables.Data.csproj">
+      <Project>{53af2d91-55d8-4b48-bf44-e3470246ad52}</Project>
+      <Name>Trackables.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trackables.Domain\Trackables.Domain.csproj">
+      <Project>{3ba10436-fbcd-41e4-b7ec-738c8d5d9465}</Project>
+      <Name>Trackables.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Trackables.Services\Trackables.Services.csproj">
+      <Project>{61bc0abe-a134-443c-b535-0dbc65f8253c}</Project>
+      <Name>Trackables.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

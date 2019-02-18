@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{53AF2D91-55D8-4B48-BF44-E3470246AD52}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Trackables.Data</RootNamespace>
+    <AssemblyName>Trackables.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstract\IFavouriteMapper.cs" />
+    <Compile Include="Abstract\IFavouriteRepository.cs" />
+    <Compile Include="Abstract\IFoodItemMapper.cs" />
+    <Compile Include="Abstract\IFoodItemRepository.cs" />
+    <Compile Include="Abstract\IIngredientMapper.cs" />
+    <Compile Include="Abstract\IIngredientRepository.cs" />
+    <Compile Include="Abstract\IMealMapper.cs" />
+    <Compile Include="Abstract\IMealRepository.cs" />
+    <Compile Include="Abstract\IProductMapper.cs" />
+    <Compile Include="Abstract\IProductRepository.cs" />
+    <Compile Include="Abstract\ITrackableItemMapper.cs" />
+    <Compile Include="Abstract\ITrackableItemRepository.cs" />
+    <Compile Include="Abstract\ITrackablesMapper.cs" />
+    <Compile Include="Abstract\ITrackablesRepository.cs" />
+    <Compile Include="Abstract\IUserMapper.cs" />
+    <Compile Include="Abstract\IUserRepository.cs" />
+    <Compile Include="Concrete\FavouriteMapper.cs" />
+    <Compile Include="Concrete\FavouriteRepository.cs" />
+    <Compile Include="Concrete\FoodItemMapper.cs" />
+    <Compile Include="Concrete\FoodItemRepository.cs" />
+    <Compile Include="Concrete\IngredientMapper.cs" />
+    <Compile Include="Concrete\IngredientRepository.cs" />
+    <Compile Include="Concrete\MealMapper.cs" />
+    <Compile Include="Concrete\MealRepository.cs" />
+    <Compile Include="Concrete\ProductMapper.cs" />
+    <Compile Include="Concrete\ProductRepository.cs" />
+    <Compile Include="Concrete\TrackableItemMapper.cs" />
+    <Compile Include="Concrete\TrackableItemRepository.cs" />
+    <Compile Include="Concrete\TrackablesMapper.cs" />
+    <Compile Include="Concrete\TrackablesRepository.cs" />
+    <Compile Include="Concrete\UserMapper.cs" />
+    <Compile Include="Concrete\UserRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Trackables.Domain\Trackables.Domain.csproj">
+      <Project>{3ba10436-fbcd-41e4-b7ec-738c8d5d9465}</Project>
+      <Name>Trackables.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
