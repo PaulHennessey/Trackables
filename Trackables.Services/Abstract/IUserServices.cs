@@ -1,6 +1,6 @@
-﻿using MyFoodDiary.Domain;
+﻿using Trackables.Domain;
 
-namespace MyFoodDiary.Services.Abstract
+namespace Trackables.Services.Abstract
 {
     public interface IUserServices
     {

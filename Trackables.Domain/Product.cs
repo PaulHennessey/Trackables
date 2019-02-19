@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MyFoodDiary.Domain
+namespace Trackables.Domain
 {
     public class Product
     {

@@ -1,10 +1,10 @@
 ﻿using System.Data;
 using System.Linq;
-using MyFoodDiary.Data.Abstract;
-using MyFoodDiary.Domain;
-using MyFoodDiary.Services.Abstract;
+using Trackables.Data.Abstract;
+using Trackables.Domain;
+using Trackables.Services.Abstract;
 
-namespace MyFoodDiary.Services.Concrete
+namespace Trackables.Services.Concrete
 {
     public class UserServices : IUserServices
     {

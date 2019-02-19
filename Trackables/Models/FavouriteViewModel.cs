@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MyFoodDiary.Models
+namespace Trackables.Models
 {
     public class FavouriteViewModel
     {

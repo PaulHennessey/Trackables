@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using MyFoodDiary.Domain;
+using Trackables.Domain;
 
-namespace MyFoodDiary.Models
+namespace Trackables.Models
 {
     public class ChartViewModel
     {

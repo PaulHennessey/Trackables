@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using MyFoodDiary.Domain;
+using Trackables.Domain;
 
-namespace MyFoodDiary.Services.Abstract
+namespace Trackables.Services.Abstract
 {
     public interface ITrackableItemServices
     {

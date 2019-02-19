@@ -6,7 +6,7 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Web.Security;
 
-namespace MyFoodDiary.Models
+namespace Trackables.Models
 {
     public class UsersContext : DbContext
     {

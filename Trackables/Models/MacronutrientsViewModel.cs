@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using MyFoodDiary.Domain;
+using Trackables.Domain;
 using System.Linq;
 
-namespace MyFoodDiary.Models
+namespace Trackables.Models
 {
     public class MacronutrientsViewModel
     {        

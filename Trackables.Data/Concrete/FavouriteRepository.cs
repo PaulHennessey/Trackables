@@ -1,8 +1,8 @@
-﻿using MyFoodDiary.Data.Abstract;
+﻿using Trackables.Data.Abstract;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace MyFoodDiary.Data.Concrete
+namespace Trackables.Data.Concrete
 {
     public class FavouriteRepository : IFavouriteRepository
     {

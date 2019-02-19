@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using MyFoodDiary.Domain;
+using Trackables.Domain;
 
-namespace MyFoodDiary.Data.Abstract
+namespace Trackables.Data.Abstract
 {
     public interface ITrackableItemMapper
     {

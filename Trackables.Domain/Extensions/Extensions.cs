@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 
-namespace MyFoodDiary.Domain.Extensions
+namespace Trackables.Domain.Extensions
 {
     public static class Extensions
     {

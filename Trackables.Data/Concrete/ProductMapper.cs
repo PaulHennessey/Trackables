@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using MyFoodDiary.Data.Abstract;
-using MyFoodDiary.Domain;
-using MyFoodDiary.Domain.Extensions;
+using Trackables.Data.Abstract;
+using Trackables.Domain;
+using Trackables.Domain.Extensions;
 
-namespace MyFoodDiary.Data.Concrete
+namespace Trackables.Data.Concrete
 {
     public class ProductMapper : IProductMapper
     {

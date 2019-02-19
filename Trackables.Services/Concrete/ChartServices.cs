@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MyFoodDiary.Domain;
-using MyFoodDiary.Services.Abstract;
+using Trackables.Domain;
+using Trackables.Services.Abstract;
 
-namespace MyFoodDiary.Services.Concrete
+namespace Trackables.Services.Concrete
 {
     public class ChartServices : IChartServices
     {

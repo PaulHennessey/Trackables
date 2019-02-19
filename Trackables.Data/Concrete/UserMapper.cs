@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using MyFoodDiary.Data.Abstract;
-using MyFoodDiary.Domain;
+using Trackables.Data.Abstract;
+using Trackables.Domain;
 
-namespace MyFoodDiary.Data.Concrete
+namespace Trackables.Data.Concrete
 {
     public class UserMapper : IUserMapper
     {

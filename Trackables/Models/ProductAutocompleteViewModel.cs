@@ -1,4 +1,4 @@
-﻿namespace MyFoodDiary.Models
+﻿namespace Trackables.Models
 {
     public class ProductAutocompleteViewModel
     {

@@ -1,8 +1,8 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
-using MyFoodDiary.Data.Abstract;
+using Trackables.Data.Abstract;
 
-namespace MyFoodDiary.Data.Concrete
+namespace Trackables.Data.Concrete
 {
     public class UserRepository : IUserRepository
     {

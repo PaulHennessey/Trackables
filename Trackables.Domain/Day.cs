@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MyFoodDiary.Domain
+namespace Trackables.Domain
 {
     public class Day
     {

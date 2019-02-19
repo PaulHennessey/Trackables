@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 
-namespace MyFoodDiary.Data.Abstract
+namespace Trackables.Data.Abstract
 {
     public interface IFoodItemRepository
     {

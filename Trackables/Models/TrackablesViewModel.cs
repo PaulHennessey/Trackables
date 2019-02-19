@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using MyFoodDiary.Domain;
+using Trackables.Domain;
 
-namespace MyFoodDiary.Models
+namespace Trackables.Models
 {
     public class TrackablesViewModel
     {

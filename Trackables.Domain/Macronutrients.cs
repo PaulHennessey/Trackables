@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyFoodDiary.Domain
+namespace Trackables.Domain
 {
     public static class Macronutrients
     {

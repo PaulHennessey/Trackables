@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using MyFoodDiary.Domain;
-using MyFoodDiary.Models;
-using MyFoodDiary.Services.Abstract;
+using Trackables.Domain;
+using Trackables.Models;
+using Trackables.Services.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +35,8 @@ namespace Trackables.Controllers
 
         public ActionResult Refresh(DateTime date)
         {
-            User user = _userServices.GetUser(User.Identity.Name);
+            //User user = _userServices.GetUser(User.Identity.Name);
+            User user = new User { Id = 1 };
 
             // Favourites
             List<Favourite> favourites = _foodItemServices.GetFavourites(user.Id).OrderBy(x => x.Name).ToList();

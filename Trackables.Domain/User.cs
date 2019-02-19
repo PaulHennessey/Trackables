@@ -1,4 +1,4 @@
-﻿namespace MyFoodDiary.Domain
+﻿namespace Trackables.Domain
 {
     public class User
     {

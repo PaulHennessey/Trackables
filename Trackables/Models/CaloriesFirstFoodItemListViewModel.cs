@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MyFoodDiary.Models
+namespace Trackables.Models
 {
     public class CaloriesFirstFoodItemListViewModel
     {
