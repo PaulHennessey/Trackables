@@ -77,31 +77,34 @@
         success: function (json) {
 
             var foodItemTable = $("#foodItemTable");
-            foodItemTable.empty();
-            $(json.FoodItems).each(function (index, foodItem) {
-                drawFoodItemRow(foodItem);
-            });
 
-            drawTotalCaloriesRow(json.TotalCalories);
+            https://stackoverflow.com/questions/8302166/dynamic-creation-of-table-with-dom
 
-            var favouriteTable = $("#favouriteTable");
-            favouriteTable.empty();
-            $(json.Favourites).each(function (index, favourite) {
-                drawFavouriteRow(favourite);
-            });
+            //foodItemTable.empty();
+            //$(json.FoodItems).each(function (index, foodItem) {
+            //    drawFoodItemRow(foodItem);
+            //});
 
-            var mealsTable = $("#mealsTable");
-            mealsTable.empty();
-            $(json.Meals).each(function (index, meal) {
-                drawMealRow(meal);
-            });
+            //drawTotalCaloriesRow(json.TotalCalories);
 
-            $('.DeleteLink').on('click', DeleteLinkClick);
-            $(".SaveLink").on("click", SaveLinkClick);
-            $('.FavouriteLink').on('click', FavouriteLinkClick);
-            $('.DeleteFavouriteLink').on('click', DeleteFavouriteLinkClick);
-            // Put the focus on the first input field.
-            $("#foodItemTable tr:first").find("input").focus();
+            //var favouriteTable = $("#favouriteTable");
+            //favouriteTable.empty();
+            //$(json.Favourites).each(function (index, favourite) {
+            //    drawFavouriteRow(favourite);
+            //});
+
+            //var mealsTable = $("#mealsTable");
+            //mealsTable.empty();
+            //$(json.Meals).each(function (index, meal) {
+            //    drawMealRow(meal);
+            //});
+
+            //$('.DeleteLink').on('click', DeleteLinkClick);
+            //$(".SaveLink").on("click", SaveLinkClick);
+            //$('.FavouriteLink').on('click', FavouriteLinkClick);
+            //$('.DeleteFavouriteLink').on('click', DeleteFavouriteLinkClick);
+            //// Put the focus on the first input field.
+            //$("#foodItemTable tr:first").find("input").focus();
         }
     });
 

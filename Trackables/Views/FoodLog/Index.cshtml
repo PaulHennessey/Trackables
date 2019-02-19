@@ -16,35 +16,48 @@
 
 <div class="row">
     <div class="col-md-12">
-        <table class="table table-bordered table-striped table-hover">
+        <table id="foodItemTable" class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email Address</th>
+                    <th>Food product</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>Paul</td>
-                    <td>Hennessey</td>
-                    <td class="text-primary">paul@paulhennessey.co.uk</td>
-                </tr>
-                <tr>
-                    <td>Paul</td>
-                    <td class="danger">Hennessey</td>
-                    <td>paul@paulhennessey.co.uk</td>
-                </tr>
-                <tr class="success">
-                    <td>Paul</td>
-                    <td>Hennessey</td>
-                    <td>paul@paulhennessey.co.uk</td>
-                </tr>
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
 </div>
 
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
-@Scripts.Render("~/bundles/trackables")
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Paul</td>
+                        <td>Hennessey</td>
+                        <td class="text-primary">paul@paulhennessey.co.uk</td>
+                    </tr>
+                    <tr>
+                        <td>Paul</td>
+                        <td class="danger">Hennessey</td>
+                        <td>paul@paulhennessey.co.uk</td>
+                    </tr>
+                    <tr class="success">
+                        <td>Paul</td>
+                        <td>Hennessey</td>
+                        <td>paul@paulhennessey.co.uk</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/trackables")
