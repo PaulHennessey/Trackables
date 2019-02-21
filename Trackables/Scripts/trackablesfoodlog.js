@@ -78,7 +78,17 @@
 
             var foodItemTable = $("#foodItemTable");
 
-            https://stackoverflow.com/questions/8302166/dynamic-creation-of-table-with-dom
+         //   https://stackoverflow.com/questions/8302166/dynamic-creation-of-table-with-dom
+            //https://stackoverflow.com/questions/18333427/how-to-insert-row-in-html-table-body-in-javascripts
+
+
+            $(json.FoodItems).each(function (index, foodItem) {
+                drawFoodItemRow1(foodItem);
+            });
+
+
+
+            //tablearea.appendChild(table);
 
             //foodItemTable.empty();
             //$(json.FoodItems).each(function (index, foodItem) {
@@ -107,6 +117,31 @@
             //$("#foodItemTable tr:first").find("input").focus();
         }
     });
+
+
+
+
+    //for (var i = 1; i < 4; i++) {
+    //    var tr = document.createElement('tr');
+
+    //    tr.appendChild(document.createElement('td'));
+
+
+    //    tr.cells[0].appendChild(document.createTextNode('Text1'));
+
+
+    //    body.appendChild(tr);
+    //}
+
+    function drawFoodItemRow1(rowData) {
+        var foodItemTableBody = document.getElementById('foodItemTable').getElementsByTagName('tbody')[0];
+        var row = document.createElement('tr');
+        var cell = document.createElement('td');
+        cell.append(document.createTextNode(rowData.Name));
+        row.append(cell);
+        foodItemTableBody.append(row);
+    }
+
 
     function drawFoodItemRow(rowData) {
         var row = $("<tr />");
