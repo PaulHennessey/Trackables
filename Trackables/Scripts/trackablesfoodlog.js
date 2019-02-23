@@ -14,6 +14,15 @@
     var DeleteFavouriteUrl = "/foodlog/deletefavourite";
     var UseMealUrl = "/foodlog/usemeal";
 
+
+    //https://medium.com/@krissanawat/20-best-jquery-autocomplete-plugins-2017-bace399c2ccd 
+    //https://www.jqueryscript.net/blog/Best-Autocomplete-Typeahead-Plugins-jQuery.html
+    //https://jqueryhouse.com/20-best-jquery-autocomplete-plugins/
+    //https://tosbourn.com/upgrading-from-bootstraps-typeahead-to-typeahead-js/
+    //https://www.w3resource.com/twitter-bootstrap/typehead.php
+    //https://www.c-sharpcorner.com/UploadFile/0c1bb2/creating-autocomplete-textbox-in-Asp-Net-mvc-5/
+    //https://stackoverflow.com/questions/43582844/typeahead-js-for-mvc-5-models
+
     // This rather dense code is explained here: http://blogs.msdn.com/b/stuartleeks/archive/2012/04/23/asp-net-mvc-amp-jquery-ui-autocomplete.aspx
     $('*[data-autocomplete-url]')
         .each(function () {

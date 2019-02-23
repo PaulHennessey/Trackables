@@ -169,10 +169,24 @@ namespace Trackables.Controllers
 
             var filteredItems = items.Where(item => item.Name.IndexOf(term, StringComparison.InvariantCultureIgnoreCase) >= 0);
 
-            IEnumerable<ProductAutocompleteViewModel> viewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductAutocompleteViewModel>>(filteredItems);
+            IEnumerable<Autocomplete> viewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<Autocomplete>>(filteredItems);
 
             return Json(viewModel, JsonRequestBehavior.AllowGet);
         }
+
+        //public ActionResult Search(string term)
+        //{
+        //    User user = _userServices.GetUser(User.Identity.Name);
+
+        //    List<Product> items = _productServices.GetProducts(user.Id).ToList();
+
+        //    var filteredItems = items.Where(item => item.Name.IndexOf(term, StringComparison.InvariantCultureIgnoreCase) >= 0);
+
+        //    IEnumerable<ProductAutocompleteViewModel> viewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductAutocompleteViewModel>>(filteredItems);
+
+        //    return Json(viewModel, JsonRequestBehavior.AllowGet);
+        //}
+
 
         /// <summary>
         /// This is called when you select a product from the autocomplete list.

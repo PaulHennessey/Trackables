@@ -1,4 +1,6 @@
-﻿
+﻿@model Trackables.Models.Autocomplete
+@using Trackables.Models
+
 <br />
 
 <div class="row">
@@ -15,6 +17,25 @@
 </div>
 
 <div class="row">
+    <div class="col-sm-3">
+        @Html.AutocompleteFor(model => model.Id, model => model.Name, "Search", "FoodLog", false)
+    </div>
+</div>
+
+@*<div class="row">
+        <div class="col-sm-3">
+            @Html.TextBox("search", null, new { data_autocomplete_url = Url.Action("Search"), data_selectfood_url = Url.Action("SelectFood", new { Code = "replace", date = "replace-date" }) })
+        </div>
+    </div>*@
+
+
+
+
+@*<div>
+        @Html.TextBox("search", null, new { data_autocomplete_url = Url.Action("Search"), data_selectfood_url = Url.Action("SelectFood", new { Code = "replace", date = "replace-date" }) })
+    </div>*@
+
+<div class="row">
     <div class="col-md-12">
         <table id="foodItemTable" class="table table-bordered table-striped table-hover">
             <thead>
@@ -22,8 +43,7 @@
                     <th>Food product</th>
                 </tr>
             </thead>
-            <tbody>
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
 </div>
