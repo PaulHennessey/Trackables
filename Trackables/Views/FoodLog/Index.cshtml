@@ -1,5 +1,5 @@
-﻿@model Trackables.Models.Autocomplete
-@using Trackables.Models
+﻿@*@model Trackables.Models.Autocomplete
+    @using Trackables.Models*@
 
 <br />
 
@@ -16,11 +16,13 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-sm-3">
-        @Html.AutocompleteFor(model => model.Id, model => model.Name, "Search", "FoodLog", false)
-    </div>
-</div>
+@*<div class="row">
+        <div class="col-sm-3">
+            <div class="form-group">
+                @Html.AutocompleteFor(model => model.Code, model => model.Name, "Search", "FoodLog", false, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+    </div>*@
 
 @*<div class="row">
         <div class="col-sm-3">

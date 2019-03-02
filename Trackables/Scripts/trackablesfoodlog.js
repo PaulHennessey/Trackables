@@ -15,31 +15,29 @@
     var UseMealUrl = "/foodlog/usemeal";
 
 
-    //https://medium.com/@krissanawat/20-best-jquery-autocomplete-plugins-2017-bace399c2ccd 
-    //https://www.jqueryscript.net/blog/Best-Autocomplete-Typeahead-Plugins-jQuery.html
-    //https://jqueryhouse.com/20-best-jquery-autocomplete-plugins/
+
     //https://tosbourn.com/upgrading-from-bootstraps-typeahead-to-typeahead-js/
-    //https://www.w3resource.com/twitter-bootstrap/typehead.php
-    //https://www.c-sharpcorner.com/UploadFile/0c1bb2/creating-autocomplete-textbox-in-Asp-Net-mvc-5/
     //https://stackoverflow.com/questions/43582844/typeahead-js-for-mvc-5-models
 
-    // This rather dense code is explained here: http://blogs.msdn.com/b/stuartleeks/archive/2012/04/23/asp-net-mvc-amp-jquery-ui-autocomplete.aspx
-    $('*[data-autocomplete-url]')
-        .each(function () {
-            $(this).autocomplete({
-                minLength: 3,
-                source: $(this).data("autocomplete-url"),
-                select: function (event, ui) {
 
-                    var actionlink = $(this).data("selectfood-url");
 
-                    actionlink = actionlink.replace("replace", ui.item.value);                              // Insert the parameter (on the client)
+    //// This rather dense code is explained here: http://blogs.msdn.com/b/stuartleeks/archive/2012/04/23/asp-net-mvc-amp-jquery-ui-autocomplete.aspx
+    //$('*[data-autocomplete-url]')
+    //    .each(function () {
+    //        $(this).autocomplete({
+    //            minLength: 3,
+    //            source: $(this).data("autocomplete-url"),
+    //            select: function (event, ui) {
 
-                    actionlink = actionlink.replace("replace-date", ConvertDateToISO8601(sessionStorage["currentDate"]));             // Insert the parameter (on the client)
-                    window.location.href = actionlink;                                                           // Go to it...
-                }
-            });
-        });
+    //                var actionlink = $(this).data("selectfood-url");
+
+    //                actionlink = actionlink.replace("replace", ui.item.value);                              // Insert the parameter (on the client)
+
+    //                actionlink = actionlink.replace("replace-date", ConvertDateToISO8601(sessionStorage["currentDate"]));             // Insert the parameter (on the client)
+    //                window.location.href = actionlink;                                                           // Go to it...
+    //            }
+    //        });
+    //    });
 
 
     //// When a date is selected I want to 
@@ -262,7 +260,8 @@
         var today = new Date();
         var dd = "8";
         //var dd = today.getDate();
-        var mm = today.getMonth() + 1; //January is 0!
+        var mm = "2";
+        //var mm = today.getMonth() + 1; //January is 0!
         var yyyy = today.getFullYear();
 
         if (dd < 10) {

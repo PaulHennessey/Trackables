@@ -30,7 +30,8 @@ namespace Trackables.Controllers
 
         public ActionResult Index()
         {
-            return View("Index", new WeightFirstFoodItemListViewModel());
+            return View("Index");
+            //return View("Index", new WeightFirstFoodItemListViewModel());
         }
 
         public ActionResult Refresh(DateTime date)
@@ -161,13 +162,14 @@ namespace Trackables.Controllers
         /// </summary>
         /// <param name="term"></param>
         /// <returns></returns>
-        public ActionResult Search(string term)
+        public ActionResult Search(string query)
         {
-            User user = _userServices.GetUser(User.Identity.Name);
+            //User user = _userServices.GetUser(User.Identity.Name);
+            User user = new User { Id = 1 };
 
             List<Product> items = _productServices.GetProducts(user.Id).ToList();
 
-            var filteredItems = items.Where(item => item.Name.IndexOf(term, StringComparison.InvariantCultureIgnoreCase) >= 0);
+            var filteredItems = items.Where(item => item.Name.IndexOf(query, StringComparison.InvariantCultureIgnoreCase) >= 0);
 
             IEnumerable<Autocomplete> viewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<Autocomplete>>(filteredItems);
 
