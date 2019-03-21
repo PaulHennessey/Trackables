@@ -1,8 +1,72 @@
 ﻿var home = (function ($) {
 
-    $('#datetimepicker1').datetimepicker({
-        format: 'DD/MM/YYYY'
+    $('#datetimepicker').datetimepicker({
+        format: 'DD/MM/YYYY',
+        useCurrent: false
     });
+
+    $('#datetimepicker').on("dp.change", function (e) {
+        example(e.target.value);
+    });
+
+    var example = function exampleFunction(d) {
+
+        sessionStorage["currentDate"] = d;
+
+        $.ajax({
+            type: "POST",
+            url: RefreshUrl,
+            dataType: "json",
+            data: {
+                date: d
+            },
+            success: function (json) {
+
+                $("#foodItemTableBody").empty();
+                $(json.FoodItems).each(function (index, foodItem) {
+                    drawFoodItemRow1(foodItem);
+                });
+
+                $('.SaveLink').on('click', SaveLinkClick);
+            }
+        });
+    };
+
+    //$("#datetimepicker").on("dp.change", function (e) {
+
+    //    sessionStorage["currentDate"] = e.date;
+
+    //    $.ajax({
+    //        type: "POST",
+    //        url: RefreshUrl,
+    //        dataType: "json",
+    //        data: {
+    //            date: e.date
+    //        },
+    //        success: function (json) {
+
+    //            var foodItemTable = $("#foodItemTable");
+
+    //            $(json.FoodItems).each(function (index, foodItem) {
+    //                drawFoodItemRow1(foodItem);
+    //            });
+
+
+    //            //foodItemTable.empty();
+    //            //$(json.FoodItems).each(function (index, foodItem) {
+    //            //    drawFoodItemRow(foodItem);
+    //            //});
+
+    //            //drawTotalCaloriesRow(json.TotalCalories);
+
+    //            //$('.DeleteLink').on('click', DeleteLinkClick);
+    //            //$('.SaveLink').on('click', SaveLinkClick);
+    //            //$('.FavouriteLink').on('click', FavouriteLinkClick);
+    //            //$('.DeleteFavouriteLink').on('click', DeleteFavouriteLinkClick);
+    //        }
+    //    });
+
+    //});
 
     SetDateOnLoad();
 
@@ -11,37 +75,37 @@
     var SaveUrl = "/foodlog/save";
     var FavouriteUrl = "/foodlog/favourite";
     var UseFavouriteUrl = "/foodlog/usefavourite";
+    var SelectFoodUrl = "/foodlog/selectfood";
     var DeleteFavouriteUrl = "/foodlog/deletefavourite";
     var UseMealUrl = "/foodlog/usemeal";
-
+    var ProductFetchUrl = "/foodlog/productfetch";
 
 
     //https://tosbourn.com/upgrading-from-bootstraps-typeahead-to-typeahead-js/
-    //https://stackoverflow.com/questions/43582844/typeahead-js-for-mvc-5-models
+    //https://stackoverflow.com/questions/43582844/typeafead-js-for-mvc-5-models
+
+    var bloodhound = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace("Name"),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: ProductFetchUrl
+    });
+
+    $('#fetch .typeahead').typeahead(null, {
+        name: 'countries',
+        displayKey: 'Name',
+        source: bloodhound
+    });
+
+    $('#fetch .typeahead').on('typeahead:selected', function (event, item) {
+        var link = SelectFoodUrl + "?Code=" + item.Code + "&date=" + ConvertDateToISO8601(sessionStorage["currentDate"]);
+        window.location.href = link;  
+    });
 
 
-
-    //// This rather dense code is explained here: http://blogs.msdn.com/b/stuartleeks/archive/2012/04/23/asp-net-mvc-amp-jquery-ui-autocomplete.aspx
-    //$('*[data-autocomplete-url]')
-    //    .each(function () {
-    //        $(this).autocomplete({
-    //            minLength: 3,
-    //            source: $(this).data("autocomplete-url"),
-    //            select: function (event, ui) {
-
-    //                var actionlink = $(this).data("selectfood-url");
-
-    //                actionlink = actionlink.replace("replace", ui.item.value);                              // Insert the parameter (on the client)
-
-    //                actionlink = actionlink.replace("replace-date", ConvertDateToISO8601(sessionStorage["currentDate"]));             // Insert the parameter (on the client)
-    //                window.location.href = actionlink;                                                           // Go to it...
-    //            }
-    //        });
-    //    });
 
 
     //// When a date is selected I want to 
-    //$("#datetimepicker1").datepicker({
+    //$("#datetimepicker").datetimepicker({
     //    onSelect: function (dateText, inst) {
 
     //        sessionStorage["currentDate"] = dateText;
@@ -56,17 +120,23 @@
     //            success: function (json) {
 
     //                var foodItemTable = $("#foodItemTable");
-    //                foodItemTable.empty();
+
     //                $(json.FoodItems).each(function (index, foodItem) {
-    //                    drawFoodItemRow(foodItem);
+    //                    drawFoodItemRow1(foodItem);
     //                });
 
-    //                drawTotalCaloriesRow(json.TotalCalories);
 
-    //                $('.DeleteLink').on('click', DeleteLinkClick);
-    //                $('.SaveLink').on('click', SaveLinkClick);
-    //                $('.FavouriteLink').on('click', FavouriteLinkClick);
-    //                $('.DeleteFavouriteLink').on('click', DeleteFavouriteLinkClick);
+    //                //foodItemTable.empty();
+    //                //$(json.FoodItems).each(function (index, foodItem) {
+    //                //    drawFoodItemRow(foodItem);
+    //                //});
+
+    //                //drawTotalCaloriesRow(json.TotalCalories);
+
+    //                //$('.DeleteLink').on('click', DeleteLinkClick);
+    //                //$('.SaveLink').on('click', SaveLinkClick);
+    //                //$('.FavouriteLink').on('click', FavouriteLinkClick);
+    //                //$('.DeleteFavouriteLink').on('click', DeleteFavouriteLinkClick);
     //            }
     //        });
 
@@ -93,7 +163,7 @@
                 drawFoodItemRow1(foodItem);
             });
 
-
+            $('.SaveLink').on('click', SaveLinkClick);
 
             //tablearea.appendChild(table);
 
@@ -141,14 +211,44 @@
     //}
 
     function drawFoodItemRow1(rowData) {
-        var foodItemTableBody = document.getElementById('foodItemTable').getElementsByTagName('tbody')[0];
+
+        var foodItemTableBody = document.getElementById('foodItemTableBody');
         var row = document.createElement('tr');
-        var cell = document.createElement('td');
-        cell.append(document.createTextNode(rowData.Name));
-        row.append(cell);
+
+        var nameCell = document.createElement('td');
+        nameCell.append(document.createTextNode(rowData.Name));
+        row.append(nameCell);
+
+        var quantityCell = document.createElement('td');
+        var div = document.createElement("div");
+        var input = document.createElement("input");
+        input.setAttribute("type", "text");
+        input.setAttribute("class", "form-control input-sm");
+        input.setAttribute("id", rowData.Id);
+        input.value = rowData.Quantity;
+        div.appendChild(input);
+        quantityCell.appendChild(div);
+        row.append(quantityCell);
+
+        var linkCell = document.createElement('td');
+
+        var saveLink = document.createElement("a");        
+        saveLink.setAttribute("class", "SaveLink");
+        saveLink.setAttribute("href", "/foodlog/save/" + rowData.Id);
+        saveLink.innerHTML = "Save";
+        linkCell.appendChild(saveLink);
+
+        var deleteLink = document.createElement("a");
+        deleteLink.setAttribute("class", "DeleteLink");
+        deleteLink.setAttribute("href", "/foodlog/delete/" + rowData.Id);
+        deleteLink.innerHTML = "Delete";
+        linkCell.appendChild(deleteLink);
+
+        row.append(linkCell);
+
         foodItemTableBody.append(row);
     }
-
+    
 
     function drawFoodItemRow(rowData) {
         var row = $("<tr />");
@@ -195,7 +295,7 @@
             sessionStorage["currentDate"] = date;
         }
 
-        $("#dateselection").val(date);
+        $("#datetimepicker").val(date);
     }
 
 
@@ -258,10 +358,8 @@
     function GetTodaysDate() {
 
         var today = new Date();
-        var dd = "8";
-        //var dd = today.getDate();
-        var mm = "2";
-        //var mm = today.getMonth() + 1; //January is 0!
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
         var yyyy = today.getFullYear();
 
         if (dd < 10) {

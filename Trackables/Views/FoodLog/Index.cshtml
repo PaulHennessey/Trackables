@@ -1,56 +1,39 @@
-﻿@*@model Trackables.Models.Autocomplete
-    @using Trackables.Models*@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
 <br />
 
 <div class="row">
-    <div class='col-sm-3'>
+    <div class='col-md-12'>
         <div class="form-group">
-            <div class='input-group date' id='datetimepicker1'>
-                <input type='text' class="form-control" />
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-            </div>
+            <input type='text' class="form-control" id='datetimepicker' />
         </div>
     </div>
 </div>
 
-@*<div class="row">
-        <div class="col-sm-3">
-            <div class="form-group">
-                @Html.AutocompleteFor(model => model.Code, model => model.Name, "Search", "FoodLog", false, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
-    </div>*@
 
-@*<div class="row">
-        <div class="col-sm-3">
-            @Html.TextBox("search", null, new { data_autocomplete_url = Url.Action("Search"), data_selectfood_url = Url.Action("SelectFood", new { Code = "replace", date = "replace-date" }) })
-        </div>
-    </div>*@
+<div id="fetch">
+    <input class="no-clear typeahead form-control" type="text" placeholder="Products">
+</div>
 
-
-
-
-@*<div>
-        @Html.TextBox("search", null, new { data_autocomplete_url = Url.Action("Search"), data_selectfood_url = Url.Action("SelectFood", new { Code = "replace", date = "replace-date" }) })
-    </div>*@
 
 <div class="row">
     <div class="col-md-12">
-        <table id="foodItemTable" class="table table-bordered table-striped table-hover">
+        <table id="foodItemTable2" class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    <th>Food product</th>
+                    <th class="col-md-4">Food product</th>
+                    <th class="col-md-4">Quantity</th>
+                    <th class="col-md-4">Links</th>
                 </tr>
             </thead>
-            <tbody></tbody>
+            <tbody id="foodItemTableBody"></tbody>
         </table>
     </div>
 </div>
 
-
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
-@Scripts.Render("~/bundles/trackables")
+<script src="@Url.Content("~/Scripts/typeahead.bundle.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/typeahead.jquery.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/trackablesfoodlog.js")" type="text/javascript"></script>

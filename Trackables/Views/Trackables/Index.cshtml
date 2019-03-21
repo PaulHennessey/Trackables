@@ -1,0 +1,30 @@
+﻿@model  Trackables.Models.TrackablesViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table id="trackablesTable">
+
+    @foreach (var trackable in Model.Trackables)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => trackable.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = trackable.Id })
+                @Html.ActionLink("Delete", "Delete", new { id = trackable.Id }, new { @class = "DeleteTrackableLink" })
+            </td>
+        </tr>
+    }
+</table>
+
+<br />
+<p>
+    @Html.ActionLink("Add a new Trackable", "Create")
+</p>
+
+<script src="@Url.Content("~/Scripts/TrackablesTrackables.js")" type="text/javascript"></script>
+

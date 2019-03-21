@@ -14,6 +14,18 @@ namespace Trackables
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "Save",
+                url: "{controller}/{action}/{id}/{quantity}",
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional, quantity = UrlParameter.Optional }
+            );
+
+            //routes.MapRoute(
+            //    name: "Save",
+            //    url: "FoodLog/Save/{id}/{quantity}",
+            //    defaults: new { controller = "FoodLog", action = "Save", id = UrlParameter.Optional, quantity = UrlParameter.Optional }
+            //);
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

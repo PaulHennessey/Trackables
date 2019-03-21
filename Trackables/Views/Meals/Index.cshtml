@@ -1,0 +1,33 @@
+﻿@model  Trackables.Models.MealsViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table id="mealTable">
+    <tr>
+        <th>
+        </th>
+    </tr>
+
+    @foreach (var meal in Model.Meals)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => meal.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = meal.Id })
+                @Html.ActionLink("Delete", "DeleteMeal", new { mealId = meal.Id }, new { @class = "DeleteMealLink" })
+            </td>
+        </tr>
+    }
+</table>
+
+<br />
+<p>
+    @Html.ActionLink("Add a new meal", "Create")
+</p>
+
+<script src="@Url.Content("~/Scripts/TrackablesMeals.js")" type="text/javascript"></script>

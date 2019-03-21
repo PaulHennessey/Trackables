@@ -1,17 +1,17 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Data.Entity;
+using System.Text;
+using System.Threading.Tasks;
 
-
-namespace Trackables.Models
+namespace Trackables.Domain
 {
     public class Autocomplete
     {
-        //public int Id { get; set;}
+        public Autocomplete()
+        { }
+
         public string Code { get; set; }
         public string Name { get; set; }
     }
-
 }

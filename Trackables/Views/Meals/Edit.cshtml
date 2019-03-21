@@ -1,0 +1,86 @@
+﻿@model  Trackables.Models.MealViewModel
+@using Trackables.Models
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Name)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+
+    @*<div>
+        <div id="details"></div>
+        <input type="text" id="Search" data-provide="typeahead" placeholder="Client Name" autocomplete="off" />
+    </div>*@
+
+    //https://twitter.github.io/typeahead.js/examples/
+
+
+    <div id="the-basics">
+        <input class="typeahead" type="text" placeholder="States of USA">
+    </div>
+
+    @*<div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    @Html.AutocompleteFor(model => model.Autocomplete.Code, model => model.Autocomplete.Name, "Search", "Meals", false, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>*@
+
+
+    @*<div>
+            @Html.TextBox("search", null, new { data_autocomplete_url = Url.Action("Search"), data_selectfood_url = Url.Action("SelectFood", new { code = "replace", mealId = Model.Id }) })
+        </div>*@
+
+    <div id="ingredientsTableDiv">
+
+        <table id="ingredientsTable">
+            <tr>
+                <th>
+                </th>
+            </tr>
+            @foreach (var ingredient in Model.Ingredients)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => ingredient.Name)
+                    </td>
+                    <td>
+                        <input class='input-quantity' id=@ingredient.Id name=@ingredient.Quantity type='text' value=@ingredient.Quantity>
+                    </td>
+                    <td>
+                        @Html.ActionLink("Save", "SaveIngredient", new { id = ingredient.Id, mealId = Model.Id }, new { @class = "SaveIngredientLink" })
+                        @Html.ActionLink("Delete", "DeleteIngredient", new { id = ingredient.Id, mealId = Model.Id }, new { @class = "DeleteIngredientLink" })
+                    </td>
+                </tr>
+            }
+        </table>
+
+    </div>
+
+    <p>
+        <input type="submit" value="Save" />
+    </p>
+
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script src="@Url.Content("~/Scripts/trackablesmeals.js")" type="text/javascript"></script>
+
+

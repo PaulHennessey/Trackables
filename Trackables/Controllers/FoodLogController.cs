@@ -51,6 +51,7 @@ namespace Trackables.Controllers
             // Meals
             List<Meal> meals = _mealServices.GetMeals(user.Id).OrderBy(x => x.Name).ToList();
             var mealsViewModel = Mapper.Map<IEnumerable<Meal>, IEnumerable<MealViewModel>>(meals);
+            
 
             var viewModel = new WeightFirstFoodItemListViewModel()
             {
@@ -160,34 +161,21 @@ namespace Trackables.Controllers
         /// <summary>
         /// This gives the autocomplete field a list of products.
         /// </summary>
-        /// <param name="term"></param>
         /// <returns></returns>
-        public ActionResult Search(string query)
+        public ActionResult ProductFetch()
         {
             //User user = _userServices.GetUser(User.Identity.Name);
             User user = new User { Id = 1 };
 
             List<Product> items = _productServices.GetProducts(user.Id).ToList();
 
-            var filteredItems = items.Where(item => item.Name.IndexOf(query, StringComparison.InvariantCultureIgnoreCase) >= 0);
+            //var filteredItems = items.Where(item => item.Name.IndexOf(query, StringComparison.InvariantCultureIgnoreCase) >= 0);
 
-            IEnumerable<Autocomplete> viewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<Autocomplete>>(filteredItems);
+      
+            IEnumerable<Autocomplete> viewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<Autocomplete>>(items);
 
             return Json(viewModel, JsonRequestBehavior.AllowGet);
         }
-
-        //public ActionResult Search(string term)
-        //{
-        //    User user = _userServices.GetUser(User.Identity.Name);
-
-        //    List<Product> items = _productServices.GetProducts(user.Id).ToList();
-
-        //    var filteredItems = items.Where(item => item.Name.IndexOf(term, StringComparison.InvariantCultureIgnoreCase) >= 0);
-
-        //    IEnumerable<ProductAutocompleteViewModel> viewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductAutocompleteViewModel>>(filteredItems);
-
-        //    return Json(viewModel, JsonRequestBehavior.AllowGet);
-        //}
 
 
         /// <summary>
@@ -198,7 +186,8 @@ namespace Trackables.Controllers
         /// <returns></returns>
         public ActionResult SelectFood(string Code, DateTime date)
         {
-            User user = _userServices.GetUser(User.Identity.Name);
+            //User user = _userServices.GetUser(User.Identity.Name);
+            User user = new User { Id = 1 };
 
             _foodItemServices.InsertFoodItem(Code, 0, date, user.Id);
 

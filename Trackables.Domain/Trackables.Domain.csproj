@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Autocomplete.cs" />
     <Compile Include="Day.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Favourite.cs" />

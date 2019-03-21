@@ -1,0 +1,31 @@
+﻿@model  Trackables.Models.ProductsViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+
+<table id="productTable" class="table table-bordered table-striped table-hover">
+
+    @foreach (var product in Model.Products)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => product.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { code = product.Code })
+                @Html.ActionLink("Delete", "Delete", new { code = product.Code }, new { @class = "DeleteProductLink" })
+            </td>
+        </tr>
+    }
+</table>
+
+<br />
+<p>
+    @Html.ActionLink("Add a new Product", "Create")
+</p>
+
+<script src="@Url.Content("~/Scripts/TrackablesProducts.js")" type="text/javascript"></script>

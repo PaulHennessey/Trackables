@@ -37,6 +37,7 @@ namespace Trackables
                 cfg.CreateMap<Product, ProductAutocompleteViewModel>()
                     .ForMember(dest => dest.label, opt => opt.MapFrom(src => src.Name))
                     .ForMember(dest => dest.value, opt => opt.MapFrom(src => src.Code));
+                cfg.CreateMap<Meal, MealViewModel>();
             });
 
 

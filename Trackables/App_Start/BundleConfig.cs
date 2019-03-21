@@ -24,12 +24,18 @@ namespace Trackables
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/bootstrap-datetimepicker.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/trackables").Include(
-                      "~/Scripts/trackablesfoodlog.js"));
+            bundles.Add(new ScriptBundle("~/bundles/typeahead").Include(
+                      "~/Scripts/bloodhound*",
+                      "~/Scripts/typeahead.bundle*",
+                      "~/Scripts/typeahead.jquery*"));
+
+            //bundles.Add(new ScriptBundle("~/bundles/trackables").Include(
+            //          "~/Scripts/trackablesfoodlog.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-datetimepicker.css",
+                      "~/Content/typeahead.css",
                       "~/Content/site.css"));
         }
     }
