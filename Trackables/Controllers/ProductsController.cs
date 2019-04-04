@@ -123,5 +123,22 @@ namespace Trackables.Controllers
 
             return RedirectToAction("Index");
         }
+
+        /// <summary>
+        /// This is used by the typeahead prefetch function.
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ProductFetch()
+        {
+            //User user = _userServices.GetUser(User.Identity.Name);
+            User user = new User { Id = 1 };
+
+            List<Product> items = _productServices.GetProducts(user.Id).ToList();
+
+            IEnumerable<Autocomplete> viewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<Autocomplete>>(items);
+
+            return Json(viewModel, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

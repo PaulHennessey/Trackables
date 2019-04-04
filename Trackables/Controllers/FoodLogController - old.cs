@@ -10,17 +10,17 @@ using System.Web.Mvc;
 
 namespace Trackables.Controllers
 {
-    public class FoodLogController : Controller
+    public class FoodLogController_old : Controller
     {
         private readonly IFoodItemServices _foodItemServices;
         private readonly IProductServices _productServices;
         private readonly IMealServices _mealServices;
         private readonly IUserServices _userServices;
 
-        public FoodLogController()
+        public FoodLogController_old()
         { }
 
-        public FoodLogController(IFoodItemServices foodItemServices, IProductServices productServices, IUserServices userServices, IMealServices mealServices)
+        public FoodLogController_old(IFoodItemServices foodItemServices, IProductServices productServices, IUserServices userServices, IMealServices mealServices)
         {
             _productServices = productServices;
             _foodItemServices = foodItemServices;
@@ -28,68 +28,16 @@ namespace Trackables.Controllers
             _mealServices = mealServices;
         }
 
-        public ActionResult Index()
-        {
-            return View("Index", new FoodLogViewModel());
+        public ActionResult Index2()
+        {            
+            return View("Index2", new FoodLogViewModel());
         }
 
-        //public ActionResult Index(DateTime date)
-        //{
-        //    //User user = _userServices.GetUser(User.Identity.Name);
-        //    User user = new User { Id = 1 };
-
-        //    // Food items
-        //    List<FoodItem> foodItems = _foodItemServices.GetFoodItems(date, user.Id).OrderByDescending(x => x.Id).ToList();
-
-        //    List<FoodItemViewModel> foodItemViewModel = Mapper.Map<List<FoodItem>, List<FoodItemViewModel>>(foodItems);
-
-        //    var viewModel = new FoodLogViewModel()
-        //    {
-        //        FoodItems = foodItemViewModel
-        //    };
-
-        //    return View("Index", viewModel);
-        //}
-
-
-        //public ActionResult Refresh(DateTime date)
-        //{
-        //    //User user = _userServices.GetUser(User.Identity.Name);
-        //    User user = new User { Id = 1 };
-
-        //    // Food items
-        //    List<FoodItem> foodItems = _foodItemServices.GetFoodItems(date, user.Id).OrderByDescending(x => x.Id).ToList();
-
-        //    List<FoodItemViewModel> foodItemViewModel = Mapper.Map<List<FoodItem>, List<FoodItemViewModel>>(foodItems);
-
-        //    var viewModel = new FoodLogViewModel()
-        //    {            
-        //        FoodItems = foodItemViewModel
-        //    };
-
-        //    return View("Index", viewModel);
-        //}
-
-
-        //public ActionResult Refresh(DateTime date)
-        //{
-        //    //User user = _userServices.GetUser(User.Identity.Name);
-        //    User user = new User { Id = 1 };
-
-        //    // Food items
-        //    List<FoodItem> foodItems = _foodItemServices.GetFoodItems(date, user.Id).OrderByDescending(x => x.Id).ToList();
-
-        //    List<FoodItemViewModel> foodItemViewModel = Mapper.Map<List<FoodItem>, List<FoodItemViewModel>>(foodItems);
-
-        //    var viewModel = new FoodLogViewModel()
-        //    {
-        //        FoodItems = foodItemViewModel
-        //    };
-
-        //    return View("Index", viewModel);
-        //}
-
-
+        public ActionResult Index()
+        {
+            return View("Index");
+            //return View("Index", new WeightFirstFoodItemListViewModel());
+        }
 
         public ActionResult Refresh(DateTime date)
         {
@@ -104,7 +52,7 @@ namespace Trackables.Controllers
 
 
             var viewModel = new FoodLogViewModel()
-            {
+            {            
                 FoodItems = foodItemViewModel
             };
 
@@ -174,14 +122,14 @@ namespace Trackables.Controllers
         {
             _foodItemServices.UpdateFoodItem(id, quantity);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index2");
         }
 
         public ActionResult Delete(int id)
         {
             _foodItemServices.DeleteFoodItem(id);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index2");
         }
 
         ///// <summary>
@@ -249,10 +197,7 @@ namespace Trackables.Controllers
 
             _foodItemServices.InsertFoodItem(Code, 0, date, user.Id);
 
-            
-
-            return RedirectToAction("Index");
-            //return RedirectToAction("Index", new { date = date });
+            return RedirectToAction("Index2");
         }
     }
 }

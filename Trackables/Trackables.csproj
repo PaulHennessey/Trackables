@@ -187,6 +187,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\FoodLogController - old.cs" />
     <Compile Include="Controllers\FoodLogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="Models\FavouriteViewModel.cs" />
     <Compile Include="Models\FoodItemListViewModel.cs" />
     <Compile Include="Models\FoodItemViewModel.cs" />
+    <Compile Include="Models\FoodLogViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\MacronutrientsViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -255,11 +257,14 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
-    <Content Include="Scripts\trackablesfoodlog.js" />
-    <Content Include="Scripts\trackablesmeals.js" />
-    <Content Include="Scripts\trackablesproducts.js" />
-    <Content Include="Scripts\TrackablesTrackables.js" />
-    <Content Include="Scripts\TrackablesTrackablesLog.js" />
+    <Content Include="Scripts\trackables-common.js" />
+    <Content Include="Scripts\trackables-foodlog2.js" />
+    <Content Include="Scripts\trackables-typeahead.js" />
+    <Content Include="Scripts\trackables-foodlog.js" />
+    <Content Include="Scripts\trackables-meals.js" />
+    <Content Include="Scripts\trackables-products.js" />
+    <Content Include="Scripts\trackables-trackables.js" />
+    <Content Include="Scripts\trackables-trackableslog.js" />
     <Content Include="Scripts\typeahead.bundle.js" />
     <Content Include="Scripts\typeahead.bundle.min.js" />
     <Content Include="Scripts\typeahead.jquery.js" />
@@ -296,7 +301,7 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\FoodLog\Index.cshtml" />
+    <Content Include="Views\FoodLog\Index_old.cshtml" />
     <Content Include="Views\Products\Index.cshtml" />
     <Content Include="Views\Products\Create.cshtml" />
     <Content Include="Views\Products\Edit.cshtml" />
@@ -307,6 +312,7 @@
     <Content Include="Views\Trackables\Create.cshtml" />
     <Content Include="Views\Trackables\Edit.cshtml" />
     <Content Include="Views\TrackablesLog\Index.cshtml" />
+    <Content Include="Views\FoodLog\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

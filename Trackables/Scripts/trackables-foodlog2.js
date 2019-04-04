@@ -6,10 +6,20 @@
     });
 
     $('#datetimepicker').on("dp.change", function (e) {
-        example(e.target.value);
+        refresh(e.target.value);
     });
 
-    var example = function exampleFunction(d) {
+
+    //var refresh = function (d) {
+
+    //    sessionStorage["currentDate"] = d;
+
+    //    var link = RefreshUrl + "?date=" + ConvertDateToISO8601(sessionStorage["currentDate"]);
+    //    window.location.href = link;  
+    //};
+
+
+    var refresh = function (d) {
 
         sessionStorage["currentDate"] = d;
 
@@ -31,6 +41,8 @@
             }
         });
     };
+
+
 
     //$("#datetimepicker").on("dp.change", function (e) {
 
@@ -78,23 +90,7 @@
     var SelectFoodUrl = "/foodlog/selectfood";
     var DeleteFavouriteUrl = "/foodlog/deletefavourite";
     var UseMealUrl = "/foodlog/usemeal";
-    var ProductFetchUrl = "/foodlog/productfetch";
-
-
-    //https://tosbourn.com/upgrading-from-bootstraps-typeahead-to-typeahead-js/
-    //https://stackoverflow.com/questions/43582844/typeafead-js-for-mvc-5-models
-
-    var bloodhound = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace("Name"),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: ProductFetchUrl
-    });
-
-    $('#fetch .typeahead').typeahead(null, {
-        name: 'countries',
-        displayKey: 'Name',
-        source: bloodhound
-    });
+    
 
     $('#fetch .typeahead').on('typeahead:selected', function (event, item) {
         var link = SelectFoodUrl + "?Code=" + item.Code + "&date=" + ConvertDateToISO8601(sessionStorage["currentDate"]);
@@ -345,8 +341,7 @@
         // Go to it...
         window.location.href = link;
     }
-
-
+    
     function DeleteFavouriteLinkClick(e) {
 
         e.preventDefault();
