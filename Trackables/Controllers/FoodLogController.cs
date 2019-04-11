@@ -96,20 +96,63 @@ namespace Trackables.Controllers
             //User user = _userServices.GetUser(User.Identity.Name);
             User user = new User { Id = 1 };
 
-
             // Food items
             List<FoodItem> foodItems = _foodItemServices.GetFoodItems(date, user.Id).OrderByDescending(x => x.Id).ToList();
-
-            List<FoodItemViewModel> foodItemViewModel = Mapper.Map<List<FoodItem>, List<FoodItemViewModel>>(foodItems);
-
+            List<FoodItemViewModel> foodItemViewModel = Mapper.Map<List<FoodItem>, List<FoodItemViewModel>>(foodItems);        
 
             var viewModel = new FoodLogViewModel()
             {
                 FoodItems = foodItemViewModel
             };
 
-            return Json(viewModel, JsonRequestBehavior.AllowGet);
+            return PartialView("FoodItemTable", viewModel);
         }
+
+
+        /// <summary>
+        /// This is called when you select a product from the autocomplete list.
+        /// </summary>
+        /// <param name="Code"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public ActionResult SelectFood(string Code, DateTime date)
+        {
+            //User user = _userServices.GetUser(User.Identity.Name);
+            User user = new User { Id = 1 };
+
+            _foodItemServices.InsertFoodItem(Code, 0, date, user.Id);
+
+            // Food items
+            List<FoodItem> foodItems = _foodItemServices.GetFoodItems(date, user.Id).OrderByDescending(x => x.Id).ToList();
+            List<FoodItemViewModel> foodItemViewModel = Mapper.Map<List<FoodItem>, List<FoodItemViewModel>>(foodItems);
+
+            var viewModel = new FoodLogViewModel()
+            {
+                FoodItems = foodItemViewModel
+            };
+
+            return PartialView("FoodItemTable", viewModel);
+        }
+
+
+        ///// <summary>
+        ///// This is called when you select a product from the autocomplete list.
+        ///// </summary>
+        ///// <param name="Code"></param>
+        ///// <param name="date"></param>
+        ///// <returns></returns>
+        //public ActionResult SelectFood(string Code, DateTime date)
+        //{
+        //    //User user = _userServices.GetUser(User.Identity.Name);
+        //    User user = new User { Id = 1 };
+
+        //    _foodItemServices.InsertFoodItem(Code, 0, date, user.Id);
+
+
+
+        //    return RedirectToAction("Index");
+        //    //return RedirectToAction("Index", new { date = date });
+        //}
 
 
         //public ActionResult Refresh(DateTime date)
@@ -236,23 +279,5 @@ namespace Trackables.Controllers
         //    return RedirectToAction("Index");
         //}
 
-        /// <summary>
-        /// This is called when you select a product from the autocomplete list.
-        /// </summary>
-        /// <param name="Code"></param>
-        /// <param name="date"></param>
-        /// <returns></returns>
-        public ActionResult SelectFood(string Code, DateTime date)
-        {
-            //User user = _userServices.GetUser(User.Identity.Name);
-            User user = new User { Id = 1 };
-
-            _foodItemServices.InsertFoodItem(Code, 0, date, user.Id);
-
-            
-
-            return RedirectToAction("Index");
-            //return RedirectToAction("Index", new { date = date });
-        }
     }
 }

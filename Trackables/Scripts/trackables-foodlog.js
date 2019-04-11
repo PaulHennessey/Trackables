@@ -1,74 +1,5 @@
 ﻿var home = (function ($) {
 
-    $('#datetimepicker').datetimepicker({
-        format: 'DD/MM/YYYY',
-        useCurrent: false
-    });
-
-    $('#datetimepicker').on("dp.change", function (e) {
-        example(e.target.value);
-    });
-
-    var example = function exampleFunction(d) {
-
-        sessionStorage["currentDate"] = d;
-
-        $.ajax({
-            type: "POST",
-            url: RefreshUrl,
-            dataType: "json",
-            data: {
-                date: d
-            },
-            success: function (json) {
-
-                $("#foodItemTableBody").empty();
-                $(json.FoodItems).each(function (index, foodItem) {
-                    drawFoodItemRow1(foodItem);
-                });
-
-                $('.SaveLink').on('click', SaveLinkClick);
-            }
-        });
-    };
-
-    //$("#datetimepicker").on("dp.change", function (e) {
-
-    //    sessionStorage["currentDate"] = e.date;
-
-    //    $.ajax({
-    //        type: "POST",
-    //        url: RefreshUrl,
-    //        dataType: "json",
-    //        data: {
-    //            date: e.date
-    //        },
-    //        success: function (json) {
-
-    //            var foodItemTable = $("#foodItemTable");
-
-    //            $(json.FoodItems).each(function (index, foodItem) {
-    //                drawFoodItemRow1(foodItem);
-    //            });
-
-
-    //            //foodItemTable.empty();
-    //            //$(json.FoodItems).each(function (index, foodItem) {
-    //            //    drawFoodItemRow(foodItem);
-    //            //});
-
-    //            //drawTotalCaloriesRow(json.TotalCalories);
-
-    //            //$('.DeleteLink').on('click', DeleteLinkClick);
-    //            //$('.SaveLink').on('click', SaveLinkClick);
-    //            //$('.FavouriteLink').on('click', FavouriteLinkClick);
-    //            //$('.DeleteFavouriteLink').on('click', DeleteFavouriteLinkClick);
-    //        }
-    //    });
-
-    //});
-
-    SetDateOnLoad();
 
     var RefreshUrl = "/foodlog/refresh";
     var DeleteUrl = "/foodlog/delete";
@@ -78,198 +9,66 @@
     var SelectFoodUrl = "/foodlog/selectfood";
     var DeleteFavouriteUrl = "/foodlog/deletefavourite";
     var UseMealUrl = "/foodlog/usemeal";
-    
 
-    $('#fetch .typeahead').on('typeahead:selected', function (event, item) {
-        var link = SelectFoodUrl + "?Code=" + item.Code + "&date=" + ConvertDateToISO8601(sessionStorage["currentDate"]);
-        window.location.href = link;  
+
+    SetDateOnLoad();
+    RefreshTable();
+
+
+    $('#datetimepicker').datetimepicker({
+        format: 'DD/MM/YYYY',
+        useCurrent: false
     });
 
 
-
-
-    //// When a date is selected I want to 
-    //$("#datetimepicker").datetimepicker({
-    //    onSelect: function (dateText, inst) {
-
-    //        sessionStorage["currentDate"] = dateText;
-
-    //        $.ajax({
-    //            type: "POST",
-    //            url: RefreshUrl,
-    //            dataType: "json",
-    //            data: {
-    //                date: dateText
-    //            },
-    //            success: function (json) {
-
-    //                var foodItemTable = $("#foodItemTable");
-
-    //                $(json.FoodItems).each(function (index, foodItem) {
-    //                    drawFoodItemRow1(foodItem);
-    //                });
-
-
-    //                //foodItemTable.empty();
-    //                //$(json.FoodItems).each(function (index, foodItem) {
-    //                //    drawFoodItemRow(foodItem);
-    //                //});
-
-    //                //drawTotalCaloriesRow(json.TotalCalories);
-
-    //                //$('.DeleteLink').on('click', DeleteLinkClick);
-    //                //$('.SaveLink').on('click', SaveLinkClick);
-    //                //$('.FavouriteLink').on('click', FavouriteLinkClick);
-    //                //$('.DeleteFavouriteLink').on('click', DeleteFavouriteLinkClick);
-    //            }
-    //        });
-
-    //    }
-    //});
-
-
-    $.ajax({
-        type: "POST",
-        url: RefreshUrl,
-        dataType: "json",
-        data: {
-            date: sessionStorage["currentDate"]
-        },
-        success: function (json) {
-
-            var foodItemTable = $("#foodItemTable");
-
-         //   https://stackoverflow.com/questions/8302166/dynamic-creation-of-table-with-dom
-            //https://stackoverflow.com/questions/18333427/how-to-insert-row-in-html-table-body-in-javascripts
-
-
-            $(json.FoodItems).each(function (index, foodItem) {
-                drawFoodItemRow1(foodItem);
-            });
-
-            $('.SaveLink').on('click', SaveLinkClick);
-
-            //tablearea.appendChild(table);
-
-            //foodItemTable.empty();
-            //$(json.FoodItems).each(function (index, foodItem) {
-            //    drawFoodItemRow(foodItem);
-            //});
-
-            //drawTotalCaloriesRow(json.TotalCalories);
-
-            //var favouriteTable = $("#favouriteTable");
-            //favouriteTable.empty();
-            //$(json.Favourites).each(function (index, favourite) {
-            //    drawFavouriteRow(favourite);
-            //});
-
-            //var mealsTable = $("#mealsTable");
-            //mealsTable.empty();
-            //$(json.Meals).each(function (index, meal) {
-            //    drawMealRow(meal);
-            //});
-
-            //$('.DeleteLink').on('click', DeleteLinkClick);
-            //$(".SaveLink").on("click", SaveLinkClick);
-            //$('.FavouriteLink').on('click', FavouriteLinkClick);
-            //$('.DeleteFavouriteLink').on('click', DeleteFavouriteLinkClick);
-            //// Put the focus on the first input field.
-            //$("#foodItemTable tr:first").find("input").focus();
-        }
+    $('#datetimepicker').on("dp.change", function (e) {
+        RefreshDate(e.target.value);
     });
 
 
+    $('#fetch').on('typeahead:selected', function (event, item) {
+
+        $.ajax({
+            type: "POST",
+            url: SelectFoodUrl,
+            dataType: "html",
+            data: {
+                Code: item.Code,
+                date: sessionStorage["currentDate"]
+            },
+            success: function (response) {
+
+                $("#foodItemTable").html(response);
+
+            }
+        });
+    });
 
 
-    //for (var i = 1; i < 4; i++) {
-    //    var tr = document.createElement('tr');
+    function RefreshDate(d) {
 
-    //    tr.appendChild(document.createElement('td'));
-
-
-    //    tr.cells[0].appendChild(document.createTextNode('Text1'));
+        sessionStorage["currentDate"] = d;
+        RefreshTable();
+    };
 
 
-    //    body.appendChild(tr);
-    //}
+    function RefreshTable() {
 
-    function drawFoodItemRow1(rowData) {
+        $.ajax({
+            type: "POST",
+            url: RefreshUrl,
+            dataType: "html",
+            data: {
+                date: sessionStorage["currentDate"]
+            },
+            success: function (response) {
 
-        var foodItemTableBody = document.getElementById('foodItemTableBody');
-        var row = document.createElement('tr');
+                $("#foodItemTable").html(response);
 
-        var nameCell = document.createElement('td');
-        nameCell.append(document.createTextNode(rowData.Name));
-        row.append(nameCell);
+            }
+        });
+    };
 
-        var quantityCell = document.createElement('td');
-        var div = document.createElement("div");
-        var input = document.createElement("input");
-        input.setAttribute("type", "text");
-        input.setAttribute("class", "form-control input-sm");
-        input.setAttribute("id", rowData.Id);
-        input.value = rowData.Quantity;
-        div.appendChild(input);
-        quantityCell.appendChild(div);
-        row.append(quantityCell);
-
-        var linkCell = document.createElement('td');
-
-        var saveLink = document.createElement("a");        
-        saveLink.setAttribute("class", "SaveLink");
-        saveLink.setAttribute("href", "/foodlog/save/" + rowData.Id);
-        saveLink.innerHTML = "Save";
-        linkCell.appendChild(saveLink);
-
-        var deleteLink = document.createElement("a");
-        deleteLink.setAttribute("class", "DeleteLink");
-        deleteLink.setAttribute("href", "/foodlog/delete/" + rowData.Id);
-        deleteLink.innerHTML = "Delete";
-        linkCell.appendChild(deleteLink);
-
-        row.append(linkCell);
-
-        foodItemTableBody.append(row);
-    }
-    
-
-    function drawFoodItemRow(rowData) {
-        var row = $("<tr />");
-        $("#foodItemTable").append(row);
-        row.append($("<td>" + rowData.Name + "</td>"));
-        row.append($("<td><input class='input-quantity' id=" + rowData.Id + " name=" + rowData.Quantity + " type='text' value=" + rowData.Quantity + "></td>"));
-        row.append($("<td>" + rowData.Calories + "</td>"));
-        row.append($("<td><a class='SaveLink' href=" + SaveUrl + "/" + rowData.Id + ">Save</a>" +
-            "<a class='DeleteLink' href=" + DeleteUrl + "/" + rowData.Id + ">Delete</a>" +
-            "<a class='FavouriteLink' href=" + FavouriteUrl + "/" + rowData.Id + ">Favourite</a></td>"));
-    }
-
-    function drawTotalCaloriesRow(totalCalories) {
-        var row = $("<tr />");
-        $("#foodItemTable").append(row);
-        row.append($("<td>" + "Total calories" + "</td>"));
-        row.append($("<td></td>"));
-        row.append($("<td>" + totalCalories + "</td>"));
-    }
-
-    function drawFavouriteRow(rowData) {
-        var row = $("<tr />");
-        $("#favouritesTable").append(row);
-        row.append($("<td><a class='UseFavouriteLink' href=" + UseFavouriteUrl + "/" + rowData.Code +
-            "/" + ConvertDateToISO8601(sessionStorage["currentDate"]) +
-            ">" + rowData.Name + "</td>"));
-        row.append($("<td><a class='DeleteFavouriteLink' href=" + DeleteFavouriteUrl + "/" + rowData.Code + ">Delete</a></td>"));
-    }
-
-    function drawMealRow(rowData) {
-        var row = $("<tr />");
-        $("#mealsTable").append(row);
-
-        row.append($("<td><a class='UseMealLink' href=" + UseMealUrl + "/" + rowData.Id +
-            "/" + ConvertDateToISO8601(sessionStorage["currentDate"]) +
-            ">" + rowData.Name + "</td>"));
-    }
 
     function SetDateOnLoad() {
 
@@ -290,7 +89,6 @@
         if (confirm("Delete?"))
             return window.location.href = this.href;
     }
-
 
 
     function SaveLinkClick(e) {
@@ -329,8 +127,7 @@
         // Go to it...
         window.location.href = link;
     }
-
-
+    
     function DeleteFavouriteLinkClick(e) {
 
         e.preventDefault();

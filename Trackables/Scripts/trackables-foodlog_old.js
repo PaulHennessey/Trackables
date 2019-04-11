@@ -6,20 +6,10 @@
     });
 
     $('#datetimepicker').on("dp.change", function (e) {
-        refresh(e.target.value);
+        example(e.target.value);
     });
 
-
-    //var refresh = function (d) {
-
-    //    sessionStorage["currentDate"] = d;
-
-    //    var link = RefreshUrl + "?date=" + ConvertDateToISO8601(sessionStorage["currentDate"]);
-    //    window.location.href = link;  
-    //};
-
-
-    var refresh = function (d) {
+    var example = function exampleFunction(d) {
 
         sessionStorage["currentDate"] = d;
 
@@ -41,8 +31,6 @@
             }
         });
     };
-
-
 
     //$("#datetimepicker").on("dp.change", function (e) {
 
@@ -341,7 +329,8 @@
         // Go to it...
         window.location.href = link;
     }
-    
+
+
     function DeleteFavouriteLinkClick(e) {
 
         e.preventDefault();

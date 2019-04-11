@@ -1,0 +1,29 @@
+﻿@model  Trackables.Models.FoodLogViewModel
+@using Trackables.Models
+
+
+<table id="foodItemTable" class="table table-striped table-hover table-bordered">
+    <thead>
+    </thead>
+    <tbody>
+        @foreach (var foodItem in Model.FoodItems)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => foodItem.Name)
+                </td>
+                <td>
+                    <input class='input-quantity' id=@foodItem.Id name=@foodItem.Quantity type='text' value=@foodItem.Quantity>
+                </td>
+                <td>
+                    @Html.ActionLink("Save", "SaveIngredient")
+                        @*@Html.ActionLink("Save", "SaveIngredient", new { id = foodItem.Id, mealId = Model.Id }, new { @class = "SaveIngredientLink" })
+                        @Html.ActionLink("Delete", "DeleteIngredient", new { id = foodItem.Id, mealId = Model.Id }, new { @class = "DeleteIngredientLink" })*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
