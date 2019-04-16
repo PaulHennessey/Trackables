@@ -39,11 +39,45 @@
             success: function (response) {
 
                 $("#foodItemTable").html(response);
-
+                $('.SaveLink').on('click', SaveLinkClick);
+                $('.DeleteLink').on('click', DeleteLinkClick);
             }
         });
     });
 
+
+    $('#fetch').on('typeahead:close', function (event, item) {
+        $('.typeahead').typeahead('val', '');
+    });
+
+
+    function SaveLinkClick(e) {
+
+        e.preventDefault();
+
+        // First get the food item id - it is the last bit of the url        
+        var parsedUrl = this.href.split("/");
+        var foodItemId = parsedUrl[parsedUrl.length - 1];
+
+        // Now get the quantity - the fooditemid is used as the id of the quantity input field        
+        var quantity = $("#" + foodItemId).val();
+
+        $.ajax({
+            type: "POST",
+            url: SaveUrl,
+            dataType: "html",
+            data: {
+                id: foodItemId,
+                quantity: quantity,
+                date: sessionStorage["currentDate"]
+            },
+            success: function (response) {
+                $("#foodItemTable").html(response);
+                $('.SaveLink').on('click', SaveLinkClick);
+                $('.DeleteLink').on('click', DeleteLinkClick);
+            }
+        });
+    }
 
     function RefreshDate(d) {
 
@@ -64,10 +98,13 @@
             success: function (response) {
 
                 $("#foodItemTable").html(response);
-
+                $('.SaveLink').on('click', SaveLinkClick);
+                $('.DeleteLink').on('click', DeleteLinkClick);
             }
         });
     };
+
+
 
 
     function SetDateOnLoad() {
@@ -86,27 +123,26 @@
 
         e.preventDefault();
 
-        if (confirm("Delete?"))
-            return window.location.href = this.href;
-    }
-
-
-    function SaveLinkClick(e) {
-
-        e.preventDefault();
-
         // First get the food item id - it is the last bit of the url        
         var parsedUrl = this.href.split("/");
         var foodItemId = parsedUrl[parsedUrl.length - 1];
 
-        // Now get the quantity - the fooditemid is used as the id of the quantity input field        
-        var quantity = $("#" + foodItemId).val();
-
-        // Now stick the quantity on the end of the url
-        var link = this.href + "/" + quantity;
-
-        // Go to it...
-        window.location.href = link;
+        if (confirm("Delete?")) {
+            $.ajax({
+                type: "POST",
+                url: DeleteUrl,
+                dataType: "html",
+                data: {
+                    id: foodItemId,
+                    date: sessionStorage["currentDate"]
+                },
+                success: function (response) {
+                    $("#foodItemTable").html(response);
+                    $('.SaveLink').on('click', SaveLinkClick);
+                    $('.DeleteLink').on('click', DeleteLinkClick);
+                }
+            });
+        }
     }
 
 

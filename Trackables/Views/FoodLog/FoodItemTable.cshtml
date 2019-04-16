@@ -13,12 +13,11 @@
                     @Html.DisplayFor(modelItem => foodItem.Name)
                 </td>
                 <td>
-                    <input class='input-quantity' id=@foodItem.Id name=@foodItem.Quantity type='text' value=@foodItem.Quantity>
+                    <input class="form-control input-sm" id=@foodItem.Id name=@foodItem.Quantity type='text' value=@foodItem.Quantity>
                 </td>
                 <td>
-                    @Html.ActionLink("Save", "SaveIngredient")
-                        @*@Html.ActionLink("Save", "SaveIngredient", new { id = foodItem.Id, mealId = Model.Id }, new { @class = "SaveIngredientLink" })
-                        @Html.ActionLink("Delete", "DeleteIngredient", new { id = foodItem.Id, mealId = Model.Id }, new { @class = "DeleteIngredientLink" })*@
+                    @Html.ActionLink("Save", "Save", new { id = foodItem.Id }, new { @class = "SaveLink" })
+                    @Html.ActionLink("Delete", "Delete", new { id = foodItem.Id }, new { @class = "DeleteLink" })
                 </td>
             </tr>
         }

@@ -30,80 +30,15 @@ namespace Trackables.Controllers
 
         public ActionResult Index()
         {
-            return View("Index", new FoodLogViewModel());
+            return View("Index", new FoodLogViewModel());            
         }
-
-        //public ActionResult Index(DateTime date)
-        //{
-        //    //User user = _userServices.GetUser(User.Identity.Name);
-        //    User user = new User { Id = 1 };
-
-        //    // Food items
-        //    List<FoodItem> foodItems = _foodItemServices.GetFoodItems(date, user.Id).OrderByDescending(x => x.Id).ToList();
-
-        //    List<FoodItemViewModel> foodItemViewModel = Mapper.Map<List<FoodItem>, List<FoodItemViewModel>>(foodItems);
-
-        //    var viewModel = new FoodLogViewModel()
-        //    {
-        //        FoodItems = foodItemViewModel
-        //    };
-
-        //    return View("Index", viewModel);
-        //}
-
-
-        //public ActionResult Refresh(DateTime date)
-        //{
-        //    //User user = _userServices.GetUser(User.Identity.Name);
-        //    User user = new User { Id = 1 };
-
-        //    // Food items
-        //    List<FoodItem> foodItems = _foodItemServices.GetFoodItems(date, user.Id).OrderByDescending(x => x.Id).ToList();
-
-        //    List<FoodItemViewModel> foodItemViewModel = Mapper.Map<List<FoodItem>, List<FoodItemViewModel>>(foodItems);
-
-        //    var viewModel = new FoodLogViewModel()
-        //    {            
-        //        FoodItems = foodItemViewModel
-        //    };
-
-        //    return View("Index", viewModel);
-        //}
-
-
-        //public ActionResult Refresh(DateTime date)
-        //{
-        //    //User user = _userServices.GetUser(User.Identity.Name);
-        //    User user = new User { Id = 1 };
-
-        //    // Food items
-        //    List<FoodItem> foodItems = _foodItemServices.GetFoodItems(date, user.Id).OrderByDescending(x => x.Id).ToList();
-
-        //    List<FoodItemViewModel> foodItemViewModel = Mapper.Map<List<FoodItem>, List<FoodItemViewModel>>(foodItems);
-
-        //    var viewModel = new FoodLogViewModel()
-        //    {
-        //        FoodItems = foodItemViewModel
-        //    };
-
-        //    return View("Index", viewModel);
-        //}
-
-
 
         public ActionResult Refresh(DateTime date)
         {
             //User user = _userServices.GetUser(User.Identity.Name);
             User user = new User { Id = 1 };
 
-            // Food items
-            List<FoodItem> foodItems = _foodItemServices.GetFoodItems(date, user.Id).OrderByDescending(x => x.Id).ToList();
-            List<FoodItemViewModel> foodItemViewModel = Mapper.Map<List<FoodItem>, List<FoodItemViewModel>>(foodItems);        
-
-            var viewModel = new FoodLogViewModel()
-            {
-                FoodItems = foodItemViewModel
-            };
+            var viewModel = GetModel(user, date);
 
             return PartialView("FoodItemTable", viewModel);
         }
@@ -122,37 +57,10 @@ namespace Trackables.Controllers
 
             _foodItemServices.InsertFoodItem(Code, 0, date, user.Id);
 
-            // Food items
-            List<FoodItem> foodItems = _foodItemServices.GetFoodItems(date, user.Id).OrderByDescending(x => x.Id).ToList();
-            List<FoodItemViewModel> foodItemViewModel = Mapper.Map<List<FoodItem>, List<FoodItemViewModel>>(foodItems);
-
-            var viewModel = new FoodLogViewModel()
-            {
-                FoodItems = foodItemViewModel
-            };
+            var viewModel = GetModel(user, date);
 
             return PartialView("FoodItemTable", viewModel);
         }
-
-
-        ///// <summary>
-        ///// This is called when you select a product from the autocomplete list.
-        ///// </summary>
-        ///// <param name="Code"></param>
-        ///// <param name="date"></param>
-        ///// <returns></returns>
-        //public ActionResult SelectFood(string Code, DateTime date)
-        //{
-        //    //User user = _userServices.GetUser(User.Identity.Name);
-        //    User user = new User { Id = 1 };
-
-        //    _foodItemServices.InsertFoodItem(Code, 0, date, user.Id);
-
-
-
-        //    return RedirectToAction("Index");
-        //    //return RedirectToAction("Index", new { date = date });
-        //}
 
 
         //public ActionResult Refresh(DateTime date)
@@ -213,19 +121,48 @@ namespace Trackables.Controllers
             return viewModel;
         }
 
-        public ActionResult Save(int id, int quantity)
+
+        public ActionResult Save(int id, int quantity, DateTime date)
         {
+            //User user = _userServices.GetUser(User.Identity.Name);
+            User user = new User { Id = 1 };
+
             _foodItemServices.UpdateFoodItem(id, quantity);
 
-            return RedirectToAction("Index");
+            var viewModel = GetModel(user, date);
+
+            return PartialView("FoodItemTable", viewModel);
         }
 
-        public ActionResult Delete(int id)
+
+
+        public ActionResult Delete(int id, DateTime date)
         {
+            //User user = _userServices.GetUser(User.Identity.Name);
+            User user = new User { Id = 1 };
+
             _foodItemServices.DeleteFoodItem(id);
 
-            return RedirectToAction("Index");
+            var viewModel = GetModel(user, date);
+
+            return PartialView("FoodItemTable", viewModel);
         }
+
+
+
+        private FoodLogViewModel GetModel(User user, DateTime date)
+        {
+            List<FoodItem> foodItems = _foodItemServices.GetFoodItems(date, user.Id).OrderByDescending(x => x.Id).ToList();
+            List<FoodItemViewModel> foodItemViewModel = Mapper.Map<List<FoodItem>, List<FoodItemViewModel>>(foodItems);
+
+            var viewModel = new FoodLogViewModel()
+            {
+                FoodItems = foodItemViewModel
+            };
+
+            return viewModel;
+        }
+
 
         ///// <summary>
         ///// When we favourite something, we also want to save it - otherwise it is possible to edit a quantity, then

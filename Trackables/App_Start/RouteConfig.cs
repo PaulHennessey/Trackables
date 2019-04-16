@@ -15,15 +15,15 @@ namespace Trackables
 
             routes.MapRoute(
                 name: "Save",
-                url: "{controller}/{action}/{id}/{quantity}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional, quantity = UrlParameter.Optional }
+                url: "{controller}/{action}/{id}/{quantity}/{date}",
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional, quantity = UrlParameter.Optional, date = UrlParameter.Optional }
             );
 
-            //routes.MapRoute(
-            //    name: "Save",
-            //    url: "FoodLog/Save/{id}/{quantity}",
-            //    defaults: new { controller = "FoodLog", action = "Save", id = UrlParameter.Optional, quantity = UrlParameter.Optional }
-            //);
+            routes.MapRoute(
+                name: "Delete",
+                url: "{controller}/{action}/{id}/{date}",
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional, date = UrlParameter.Optional }
+            );
 
             routes.MapRoute(
                 name: "Default",
