@@ -2,6 +2,8 @@
 @using Trackables.Domain
 
 @{
+    /**/
+
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -10,21 +12,18 @@
 {
     @Html.ValidationSummary(true)
 
+    <div class="row">
+        <div class="col-md-12">
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.Name)
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name)
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+
+            <p><button type="submit" class="btn btn-primary">Save</button></p>
+        </div>
     </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.Name)
-        @Html.ValidationMessageFor(model => model.Name)
-    </div>
-
-    <p>
-        <input type="submit" value="Save" />
-    </p>
-
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+<div>@Html.ActionLink("Back to List", "Index", new { htmlAttributes = new { @class = "btn btn-link" } })</div>

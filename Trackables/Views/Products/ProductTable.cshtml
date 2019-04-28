@@ -1,0 +1,21 @@
+﻿@model  Trackables.Models.ProductsViewModel
+@using Trackables.Models
+
+<table id="productTable" class="table table-bordered table-striped table-hover">
+    <thead>
+    </thead>
+    <tbody>
+        @foreach (var product in Model.Products)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => product.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { code = product.Code })
+                    @Html.ActionLink("Delete", "Delete", null, new { @class = "DeleteLink", @data_code = product.Code })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

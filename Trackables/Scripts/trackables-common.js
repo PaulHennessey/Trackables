@@ -1,19 +1,10 @@
-﻿var IndexUrl = "/foodlog/index";
-
-function SetDateOnLoad() {
+﻿function SetDateOnLoad() {
 
     var date = sessionStorage["currentDate"];
     if (date == null) {
         date = GetTodaysDate();
         sessionStorage["currentDate"] = date;
     }
-
-    var link = IndexUrl + "?date=" + ConvertDateToISO8601(sessionStorage["currentDate"]);
-    window.location.href = link;  
-}
-
-function GetCurrentDate() {
-    return sessionStorage["currentDate"];
 }
 
 function GetTodaysDate() {

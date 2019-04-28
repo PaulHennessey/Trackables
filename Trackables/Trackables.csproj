@@ -301,7 +301,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\FoodLog\Index_old.cshtml" />
     <Content Include="Views\Products\Index.cshtml" />
     <Content Include="Views\Products\Create.cshtml" />
     <Content Include="Views\Products\Edit.cshtml" />
@@ -314,6 +313,10 @@
     <Content Include="Views\TrackablesLog\Index.cshtml" />
     <Content Include="Views\FoodLog\Index.cshtml" />
     <Content Include="Views\FoodLog\FoodItemTable.cshtml" />
+    <Content Include="Views\Products\ProductTable.cshtml" />
+    <Content Include="Views\Meals\MealsTable.cshtml" />
+    <Content Include="Views\Meals\IngredientsTable.cshtml" />
+    <Content Include="Views\Trackables\TrackablesTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,40 +1,84 @@
 ﻿var meals = (function ($) {
 
     var SelectFoodUrl = "/meals/selectfood";
- 
-    $(".DeleteMealLink").on("click", DeleteLinkClick);
-    $(".DeleteIngredientLink").on("click", DeleteLinkClick);
-    $(".SaveIngredientLink").on("click", SaveLinkClick);
+    var DeleteMealUrl = "/meals/deletemeal";
+    var DeleteIngredientUrl = "/meals/deleteingredient";
+    var SaveIngredientUrl = "/meals/saveingredient";
 
-    $('#fetch .typeahead').on('typeahead:selected', function (event, item) {
-        var link = SelectFoodUrl + "?Code=" + item.Code + "&mealId=" + $("#Id").val();
-        window.location.href = link;
+    $(".DeleteMealLink").on("click", DeleteMealLinkClick);
+    $(".DeleteIngredientLink").on("click", DeleteIngredientLinkClick);
+    $(".SaveIngredientLink").on("click", SaveIngredientLinkClick);
+
+    /* Typeahead */
+
+    $('#fetch').on('typeahead:selected', function (event, item) {
+        RefreshIngredientsTable(SelectFoodUrl, { code: item.Code, mealId: $("#fetch").data("mealid") });
     });
 
-    function DeleteLinkClick(e) {
+    $('#fetch').on('typeahead:close', function (event, item) {
+        $('.typeahead').typeahead('val', '');
+    });
 
-        if (confirm("Delete?"))
-            return window.location.href = this.href;
+    function DeleteMealLinkClick(e) {
 
         e.preventDefault();
+
+        if (confirm("Delete?")) {
+            RefreshMealsTable(DeleteMealUrl, { mealId: $(this).data("mealid") });
+        }
     }
 
-    function SaveLinkClick(e) {
+    function DeleteIngredientLinkClick(e) {
 
         e.preventDefault();
 
-        // First get the food item id - it is the last bit of the url        
-        var parsedUrl = this.href.split("/");
-        var ingredientId = parsedUrl[parsedUrl.length - 2];
+        if (confirm("Delete?")) {
+            RefreshIngredientsTable(DeleteIngredientUrl, { ingredientId: $(this).data("ingredientid"), mealId: $(this).data("mealid") });
+        }
+    }
+
+    function RefreshIngredientsTable(url, parameters) {
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: "html",
+            data: parameters,
+            success: function (response) {
+
+                $("#ingredientsTable").html(response);
+                $('.SaveIngredientLink').on('click', SaveIngredientLinkClick);
+                $('.DeleteIngredientLink').on('click', DeleteIngredientLinkClick);
+            }
+        });
+    };
+
+    function RefreshMealsTable(url, parameters) {
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: "html",
+            data: parameters,
+            success: function (response) {
+
+                $("#mealsTable").html(response);
+                $('.DeleteMealLink').on('click', DeleteMealLinkClick);
+            }
+        });
+    };
+
+    function SaveIngredientLinkClick(e) {
+
+        e.preventDefault();
+
+        var ingredientId = $(this).data("ingredientid");
+        var mealId = $(this).data("mealid");
 
         // Now get the quantity - the ingredientId is used as the id of the quantity input field
         var quantity = $("#" + ingredientId).val();
 
-        // Now stick the quantity on the end of the url
-        var link = this.href + "/" + quantity;
-
-        // Go to it...
-        window.location.href = link;
+        RefreshIngredientsTable(SaveIngredientUrl, { ingredientId: ingredientId, mealId: mealId, quantity: quantity });
     }
 
 })(jQuery);

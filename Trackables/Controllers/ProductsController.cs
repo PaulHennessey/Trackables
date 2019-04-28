@@ -37,8 +37,38 @@ namespace Trackables.Controllers
                 Products = items
             };
 
+            //return PartialView("ProductTable", viewModel);
+
             return View("Index", viewModel);
         }
+
+
+        public ActionResult Delete(string code)
+        {
+            //User user = _userServices.GetUser(User.Identity.Name);
+            User user = new User { Id = 1 };
+
+            _productServices.DeleteProduct(code);
+
+            var viewModel = GetModel(user);
+
+            return PartialView("ProductTable", viewModel);
+        }
+
+
+
+        private ProductsViewModel GetModel(User user)
+        {
+            List<Product> items = _productServices.GetCustomProducts(user.Id).OrderBy(x => x.Name).ToList();
+
+            var viewModel = new ProductsViewModel()
+            {
+                Products = items
+            };
+
+            return viewModel;
+        }
+
 
 
         [HttpGet]
@@ -116,13 +146,6 @@ namespace Trackables.Controllers
             }
         }
 
-
-        public ActionResult Delete(string code)
-        {
-            _productServices.DeleteProduct(code);
-
-            return RedirectToAction("Index");
-        }
 
         /// <summary>
         /// This is used by the typeahead prefetch function.

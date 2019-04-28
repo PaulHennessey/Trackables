@@ -33,12 +33,7 @@ namespace Trackables.Controllers
             //User user = _userServices.GetUser(User.Identity.Name);
             User user = new User { Id = 1 };
 
-            List<Meal> items = _mealServices.GetMeals(user.Id).OrderBy(x => x.Name).ToList();
-
-            var viewModel = new MealsViewModel()
-            {
-                Meals = items
-            };
+            var viewModel = GetMealsModel(user);
 
             return View("Index", viewModel);
         }
@@ -47,18 +42,7 @@ namespace Trackables.Controllers
         [HttpGet]
         public ViewResult Create()
         {
-            Meal meal = new Meal()
-            {
-                Name = String.Empty,
-                Ingredients = new List<Ingredient>
-                {
-                    new Ingredient{ Id = 1, MealId = 1, Code = "aaa", Quantity = 10 },
-                    new Ingredient{ Id = 2, MealId = 1, Code = "bbb", Quantity = 20 },
-                    new Ingredient{ Id = 3, MealId = 1, Code = "ccc", Quantity = 30 }
-                }
-            };
-
-            MealViewModel mealViewModel = Mapper.Map<Meal, MealViewModel>(meal);
+            MealViewModel mealViewModel = Mapper.Map<Meal, MealViewModel>(new Meal());
 
             return View(mealViewModel);
         }
@@ -113,6 +97,7 @@ namespace Trackables.Controllers
             }
         }
 
+
         /// <summary>
         /// This is called when you select a product from the autocomplete list.
         /// </summary>
@@ -121,32 +106,74 @@ namespace Trackables.Controllers
         /// <returns></returns>
         public ActionResult SelectFood(string code, int mealId)
         {
+            User user = new User { Id = 1 };
+
             _ingredientServices.CreateIngredient(code, mealId);
 
-            return RedirectToAction("Edit", new { id = mealId });
+            var viewModel = GetMealModel(user, mealId);
+
+            return PartialView("IngredientsTable", viewModel);
         }
+
 
         public ActionResult DeleteMeal(int mealId)
         {
+            User user = new User { Id = 1 };
+
             Meal meal = _mealServices.GetMeal(mealId);
 
             _mealServices.DeleteMeal(meal);
 
-            return RedirectToAction("Index");
+            var viewModel = GetMealsModel(user);
+
+            return PartialView("MealsTable", viewModel);           
         }
 
-        public ActionResult DeleteIngredient(int id, int mealId)
-        {
-            _ingredientServices.DeleteIngredient(id);
 
-            return RedirectToAction("Edit", new { id = mealId });
+        public ActionResult DeleteIngredient(int ingredientId, int mealId)
+        {
+            User user = new User { Id = 1 };
+
+            _ingredientServices.DeleteIngredient(ingredientId);
+
+            var viewModel = GetMealModel(user, mealId);
+
+            return PartialView("IngredientsTable", viewModel);
         }
 
-        public ActionResult SaveIngredient(int id, int mealId, int quantity)
-        {
-            _ingredientServices.UpdateIngredient(id, quantity);
 
-            return RedirectToAction("Edit", new { id = mealId });
+        public ActionResult SaveIngredient(int ingredientId, int mealId, int quantity)
+        {
+            User user = new User { Id = 1 };
+
+            _ingredientServices.UpdateIngredient(ingredientId, quantity);
+
+            var viewModel = GetMealModel(user, mealId);
+
+            return PartialView("IngredientsTable", viewModel);
+        }
+
+
+        private MealViewModel GetMealModel(User user, int mealId)
+        {
+            Meal meal = _mealServices.GetMeal(mealId);
+
+            MealViewModel viewModel = Mapper.Map<Meal, MealViewModel>(meal);
+
+            return viewModel;
+        }
+
+
+        private MealsViewModel GetMealsModel(User user)
+        {
+            List<Meal> items = _mealServices.GetMeals(user.Id).OrderBy(x => x.Name).ToList();
+
+            var viewModel = new MealsViewModel()
+            {
+                Meals = items
+            };
+
+            return viewModel;
         }
     }
 }

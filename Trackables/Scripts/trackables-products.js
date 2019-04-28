@@ -1,14 +1,37 @@
 ﻿var products = (function ($) {
 
-    $(".DeleteProductLink").on("click", DeleteLinkClick);
+    var DeleteUrl = "/products/delete";
+
+
+    $(".DeleteLink").on("click", DeleteLinkClick);
+
 
     function DeleteLinkClick(e) {
 
-        if (confirm("Delete?"))
-            return window.location.href = this.href;
-
         e.preventDefault();
+
+        if (confirm("Delete?")) {
+            RefreshTable(DeleteUrl, { code: $(this).data("code")});
+        }
     }
+
+
+    function RefreshTable(url, parameters) {
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: "html",
+            data: parameters,
+            success: function (response) {
+
+                $("#productTable").html(response);
+                $('.DeleteLink').on('click', DeleteLinkClick);
+            }
+        });
+    };
+
+
 
 })(jQuery);
 

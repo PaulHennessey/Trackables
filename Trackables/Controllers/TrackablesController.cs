@@ -29,12 +29,7 @@ namespace Trackables.Controllers
            // User user = _userServices.GetUser(User.Identity.Name);
             User user = new User { Id = 1 };
 
-            List<Trackable> items = _trackablesServices.GetTrackables(user.Id).OrderBy(x => x.Name).ToList();
-
-            var viewModel = new TrackablesViewModel()
-            {
-                Trackables = items
-            };
+            var viewModel = GetTrackablesModel(user);
 
             return View("Index", viewModel);
         }
@@ -106,9 +101,26 @@ namespace Trackables.Controllers
 
         public ActionResult Delete(int id)
         {
+            User user = new User { Id = 1 };
+
             _trackablesServices.DeleteTrackable(id);
 
-            return RedirectToAction("Index");
+            var viewModel = GetTrackablesModel(user);
+
+            return PartialView("TrackablesTable", viewModel);
+        }
+
+
+        private TrackablesViewModel GetTrackablesModel(User user)
+        {
+            List<Trackable> items = _trackablesServices.GetTrackables(user.Id).OrderBy(x => x.Name).ToList();
+
+            var viewModel = new TrackablesViewModel()
+            {
+                Trackables = items
+            };
+
+            return viewModel;
         }
     }
 }

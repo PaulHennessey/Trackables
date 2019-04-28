@@ -5,26 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<table id="trackablesTable">
+<br />
 
-    @foreach (var trackable in Model.Trackables)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => trackable.Name)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = trackable.Id })
-                @Html.ActionLink("Delete", "Delete", new { id = trackable.Id }, new { @class = "DeleteTrackableLink" })
-            </td>
-        </tr>
-    }
-</table>
+<div class="row">
+    <div class="col-md-12">
+        @{Html.RenderPartial("TrackablesTable");}
+    </div>
+</div>
 
 <br />
-<p>
-    @Html.ActionLink("Add a new Trackable", "Create")
-</p>
+
+<p>@Html.ActionLink("Add a new Trackable", "Create")</p>
 
 <script src="@Url.Content("~/Scripts/trackables-trackables.js")" type="text/javascript"></script>
 

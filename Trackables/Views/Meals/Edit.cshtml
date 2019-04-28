@@ -6,63 +6,42 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Html.HiddenFor(model => model.Id)
-
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
 
+    <div class="row">
+        <div class="col-md-12">
 
-    <div class="editor-label">
-        @Html.LabelFor(model => model.Name)
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name)
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+
+            <div id="fetch" data-mealid = @Model.Id>
+                <input class="no-clear typeahead form-control" type="text" placeholder="Products">
+            </div>
+
+            <br />
+
+            <div class="row">
+                <div class="col-md-12">
+                    @{Html.RenderPartial("IngredientsTable");}
+                </div>
+            </div>
+
+            <p><button type="submit" class="btn btn-primary">Save</button></p>
+        </div>
     </div>
-    <div class="editor-field">
-        @Html.EditorFor(model => model.Name)
-        @Html.ValidationMessageFor(model => model.Name)
-    </div>
-
-    <div id="fetch">
-        <input class="no-clear typeahead form-control" type="text" placeholder="Products">
-    </div>
-
-    <div id="ingredientsTableDiv">
-        <table id="ingredientsTable">
-            <tr>
-                <th>
-                </th>
-            </tr>
-            @foreach (var ingredient in Model.Ingredients)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => ingredient.Name)
-                    </td>
-                    <td>
-                        <input class='input-quantity' id=@ingredient.Id name=@ingredient.Quantity type='text' value=@ingredient.Quantity>
-                    </td>
-                    <td>
-                        @Html.ActionLink("Save", "SaveIngredient", new { id = ingredient.Id, mealId = Model.Id }, new { @class = "SaveIngredientLink" })
-                        @Html.ActionLink("Delete", "DeleteIngredient", new { id = ingredient.Id, mealId = Model.Id }, new { @class = "DeleteIngredientLink" })
-                    </td>
-                </tr>
-            }
-        </table>
-    </div>
-
-    <p>
-        <input type="submit" value="Save" />
-    </p>
-
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+<div>@Html.ActionLink("Back to List", "Index", new { htmlAttributes = new { @class = "btn btn-link" } })</div>
 
 
 <script src="@Url.Content("~/Scripts/typeahead.bundle.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/typeahead.jquery.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/trackables-meals.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/trackables-typeahead.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/trackables-meals.js")" type="text/javascript"></script>
 
 
