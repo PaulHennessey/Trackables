@@ -13,6 +13,14 @@ namespace Trackables
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            // Trackable Items
+            routes.MapRoute(
+                name: "SaveTrackableItem",
+                url: "TrackablesLog/Save/{id}/{trackableId}/{quantity}/{date}",
+                defaults: new { controller = "TrackablesLog", action = "Save", id = UrlParameter.Optional, quantity = UrlParameter.Optional }
+            );
+
+            // Meals 
             routes.MapRoute(
                 name: "EditMeal",
                 url: "Meals/Edit/{id}",               
@@ -31,12 +39,14 @@ namespace Trackables
                 defaults: new { controller = "Home", action = "Index", ingredientId = UrlParameter.Optional, mealId = UrlParameter.Optional }
             );
 
+            // Products
             routes.MapRoute(
                 name: "DeleteProduct",
                 url: "{controller}/{action}/{code}",
                 defaults: new { controller = "Home", action = "Index", code = UrlParameter.Optional }
             );
 
+            // Defaults
             routes.MapRoute(
                 name: "Save",
                 url: "{controller}/{action}/{id}/{quantity}/{date}",

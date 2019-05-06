@@ -5,9 +5,9 @@ using System.Web;
 
 namespace Trackables.Models
 {
-    public class FoodLogViewModel
+    public class FoodItemTableViewModel
     {
-        public FoodLogViewModel()
+        public FoodItemTableViewModel()
         {
             FoodItems = new List<FoodItemViewModel>();
         }

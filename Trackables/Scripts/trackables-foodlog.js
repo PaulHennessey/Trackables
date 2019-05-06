@@ -2,20 +2,22 @@
 
     /* Module level state */
 
-    var RefreshUrl = "/foodlog/refresh";
+    var RefreshFoodItemTableUrl = "/foodlog/refreshfooditemtable";
+    var RefreshMealsTableUrl = "/foodlog/refreshmealstable";
     var DeleteUrl = "/foodlog/delete";
     var SaveUrl = "/foodlog/save";
-    var FavouriteUrl = "/foodlog/favourite";
-    var UseFavouriteUrl = "/foodlog/usefavourite";
     var SelectFoodUrl = "/foodlog/selectfood";
-    var DeleteFavouriteUrl = "/foodlog/deletefavourite";
     var UseMealUrl = "/foodlog/usemeal";
+  //  var FavouriteUrl = "/foodlog/favourite";
+  //  var UseFavouriteUrl = "/foodlog/usefavourite";
+  //  var DeleteFavouriteUrl = "/foodlog/deletefavourite";
 
 
     /* On page load functions */
 
     SetDateOnLoad();
-    RefreshTable(RefreshUrl, { date: sessionStorage["currentDate"] });
+    RefreshFoodItemTable(RefreshFoodItemTableUrl, { date: sessionStorage["currentDate"] });
+    RefreshMealsTable(RefreshMealsTableUrl, { date: sessionStorage["currentDate"] });
 
     /* Date time picker */
 
@@ -36,7 +38,7 @@
     /* Typeahead */
 
     $('#fetch').on('typeahead:selected', function (event, item) {        
-        RefreshTable(SelectFoodUrl, { Code: item.Code, date: sessionStorage["currentDate"] });
+        RefreshFoodItemTable(SelectFoodUrl, { Code: item.Code, date: sessionStorage["currentDate"] });
     });
 
 
@@ -47,11 +49,11 @@
 
     function RefreshDate(d) {
         sessionStorage["currentDate"] = d;
-        RefreshTable(RefreshUrl, { date: sessionStorage["currentDate"] });
+        RefreshFoodItemTable(RefreshFoodItemTableUrl, { date: sessionStorage["currentDate"] });
     };
 
 
-    function RefreshTable(url, parameters) {
+    function RefreshFoodItemTable(url, parameters) {
 
         $.ajax({
             type: "POST",
@@ -68,20 +70,43 @@
     };
 
 
+    function RefreshMealsTable(url, parameters) {
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: "html",
+            data: parameters,
+            success: function (response) {
+                $("#mealsTable").html(response);
+                $('.UseMealLink').on('click', UseMealLinkClick);
+            }
+        });
+    };
+
+
     /* Event handlers */
 
     function SaveLinkClick(e) {
 
         e.preventDefault();
 
-        // First get the food item id - it is the last bit of the url        
-        var parsedUrl = this.href.split("/");
-        var foodItemId = parsedUrl[parsedUrl.length - 1];
+        var foodItemId = $(this).data("id");
 
         // Now get the quantity - the fooditemid is used as the id of the quantity input field        
         var quantity = $("#" + foodItemId).val();
 
-        RefreshTable(SaveUrl, { id: foodItemId, quantity: quantity, date: sessionStorage["currentDate"] });
+        RefreshFoodItemTable(SaveUrl, { id: foodItemId, quantity: quantity, date: sessionStorage["currentDate"] });
+    }
+
+
+    function UseMealLinkClick(e) {
+
+        e.preventDefault();
+
+        var mealId = $(this).data("id");
+
+        RefreshFoodItemTable(UseMealUrl, { id: mealId, date: sessionStorage["currentDate"] });
     }
 
 
@@ -89,12 +114,10 @@
 
         e.preventDefault();
 
-        // First get the food item id - it is the last bit of the url        
-        var parsedUrl = this.href.split("/");
-        var foodItemId = parsedUrl[parsedUrl.length - 1];
+        var foodItemId = $(this).data("id");
 
         if (confirm("Delete?")) {
-            RefreshTable(DeleteUrl, { id: foodItemId, date: sessionStorage["currentDate"] });
+            RefreshFoodItemTable(DeleteUrl, { id: foodItemId, date: sessionStorage["currentDate"] });
         }
     }
 

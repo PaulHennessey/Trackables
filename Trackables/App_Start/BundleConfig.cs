@@ -36,6 +36,7 @@ namespace Trackables
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-datetimepicker.css",
                       "~/Content/typeahead.css",
+                      "~/Content/trackables.css",
                       "~/Content/site.css"));
         }
     }

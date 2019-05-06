@@ -32,7 +32,8 @@ namespace Trackables.Controllers
 
         public ActionResult Refresh(DateTime date)
         {
-            User user = _userServices.GetUser(User.Identity.Name);
+            //User user = _userServices.GetUser(User.Identity.Name);
+            User user = new User { Id = 1 };
 
             List<TrackableItem> trackableItems = _trackableItemServices.GetTrackableItems(date, user.Id).OrderBy(x => x.Name).ToList();
 
@@ -41,18 +42,28 @@ namespace Trackables.Controllers
                 TrackableItems = Mapper.Map<IEnumerable<TrackableItem>, IEnumerable<TrackableItemViewModel>>(trackableItems),
             };
 
-            return Json(viewModel, JsonRequestBehavior.AllowGet);
+            return PartialView("TrackableItemTable", viewModel);
         }
 
 
         public ActionResult Save(int? id, int trackableId, decimal? quantity, DateTime date)
         {
+            User user = new User { Id = 1 };
+
             if (id == null)
                 _trackableItemServices.InsertTrackableItem(trackableId, date, quantity);
             else
                 _trackableItemServices.UpdateTrackableItem(id, quantity);
 
-            return RedirectToAction("Index");
+            List<TrackableItem> trackableItems = _trackableItemServices.GetTrackableItems(date, user.Id).OrderBy(x => x.Name).ToList();
+
+            var viewModel = new TrackableItemListViewModel()
+            {
+                TrackableItems = Mapper.Map<IEnumerable<TrackableItem>, IEnumerable<TrackableItemViewModel>>(trackableItems),
+            };
+
+            return PartialView("TrackableItemTable", viewModel);
+
         }
 
     }

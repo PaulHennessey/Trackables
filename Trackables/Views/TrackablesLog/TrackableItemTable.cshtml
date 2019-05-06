@@ -1,0 +1,27 @@
+﻿@model  Trackables.Models.TrackableItemListViewModel
+@using Trackables.Models
+
+
+<table id="trackableItemTable" class="table table-striped table-hover table-bordered">
+    <thead>
+    </thead>
+    <tbody>
+        @foreach (var trackableItem in Model.TrackableItems)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => trackableItem.Name)
+                </td>
+                <td>
+                    <input class="form-control input-sm" id=@trackableItem.TrackableId type='text' value=@trackableItem.Quantity>
+                </td>
+                <td>
+                    @Html.ActionLink("Save", "Save", null, new { @class = "SaveLink", @data_id = trackableItem.Id, @data_trackableid = trackableItem.TrackableId })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
