@@ -4,17 +4,35 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Trackables.Domain;
 using Trackables.Models;
 using Trackables.Services.Abstract;
 
 namespace Trackables.Controllers
 {
-  
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly IProductServices _productServices;
         private readonly IUserServices _userServices;
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+        }
+
+        public string UserId
+        {
+            get
+            {
+                return UserManager.FindById(User.Identity.GetUserId()).Id;
+            }
+        }
 
         public ProductsController()
         { }
@@ -27,17 +45,12 @@ namespace Trackables.Controllers
 
         public ActionResult Index()
         {
-            //User user = _userServices.GetUser(User.Identity.Name);
-            User user = new User { Id = 1 };
-
-            List<Product> items = _productServices.GetCustomProducts(user.Id).OrderBy(x => x.Name).ToList();
+            List<Product> items = _productServices.GetCustomProducts(UserId).OrderBy(x => x.Name).ToList();
 
             var viewModel = new ProductsViewModel()
             {
                 Products = items
             };
-
-            //return PartialView("ProductTable", viewModel);
 
             return View("Index", viewModel);
         }
@@ -45,30 +58,12 @@ namespace Trackables.Controllers
 
         public ActionResult Delete(string code)
         {
-            //User user = _userServices.GetUser(User.Identity.Name);
-            User user = new User { Id = 1 };
-
             _productServices.DeleteProduct(code);
 
-            var viewModel = GetModel(user);
+            var viewModel = GetModel();
 
             return PartialView("ProductTable", viewModel);
         }
-
-
-
-        private ProductsViewModel GetModel(User user)
-        {
-            List<Product> items = _productServices.GetCustomProducts(user.Id).OrderBy(x => x.Name).ToList();
-
-            var viewModel = new ProductsViewModel()
-            {
-                Products = items
-            };
-
-            return viewModel;
-        }
-
 
 
         [HttpGet]
@@ -95,14 +90,11 @@ namespace Trackables.Controllers
         {
             if (ModelState.IsValid)
             {
-                //User user = _userServices.GetUser(User.Identity.Name);
-                User user = new User { Id = 1 };
-
                 Product product = Mapper.Map<ProductViewModel, Product>(productViewModel);
                 product.ProductMacronutrients = _productServices.UpdateProductMacronutrients(productViewModel.MacroNutrients);
                 product.ProductMicronutrients = _productServices.UpdateProductMicronutrients(productViewModel.MicroNutrients);
 
-                _productServices.CreateProduct(product, user.Id);
+                _productServices.CreateProduct(product, UserId);
 
                 return RedirectToAction("Index");
             }
@@ -152,15 +144,25 @@ namespace Trackables.Controllers
         /// </summary>
         /// <returns></returns>
         public ActionResult ProductFetch()
-        {
-            //User user = _userServices.GetUser(User.Identity.Name);
-            User user = new User { Id = 1 };
-
-            List<Product> items = _productServices.GetProducts(user.Id).ToList();
+        { 
+            List<Product> items = _productServices.GetProducts(UserId).ToList();
 
             IEnumerable<Autocomplete> viewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<Autocomplete>>(items);
 
             return Json(viewModel, JsonRequestBehavior.AllowGet);
+        }
+
+
+        private ProductsViewModel GetModel()
+        {
+            List<Product> items = _productServices.GetCustomProducts(UserId).OrderBy(x => x.Name).ToList();
+
+            var viewModel = new ProductsViewModel()
+            {
+                Products = items
+            };
+
+            return viewModel;
         }
 
     }

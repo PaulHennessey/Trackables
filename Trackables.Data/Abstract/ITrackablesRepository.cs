@@ -6,9 +6,9 @@ namespace Trackables.Data.Abstract
 {
     public interface ITrackablesRepository
     {
-        DataTable GetTrackables(int userId);
+        DataTable GetTrackables(string userId);
         DataTable GetTrackable(int id);
-        void CreateTrackable(Trackable trackable, int userId);
+        void CreateTrackable(Trackable trackable, string userId);
         void UpdateTrackable(Trackable trackable);
         void DeleteTrackable(int id);
     }

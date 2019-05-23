@@ -10,7 +10,7 @@ using Trackables.Services.Abstract;
 
 namespace Trackables.Controllers
 {
-    
+
     public class TrackablesLogController : Controller
     {
         private readonly ITrackableItemServices _trackableItemServices;

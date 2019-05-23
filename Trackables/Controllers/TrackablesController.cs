@@ -4,19 +4,40 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Trackables.Domain;
 using Trackables.Models;
 using Trackables.Services.Abstract;
 
 namespace Trackables.Controllers
 {
+    [Authorize]
     public class TrackablesController : Controller
     {
         private readonly ITrackablesServices _trackablesServices;
         private readonly IUserServices _userServices;
 
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+        }
+
+        public string UserId
+        {
+            get
+            {
+                return UserManager.FindById(User.Identity.GetUserId()).Id;
+            }
+        }
+
+
         public TrackablesController()
         { }
+
 
         public TrackablesController(ITrackablesServices trackablesServices, IUserServices userServices)
         {
@@ -24,12 +45,10 @@ namespace Trackables.Controllers
             _userServices = userServices;
         }
 
+
         public ActionResult Index()
         {
-           // User user = _userServices.GetUser(User.Identity.Name);
-            User user = new User { Id = 1 };
-
-            var viewModel = GetTrackablesModel(user);
+            var viewModel = GetTrackablesModel();
 
             return View("Index", viewModel);
         }
@@ -54,12 +73,9 @@ namespace Trackables.Controllers
         {
             if (ModelState.IsValid)
             {
-                //User user = _userServices.GetUser(User.Identity.Name);
-                User user = new User { Id = 1 };
-
                 Trackable trackable = Mapper.Map<TrackableViewModel, Trackable>(trackableViewModel);
 
-                _trackablesServices.CreateTrackable(trackable, user.Id);
+                _trackablesServices.CreateTrackable(trackable, UserId);
 
                 return RedirectToAction("Index");
             }
@@ -101,19 +117,17 @@ namespace Trackables.Controllers
 
         public ActionResult Delete(int id)
         {
-            User user = new User { Id = 1 };
-
             _trackablesServices.DeleteTrackable(id);
 
-            var viewModel = GetTrackablesModel(user);
+            var viewModel = GetTrackablesModel();
 
             return PartialView("TrackablesTable", viewModel);
         }
 
 
-        private TrackablesViewModel GetTrackablesModel(User user)
+        private TrackablesViewModel GetTrackablesModel()
         {
-            List<Trackable> items = _trackablesServices.GetTrackables(user.Id).OrderBy(x => x.Name).ToList();
+            List<Trackable> items = _trackablesServices.GetTrackables(UserId).OrderBy(x => x.Name).ToList();
 
             var viewModel = new TrackablesViewModel()
             {

@@ -4,18 +4,37 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Trackables.Domain;
 using Trackables.Models;
 using Trackables.Services.Abstract;
 
 namespace Trackables.Controllers
 {
+    [Authorize]
     public class MealsController : Controller
     {
         private readonly IMealServices _mealServices;
         private readonly IIngredientServices _ingredientServices;
         private readonly IUserServices _userServices;
         private readonly IProductServices _productServices;
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+        }
+
+        public string UserId
+        {
+            get
+            {
+                return UserManager.FindById(User.Identity.GetUserId()).Id;
+            }
+        }
 
         public MealsController()
         { }
@@ -30,10 +49,7 @@ namespace Trackables.Controllers
 
         public ActionResult Index()
         {
-            //User user = _userServices.GetUser(User.Identity.Name);
-            User user = new User { Id = 1 };
-
-            var viewModel = GetMealsModel(user);
+            var viewModel = GetMealsModel();
 
             return View("Index", viewModel);
         }
@@ -53,12 +69,9 @@ namespace Trackables.Controllers
         {
             if (ModelState.IsValid)
             {
-                //User user = _userServices.GetUser(User.Identity.Name);
-                User user = new User { Id = 1 };
-
                 Meal meal = Mapper.Map<MealViewModel, Meal>(mealViewModel);
 
-                _mealServices.CreateMeal(meal, user.Id);
+                _mealServices.CreateMeal(meal, UserId);
 
                 return RedirectToAction("Index");
             }
@@ -106,11 +119,9 @@ namespace Trackables.Controllers
         /// <returns></returns>
         public ActionResult SelectFood(string code, int mealId)
         {
-            User user = new User { Id = 1 };
-
             _ingredientServices.CreateIngredient(code, mealId);
 
-            var viewModel = GetMealModel(user, mealId);
+            var viewModel = GetMealModel(mealId);
 
             return PartialView("IngredientsTable", viewModel);
         }
@@ -118,13 +129,11 @@ namespace Trackables.Controllers
 
         public ActionResult DeleteMeal(int mealId)
         {
-            User user = new User { Id = 1 };
-
             Meal meal = _mealServices.GetMeal(mealId);
 
             _mealServices.DeleteMeal(meal);
 
-            var viewModel = GetMealsModel(user);
+            var viewModel = GetMealsModel();
 
             return PartialView("MealsTable", viewModel);           
         }
@@ -132,11 +141,9 @@ namespace Trackables.Controllers
 
         public ActionResult DeleteIngredient(int ingredientId, int mealId)
         {
-            User user = new User { Id = 1 };
-
             _ingredientServices.DeleteIngredient(ingredientId);
 
-            var viewModel = GetMealModel(user, mealId);
+            var viewModel = GetMealModel(mealId);
 
             return PartialView("IngredientsTable", viewModel);
         }
@@ -144,17 +151,15 @@ namespace Trackables.Controllers
 
         public ActionResult SaveIngredient(int ingredientId, int mealId, int quantity)
         {
-            User user = new User { Id = 1 };
-
             _ingredientServices.UpdateIngredient(ingredientId, quantity);
 
-            var viewModel = GetMealModel(user, mealId);
+            var viewModel = GetMealModel(mealId);
 
             return PartialView("IngredientsTable", viewModel);
         }
 
 
-        private MealViewModel GetMealModel(User user, int mealId)
+        private MealViewModel GetMealModel(int mealId)
         {
             Meal meal = _mealServices.GetMeal(mealId);
 
@@ -164,9 +169,9 @@ namespace Trackables.Controllers
         }
 
 
-        private MealsViewModel GetMealsModel(User user)
+        private MealsViewModel GetMealsModel()
         {
-            List<Meal> items = _mealServices.GetMeals(user.Id).OrderBy(x => x.Name).ToList();
+            List<Meal> items = _mealServices.GetMeals(UserId).OrderBy(x => x.Name).ToList();
 
             var viewModel = new MealsViewModel()
             {

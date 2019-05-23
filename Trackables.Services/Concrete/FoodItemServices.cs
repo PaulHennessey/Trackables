@@ -35,6 +35,12 @@ namespace Trackables.Services.Concrete
             return _foodItemMapper.HydrateFoodItems(foodItems);
         }
 
+        public IEnumerable<FoodItem> GetFoodItems(DateTime dt, string userId)
+        {
+            DataTable foodItems = _foodItemRepository.GetFoodItems(dt, userId);
+            return _foodItemMapper.HydrateFoodItems(foodItems);
+        }
+
         public Day GetDay(DateTime dt, int userId)
         {
             return new Day()
@@ -61,6 +67,10 @@ namespace Trackables.Services.Concrete
             _foodItemRepository.InsertFoodItem(code, quantity, dt, userId);
         }
 
+        public void InsertFoodItem(string code, int quantity, DateTime dt, string userId)
+        {
+            _foodItemRepository.InsertFoodItem(code, quantity, dt, userId);
+        }
 
         public void UpdateFoodItem(int id, int quantity)
         {

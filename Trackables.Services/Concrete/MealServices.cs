@@ -1,8 +1,4 @@
-﻿//public void DeleteProduct(string code)
-//{
-//    _productRepository.DeleteProduct(code);
-//}
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Trackables.Data.Abstract;
@@ -27,13 +23,13 @@ namespace Trackables.Services.Concrete
             _ingredientRepository = ingredientRepository;
         }
 
-        public IEnumerable<Meal> GetMeals(int userId)
+        public IEnumerable<Meal> GetMeals(string userId)
         {
             DataTable dataTable = _mealRepository.GetMeals(userId);
             return _mealMapper.HydrateMeals(dataTable);
         }
 
-        public void CreateMeal(Meal meal, int userId)
+        public void CreateMeal(Meal meal, string userId)
         {
             _mealRepository.CreateMeal(meal, userId);
         }

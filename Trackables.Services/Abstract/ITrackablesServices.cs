@@ -5,12 +5,12 @@ namespace Trackables.Services.Abstract
 {
     public interface ITrackablesServices
     {
-        IEnumerable<Trackable> GetTrackables(int userId);
+        IEnumerable<Trackable> GetTrackables(string userId);
         //IEnumerable<Product> GetProducts(List<FoodItem> foodItems);
         //IEnumerable<Product> GetProducts(List<Day> days);
         //List<Product> GetCustomProducts(int userId);
         Trackable GetTrackable(int id);
-        void CreateTrackable(Trackable trackable, int userId);
+        void CreateTrackable(Trackable trackable, string userId);
         void UpdateTrackable(Trackable trackable);
         void DeleteTrackable(int id);
         //Dictionary<string, decimal> GetNutrients(Product product);

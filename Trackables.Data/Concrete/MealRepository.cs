@@ -18,14 +18,9 @@ namespace Trackables.Data.Concrete
             _connectionString = connectionString;
         }
 
-        /// <summary>
-        /// This is used by the Search.
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        public DataTable GetMeals(int userId)
+        public DataTable GetMeals(string userId)
         {
-          var dataTable = new DataTable();
+            var dataTable = new DataTable();
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -34,7 +29,7 @@ namespace Trackables.Data.Concrete
                     CommandType = CommandType.StoredProcedure
                 };
 
-                command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@userId", SqlDbType.NVarChar));
                 command.Parameters["@userId"].Value = userId;
 
                 var da = new SqlDataAdapter(command);
@@ -44,7 +39,7 @@ namespace Trackables.Data.Concrete
             return dataTable;
         }
 
-        public void CreateMeal(Meal meal, int userId)
+        public void CreateMeal(Meal meal, string userId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -53,7 +48,7 @@ namespace Trackables.Data.Concrete
                     CommandType = CommandType.StoredProcedure
                 };
 
-                cmd.Parameters.Add(new SqlParameter("@UserId", SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@UserId", SqlDbType.NVarChar));
                 cmd.Parameters["@UserId"].Value = userId;
 
                 cmd.Parameters.Add(new SqlParameter("@Name", SqlDbType.VarChar, 255));

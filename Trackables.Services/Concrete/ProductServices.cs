@@ -21,7 +21,7 @@ namespace Trackables.Services.Concrete
             _productMapper = productMapper;
         }
 
-        public IEnumerable<Product> GetProducts(int userId)
+        public IEnumerable<Product> GetProducts(string userId)
         {
             DataTable dataTable = _productRepository.GetProducts(userId);
             return _productMapper.HydrateProducts(dataTable);
@@ -51,6 +51,11 @@ namespace Trackables.Services.Concrete
             _productRepository.CreateProduct(product, userId);
         }
 
+        public void CreateProduct(Product product, string userId)
+        {
+            _productRepository.CreateProduct(product, userId);
+        }
+
         public void UpdateProduct(Product product)
         {
             _productRepository.UpdateProduct(product);
@@ -63,6 +68,12 @@ namespace Trackables.Services.Concrete
         }
 
         public List<Product> GetCustomProducts(int userId)
+        {
+            DataTable dataTable = _productRepository.GetCustomProducts(userId);
+            return _productMapper.HydrateProducts(dataTable).ToList();
+        }
+
+        public List<Product> GetCustomProducts(string userId)
         {
             DataTable dataTable = _productRepository.GetCustomProducts(userId);
             return _productMapper.HydrateProducts(dataTable).ToList();

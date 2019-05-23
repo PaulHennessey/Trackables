@@ -18,7 +18,8 @@ namespace Trackables.Data.Concrete
             _connectionString = connectionString;
         }
 
-        public DataTable GetTrackables(int userId)
+
+        public DataTable GetTrackables(string userId)
         {
             var dataTable = new DataTable();
 
@@ -29,7 +30,7 @@ namespace Trackables.Data.Concrete
                     CommandType = CommandType.StoredProcedure
                 };
 
-                command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@userId", SqlDbType.NVarChar));
                 command.Parameters["@userId"].Value = userId;
 
                 var da = new SqlDataAdapter(command);
@@ -38,6 +39,7 @@ namespace Trackables.Data.Concrete
 
             return dataTable;
         }
+
 
         public DataTable GetTrackable(int id)
         {
@@ -60,7 +62,8 @@ namespace Trackables.Data.Concrete
             return dataTable;
         }
 
-        public void CreateTrackable(Trackable trackable, int userId)
+
+        public void CreateTrackable(Trackable trackable, string userId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -69,7 +72,7 @@ namespace Trackables.Data.Concrete
                     CommandType = CommandType.StoredProcedure
                 };
 
-                cmd.Parameters.Add(new SqlParameter("@UserId", SqlDbType.Int));
+                cmd.Parameters.Add(new SqlParameter("@UserId", SqlDbType.NVarChar));
                 cmd.Parameters["@UserId"].Value = userId;
 
                 cmd.Parameters.Add(new SqlParameter("@Name", SqlDbType.VarChar, 255));
@@ -79,6 +82,7 @@ namespace Trackables.Data.Concrete
                 cmd.ExecuteNonQuery();
             }
         }
+
 
         public void UpdateTrackable(Trackable trackable)
         {
@@ -99,6 +103,7 @@ namespace Trackables.Data.Concrete
                 cmd.ExecuteNonQuery();
             }
         }
+
 
         public void DeleteTrackable(int id)
         {

@@ -21,7 +21,7 @@ namespace Trackables.Services.Concrete
             _trackablesMapper = productMapper;
         }
 
-        public IEnumerable<Trackable> GetTrackables(int userId)
+        public IEnumerable<Trackable> GetTrackables(string userId)
         {
             DataTable dataTable = _trackablesRepository.GetTrackables(userId);
             return _trackablesMapper.HydrateTrackables(dataTable);
@@ -33,7 +33,7 @@ namespace Trackables.Services.Concrete
             return _trackablesMapper.HydrateTrackables(dataTable).FirstOrDefault();
         }
 
-        public void CreateTrackable(Trackable trackable, int userId)
+        public void CreateTrackable(Trackable trackable, string userId)
         {
             _trackablesRepository.CreateTrackable(trackable, userId);
         }

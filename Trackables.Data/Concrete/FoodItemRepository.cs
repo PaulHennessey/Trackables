@@ -41,6 +41,29 @@ namespace Trackables.Data.Concrete
             return dataTable;
         }
 
+        public DataTable GetFoodItems(DateTime dt, string userId)
+        {
+            var dataTable = new DataTable();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("GetFoodItems", connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                cmd.Parameters.Add(new SqlParameter("@dt", SqlDbType.DateTime));
+                cmd.Parameters["@dt"].Value = dt;
+
+                cmd.Parameters.Add(new SqlParameter("@userId", SqlDbType.NVarChar));
+                cmd.Parameters["@userId"].Value = userId;
+
+                var da = new SqlDataAdapter(cmd);
+                da.Fill(dataTable);
+            }
+
+            return dataTable;
+        }
 
         public void InsertFoodItem(string code, int quantity, DateTime dt, int userId)
         {
@@ -68,6 +91,32 @@ namespace Trackables.Data.Concrete
             }
         }
 
+
+        public void InsertFoodItem(string code, int quantity, DateTime dt, string userId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("InsertFoodItem", connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                cmd.Parameters.Add(new SqlParameter("@Code", SqlDbType.VarChar, 255));
+                cmd.Parameters["@Code"].Value = code;
+
+                cmd.Parameters.Add(new SqlParameter("@quantity", SqlDbType.Int));
+                cmd.Parameters["@quantity"].Value = quantity;
+
+                cmd.Parameters.Add(new SqlParameter("@dt", SqlDbType.DateTime));
+                cmd.Parameters["@dt"].Value = dt;
+
+                cmd.Parameters.Add(new SqlParameter("@userId", SqlDbType.NVarChar));
+                cmd.Parameters["@userId"].Value = userId;
+
+                connection.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
 
         public void DeleteFoodItem(int id)
         {

@@ -7,24 +7,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Trackables.Controllers
 {
+    [Authorize]
     public class FoodLogController : Controller
     {
         private readonly IFoodItemServices _foodItemServices;
         private readonly IProductServices _productServices;
         private readonly IMealServices _mealServices;
-        private readonly IUserServices _userServices;
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+        }
+
+        public string UserId
+        {
+            get
+            {
+                return UserManager.FindById(User.Identity.GetUserId()).Id;
+            }
+        }
+
 
         public FoodLogController()
         { }
 
-        public FoodLogController(IFoodItemServices foodItemServices, IProductServices productServices, IUserServices userServices, IMealServices mealServices)
+        public FoodLogController(IFoodItemServices foodItemServices, IProductServices productServices, IMealServices mealServices)
         {
             _productServices = productServices;
             _foodItemServices = foodItemServices;
-            _userServices = userServices;
             _mealServices = mealServices;
         }
 
@@ -35,20 +54,14 @@ namespace Trackables.Controllers
 
         public ActionResult RefreshFoodItemTable(DateTime date)
         {
-            //User user = _userServices.GetUser(User.Identity.Name);
-            User user = new User { Id = 1 };
-
-            var viewModel = GetFoodItemTableViewModel(user, date);
+            var viewModel = GetFoodItemTableViewModel(date);
 
             return PartialView("FoodItemTable", viewModel);
         }
 
         public ActionResult RefreshMealsTable(DateTime date)
         {
-            //User user = _userServices.GetUser(User.Identity.Name);
-            User user = new User { Id = 1 };
-
-            var viewModel = GetMealsTableViewModel(user, date);
+            var viewModel = GetMealsTableViewModel(date);
 
             return PartialView("MealsTable", viewModel);
         }
@@ -61,12 +74,9 @@ namespace Trackables.Controllers
         /// <returns></returns>
         public ActionResult SelectFood(string Code, DateTime date)
         {
-            //User user = _userServices.GetUser(User.Identity.Name);
-            User user = new User { Id = 1 };
+            _foodItemServices.InsertFoodItem(Code, 0, date, UserId);
 
-            _foodItemServices.InsertFoodItem(Code, 0, date, user.Id);
-
-            var viewModel = GetFoodItemTableViewModel(user, date);
+            var viewModel = GetFoodItemTableViewModel(date);
 
             return PartialView("FoodItemTable", viewModel);
         }
@@ -75,12 +85,9 @@ namespace Trackables.Controllers
 
         public ActionResult Save(int id, int quantity, DateTime date)
         {
-            //User user = _userServices.GetUser(User.Identity.Name);
-            User user = new User { Id = 1 };
-
             _foodItemServices.UpdateFoodItem(id, quantity);
 
-            var viewModel = GetFoodItemTableViewModel(user, date);
+            var viewModel = GetFoodItemTableViewModel(date);
 
             return PartialView("FoodItemTable", viewModel);
         }
@@ -89,17 +96,14 @@ namespace Trackables.Controllers
 
         public ActionResult UseMeal(int id, DateTime date)
         {
-            //User user = _userServices.GetUser(User.Identity.Name);
-            User user = new User { Id = 1 };
-
             Meal meal = _mealServices.GetMeal(id);
 
             foreach (Ingredient ingredient in meal.Ingredients)
             {
-                _foodItemServices.InsertFoodItem(ingredient.Code, ingredient.Quantity, date, user.Id);
+                _foodItemServices.InsertFoodItem(ingredient.Code, ingredient.Quantity, date, UserId);
             }
 
-            var viewModel = GetFoodItemTableViewModel(user, date);
+            var viewModel = GetFoodItemTableViewModel(date);
 
             return PartialView("FoodItemTable", viewModel);
         }
@@ -107,21 +111,18 @@ namespace Trackables.Controllers
 
         public ActionResult Delete(int id, DateTime date)
         {
-            //User user = _userServices.GetUser(User.Identity.Name);
-            User user = new User { Id = 1 };
-
             _foodItemServices.DeleteFoodItem(id);
 
-            var viewModel = GetFoodItemTableViewModel(user, date);
+            var viewModel = GetFoodItemTableViewModel(date);
 
             return PartialView("FoodItemTable", viewModel);
         }
 
 
 
-        private FoodItemTableViewModel GetFoodItemTableViewModel(User user, DateTime date)
+        private FoodItemTableViewModel GetFoodItemTableViewModel(DateTime date)
         {
-            List<FoodItem> foodItems = _foodItemServices.GetFoodItems(date, user.Id).OrderByDescending(x => x.Id).ToList();
+            List<FoodItem> foodItems = _foodItemServices.GetFoodItems(date, UserId).OrderByDescending(x => x.Id).ToList();
             List<FoodItemViewModel> foodItemViewModel = Mapper.Map<List<FoodItem>, List<FoodItemViewModel>>(foodItems);
 
             var viewModel = new FoodItemTableViewModel()
@@ -134,9 +135,9 @@ namespace Trackables.Controllers
 
 
 
-        private MealsTableViewModel GetMealsTableViewModel(User user, DateTime date)
+        private MealsTableViewModel GetMealsTableViewModel(DateTime date)
         {
-            List<Meal> meals = _mealServices.GetMeals(user.Id).OrderBy(x => x.Name).ToList();
+            List<Meal> meals = _mealServices.GetMeals(UserId).OrderBy(x => x.Name).ToList();
             var mealsViewModel = Mapper.Map<IEnumerable<Meal>, IEnumerable<MealViewModel>>(meals);
 
             var viewModel = new MealsTableViewModel()
@@ -146,6 +147,7 @@ namespace Trackables.Controllers
 
             return viewModel;
         }
+
 
         ///// <summary>
         ///// When we favourite something, we also want to save it - otherwise it is possible to edit a quantity, then

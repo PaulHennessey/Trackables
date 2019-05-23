@@ -20,8 +20,14 @@ namespace Trackables.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        /// <summary>
+        /// Identity need EF to do its thing. Out of the box it uses its own connection string and creates its own db. 
+        /// However, you can make it generate its files in your db by either pointing its DefaultConnection connection 
+        /// string to your db, or by simply passing your connection string to the ApplicationDbContext constructor as 
+        /// we do here.
+        /// </summary>
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("Trackables_ConnectionString", throwIfV1Schema: false)
         {
         }
 

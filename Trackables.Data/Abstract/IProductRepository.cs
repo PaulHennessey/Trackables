@@ -6,11 +6,13 @@ namespace Trackables.Data.Abstract
 {
     public interface IProductRepository
     {
-        DataTable GetProducts(int userId);
+        DataTable GetProducts(string userId);
         DataTable GetCustomProducts(int userId);
+        DataTable GetCustomProducts(string userId);
         DataTable GetProduct(string code);
         DataTable GetProducts(IEnumerable<FoodItem> foodItems);
         void CreateProduct(Product product, int userId);
+        void CreateProduct(Product product, string userId);
         void UpdateProduct(Product product);
         void DeleteProduct(string code);
     }
