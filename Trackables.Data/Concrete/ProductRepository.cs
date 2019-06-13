@@ -51,7 +51,7 @@ namespace Trackables.Data.Concrete
         /// </summary>
         /// <param name="foodItems"></param>
         /// <returns></returns>
-        public DataTable GetProducts(IEnumerable<FoodItem> foodItems)
+        public DataTable GetProducts(string userId, IEnumerable<FoodItem> foodItems)
         {
             var dataTable = new DataTable();
 
@@ -60,36 +60,13 @@ namespace Trackables.Data.Concrete
                 SqlCommand command = new SqlCommand("GetProducts", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
+                command.Parameters.Add(new SqlParameter("@userId", SqlDbType.NVarChar));
+                command.Parameters["@userId"].Value = userId;
+
                 command.Parameters.Add(new SqlParameter("@Food_Codes", SqlDbType.Structured));
                 command.Parameters["@Food_Codes"].Value = CreateCodeTable(foodItems);
 
                 SqlDataAdapter da = new SqlDataAdapter(command);
-                da.Fill(dataTable);
-            }
-
-            return dataTable;
-        }
-
-        /// <summary>
-        /// This is used by the ProductsController Index.
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        public DataTable GetCustomProducts(int userId)
-        {
-            var dataTable = new DataTable();
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                var command = new SqlCommand("GetCustomProducts", connection)
-                {
-                    CommandType = CommandType.StoredProcedure
-                };
-
-                command.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int));
-                command.Parameters["@userId"].Value = userId;
-
-                var da = new SqlDataAdapter(command);
                 da.Fill(dataTable);
             }
 
@@ -351,7 +328,7 @@ namespace Trackables.Data.Concrete
 
 
 
-        public void UpdateProduct(Product product)
+        public void UpdateProduct(string userId, Product product)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -456,6 +433,8 @@ namespace Trackables.Data.Concrete
                 cmd.Parameters.Add(new SqlParameter("@Carotene", SqlDbType.VarChar, 255));
                 cmd.Parameters["@Carotene"].Value = product.ProductMicronutrients.Quantity("Carotene");
 
+                cmd.Parameters.Add(new SqlParameter("@UserId", SqlDbType.NVarChar, 128));
+                cmd.Parameters["@UserId"].Value = userId;
 
                 connection.Open();
                 cmd.ExecuteNonQuery();
@@ -536,7 +515,7 @@ namespace Trackables.Data.Concrete
         }
 
 
-        public DataTable GetProduct(string code)
+        public DataTable GetProduct(string userId, string code)
         {
             var dataTable = new DataTable();
 
@@ -546,6 +525,9 @@ namespace Trackables.Data.Concrete
                 {
                     CommandType = CommandType.StoredProcedure
                 };
+
+                command.Parameters.Add(new SqlParameter("@userId", SqlDbType.NVarChar));
+                command.Parameters["@userId"].Value = userId;
 
                 command.Parameters.Add(new SqlParameter("@Code", SqlDbType.VarChar, 255));
                 command.Parameters["@Code"].Value = code;

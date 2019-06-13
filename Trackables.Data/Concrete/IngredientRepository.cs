@@ -23,7 +23,7 @@ namespace Trackables.Data.Concrete
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public DataTable GetIngredients(int mealId)
+        public DataTable GetIngredients(string userId, int mealId)
         {
           var dataTable = new DataTable();
 
@@ -33,6 +33,9 @@ namespace Trackables.Data.Concrete
                 {
                     CommandType = CommandType.StoredProcedure
                 };
+
+                command.Parameters.Add(new SqlParameter("@userId", SqlDbType.NVarChar));
+                command.Parameters["@userId"].Value = userId;
 
                 command.Parameters.Add(new SqlParameter("@mealId", SqlDbType.Int));
                 command.Parameters["@mealId"].Value = mealId;
@@ -87,26 +90,26 @@ namespace Trackables.Data.Concrete
 
 
 
-        public DataTable GetIngredient(int id)
-        {
-            var dataTable = new DataTable();
+        //public DataTable GetIngredient(int id)
+        //{
+        //    var dataTable = new DataTable();
 
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                var command = new SqlCommand("GetIngredient", connection)
-                {
-                    CommandType = CommandType.StoredProcedure
-                };
+        //    using (var connection = new SqlConnection(_connectionString))
+        //    {
+        //        var command = new SqlCommand("GetIngredient", connection)
+        //        {
+        //            CommandType = CommandType.StoredProcedure
+        //        };
 
-                command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
-                command.Parameters["@id"].Value = id;
+        //        command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+        //        command.Parameters["@id"].Value = id;
 
-                SqlDataAdapter da = new SqlDataAdapter(command);
-                da.Fill(dataTable);
-            }
+        //        SqlDataAdapter da = new SqlDataAdapter(command);
+        //        da.Fill(dataTable);
+        //    }
 
-            return dataTable;
-        }
+        //    return dataTable;
+        //}
 
 
         public void DeleteIngredient(int id)

@@ -27,13 +27,13 @@ namespace Trackables.Services.Concrete
             return _productMapper.HydrateProducts(dataTable);
         }
 
-        public IEnumerable<Product> GetProducts(List<FoodItem> foodItems)
+        public IEnumerable<Product> GetProducts(string userId, List<FoodItem> foodItems)
         {
-            DataTable dataTable = _productRepository.GetProducts(foodItems);
+            DataTable dataTable = _productRepository.GetProducts(userId, foodItems);
             return _productMapper.HydrateProducts(dataTable);
         }
 
-        public IEnumerable<Product> GetProducts(List<Day> days)
+        public IEnumerable<Product> GetProducts(string userId, List<Day> days)
         {
             IEnumerable<FoodItem> foodItems = new List<FoodItem>();
 
@@ -42,7 +42,7 @@ namespace Trackables.Services.Concrete
                 foodItems = foodItems.Concat(day.Food);
             }
 
-            DataTable dataTable = _productRepository.GetProducts(foodItems);
+            DataTable dataTable = _productRepository.GetProducts(userId, foodItems);
             return _productMapper.HydrateProducts(dataTable);
         }
 
@@ -56,21 +56,15 @@ namespace Trackables.Services.Concrete
             _productRepository.CreateProduct(product, userId);
         }
 
-        public void UpdateProduct(Product product)
+        public void UpdateProduct(string userId, Product product)
         {
-            _productRepository.UpdateProduct(product);
+            _productRepository.UpdateProduct(userId, product);
         }
 
-        public Product GetProduct(string code)
+        public Product GetProduct(string userId, string code)
         {
-            DataTable dataTable = _productRepository.GetProduct(code);
+            DataTable dataTable = _productRepository.GetProduct(userId, code);
             return _productMapper.HydrateProducts(dataTable).FirstOrDefault();
-        }
-
-        public List<Product> GetCustomProducts(int userId)
-        {
-            DataTable dataTable = _productRepository.GetCustomProducts(userId);
-            return _productMapper.HydrateProducts(dataTable).ToList();
         }
 
         public List<Product> GetCustomProducts(string userId)

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,12 +11,28 @@ using Trackables.Services.Abstract;
 
 namespace Trackables.Controllers
 {
+    [Authorize]
     public class MicronutrientsController : Controller
     {
         private readonly IFoodItemServices _foodItemServices;
         private readonly IProductServices _productServices;
         private readonly IChartServices _chartServices;
         private readonly IUserServices _userServices;
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+        }
+
+        public string UserId
+        {
+            get
+            {
+                return UserManager.FindById(User.Identity.GetUserId()).Id;
+            }
+        }
 
         public MicronutrientsController()
         { }
@@ -34,11 +52,8 @@ namespace Trackables.Controllers
 
         public ActionResult RefreshBarChart(DateTime start, DateTime end, string nutrient)
         {
-            //User user = _userServices.GetUser(User.Identity.Name);
-            User user = new User { Id = 1 };
-
-            List<Day> days = _foodItemServices.GetDays(start, end, user.Id).ToList();
-            List<Product> products = _productServices.GetProducts(days).ToList();
+            List<Day> days = _foodItemServices.GetDays(start, end, UserId).ToList();
+            List<Product> products = _productServices.GetProducts(UserId, days).ToList();
             var viewModel = new ChartViewModel();
 
             viewModel.BarNames = _chartServices.GetBarNames(days);
@@ -54,11 +69,8 @@ namespace Trackables.Controllers
 
         public ActionResult RefreshLineChart(DateTime start, DateTime end, string nutrient)
         {
-            //User user = _userServices.GetUser(User.Identity.Name);
-            User user = new User { Id = 1 };
-
-            List<Day> days = _foodItemServices.GetDays(start, end, user.Id).ToList();
-            List<Product> products = _productServices.GetProducts(days).ToList();
+            List<Day> days = _foodItemServices.GetDays(start, end, UserId).ToList();
+            List<Product> products = _productServices.GetProducts(UserId, days).ToList();
             var viewModel = new ChartViewModel();
 
             viewModel.BarNames = _chartServices.GetDates(days);

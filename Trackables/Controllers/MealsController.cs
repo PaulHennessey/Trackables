@@ -85,7 +85,7 @@ namespace Trackables.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            Meal meal = _mealServices.GetMeal(id);
+            Meal meal = _mealServices.GetMeal(UserId, id);
 
             MealViewModel mealViewModel = Mapper.Map<Meal, MealViewModel>(meal);
 
@@ -129,7 +129,7 @@ namespace Trackables.Controllers
 
         public ActionResult DeleteMeal(int mealId)
         {
-            Meal meal = _mealServices.GetMeal(mealId);
+            Meal meal = _mealServices.GetMeal(UserId, mealId);
 
             _mealServices.DeleteMeal(meal);
 
@@ -161,7 +161,7 @@ namespace Trackables.Controllers
 
         private MealViewModel GetMealModel(int mealId)
         {
-            Meal meal = _mealServices.GetMeal(mealId);
+            Meal meal = _mealServices.GetMeal(UserId, mealId);
 
             MealViewModel viewModel = Mapper.Map<Meal, MealViewModel>(meal);
 

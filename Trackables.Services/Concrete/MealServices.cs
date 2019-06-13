@@ -39,10 +39,10 @@ namespace Trackables.Services.Concrete
             _mealRepository.UpdateMeal(meal);
         }
 
-        public Meal GetMeal(int mealId)
+        public Meal GetMeal(string userId, int mealId)
         {
             DataTable mealTable = _mealRepository.GetMeal(mealId);
-            DataTable ingredientsTable = _ingredientRepository.GetIngredients(mealId);
+            DataTable ingredientsTable = _ingredientRepository.GetIngredients(userId, mealId);
 
             return _mealMapper.HydrateMeal(mealTable, ingredientsTable).FirstOrDefault();
         }

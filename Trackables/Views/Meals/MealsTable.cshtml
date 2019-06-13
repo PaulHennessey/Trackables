@@ -1,22 +1,22 @@
 ﻿@model  Trackables.Models.MealsViewModel
 @using Trackables.Models
 
-<table id="mealsTable" class="table table-bordered table-striped table-hover">
-    <thead>
-    </thead>
-    <tbody>
-        @foreach (var meal in Model.Meals)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => meal.Name)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = meal.Id })
-                    @Html.ActionLink("Delete", "DeleteMeal", null, new { @class = "DeleteMealLink", @data_mealid = meal.Id })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <table id="mealsTable" class="table table-hover">
+        <thead>
+        </thead>
+        <tbody>
+            @foreach (var meal in Model.Meals)
+            {
+                <tr>
+                    <td class="col-md-3">
+                        @Html.DisplayFor(modelItem => meal.Name)
+                    </td>
+                    <td  class="col-md-1">
+                        @Html.ActionLink("Edit", "Edit", new { id = meal.Id })
+                        @Html.ActionLink("Delete", "DeleteMeal", null, new { @class = "DeleteMealLink", @data_mealid = meal.Id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 

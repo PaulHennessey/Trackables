@@ -6,7 +6,7 @@ namespace Trackables.Services.Abstract
 {
     public interface ITrackableItemServices
     {
-        IEnumerable<TrackableItem> GetTrackableItems(DateTime dt, int userId);
+        IEnumerable<TrackableItem> GetTrackableItems(DateTime dt, string userId);
         void InsertTrackableItem(int? trackableId, DateTime dt, decimal? quantity);
         void UpdateTrackableItem(int? id, decimal? quantity);
     }

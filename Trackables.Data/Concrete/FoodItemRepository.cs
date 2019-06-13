@@ -17,29 +17,6 @@ namespace Trackables.Data.Concrete
             _connectionString = connectionString;
         }
 
-        public DataTable GetFoodItems(DateTime dt, int userId)
-        {
-            var dataTable = new DataTable();
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                var cmd = new SqlCommand("GetFoodItems", connection)
-                {
-                    CommandType = CommandType.StoredProcedure
-                };
-
-                cmd.Parameters.Add(new SqlParameter("@dt", SqlDbType.DateTime));
-                cmd.Parameters["@dt"].Value = dt;
-
-                cmd.Parameters.Add(new SqlParameter("@userId", SqlDbType.Int));
-                cmd.Parameters["@userId"].Value = userId;
-
-                var da = new SqlDataAdapter(cmd);
-                da.Fill(dataTable);
-            }
-
-            return dataTable;
-        }
 
         public DataTable GetFoodItems(DateTime dt, string userId)
         {

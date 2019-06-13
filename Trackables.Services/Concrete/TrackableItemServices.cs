@@ -28,7 +28,7 @@ namespace Trackables.Services.Concrete
         }
 
 
-        public IEnumerable<TrackableItem> GetTrackableItems(DateTime dt, int userId)
+        public IEnumerable<TrackableItem> GetTrackableItems(DateTime dt, string userId)
         {
             DataTable trackableItems = _trackableItemRepository.GetTrackableItems(dt, userId);
             return _trackableItemMapper.HydrateTrackableItems(trackableItems);

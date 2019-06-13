@@ -2,14 +2,14 @@
 @using Trackables.Models
 
 
-<table id="mealsTable" class="table table-striped table-hover table-bordered">
+<table id="mealsTable" class="table table-hover">
     <thead>
     </thead>
     <tbody>
         @foreach (var meal in Model.Meals)
         {
             <tr>
-                <td>
+                <td class="col-md-4">
                     @Html.ActionLink(meal.Name, "UseMeal", null, new { @class = "UseMealLink", @data_id = meal.Id })
                 </td>
             </tr>

@@ -2,20 +2,20 @@
 @using Trackables.Models
 
 
-<table id="ingredientsTable" class="table table-bordered table-striped table-hover">
+<table id="ingredientsTable" class="table table-hover">
     <thead>
     </thead>
     <tbody>
         @foreach (var ingredient in Model.Ingredients)
         {
             <tr>
-                <td>
+                <td class="col-md-4">
                     @Html.DisplayFor(modelItem => ingredient.Name)
                 </td>
-                <td>
+                <td class="col-md-1">
                     <input class='form-control input-sm' id=@ingredient.Id name=@ingredient.Quantity type='text' value=@ingredient.Quantity>
                 </td>
-                <td>
+                <td class="col-md-1">
                     @Html.ActionLink("Save", "SaveIngredient", null, new { @class = "SaveIngredientLink", @data_mealid = Model.Id, @data_ingredientid = ingredient.Id })
                     @Html.ActionLink("Delete", "DeleteIngredient", null, new { @class = "DeleteIngredientLink", @data_mealid = Model.Id, @data_ingredientid = ingredient.Id })
                 </td>

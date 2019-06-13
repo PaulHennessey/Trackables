@@ -108,7 +108,7 @@ namespace Trackables.Controllers
         [HttpGet]
         public ActionResult Edit(string code)
         {
-            Product product = _productServices.GetProduct(code);
+            Product product = _productServices.GetProduct(UserId, code);
 
             ProductViewModel productViewModel = Mapper.Map<Product, ProductViewModel>(product);
 
@@ -128,7 +128,7 @@ namespace Trackables.Controllers
                 product.ProductMacronutrients = _productServices.UpdateProductMacronutrients(productViewModel.MacroNutrients);
                 product.ProductMicronutrients = _productServices.UpdateProductMicronutrients(productViewModel.MicroNutrients);
 
-                _productServices.UpdateProduct(product);
+                _productServices.UpdateProduct(UserId, product);
 
                 return RedirectToAction("Index");
             }

@@ -28,20 +28,13 @@ namespace Trackables.Services.Concrete
             _favouriteMapper = favouriteMapper;
         }
 
-
-        public IEnumerable<FoodItem> GetFoodItems(DateTime dt, int userId)
-        {
-            DataTable foodItems = _foodItemRepository.GetFoodItems(dt, userId);
-            return _foodItemMapper.HydrateFoodItems(foodItems);
-        }
-
         public IEnumerable<FoodItem> GetFoodItems(DateTime dt, string userId)
         {
             DataTable foodItems = _foodItemRepository.GetFoodItems(dt, userId);
             return _foodItemMapper.HydrateFoodItems(foodItems);
         }
 
-        public Day GetDay(DateTime dt, int userId)
+        public Day GetDay(DateTime dt, string userId)
         {
             return new Day()
             {
@@ -50,7 +43,7 @@ namespace Trackables.Services.Concrete
             };
         }
 
-        public IEnumerable<Day> GetDays(DateTime start, DateTime end, int userId)
+        public IEnumerable<Day> GetDays(DateTime start, DateTime end, string userId)
         {
             var days = new List<Day>();
 

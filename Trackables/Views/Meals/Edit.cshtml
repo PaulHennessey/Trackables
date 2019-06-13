@@ -6,34 +6,38 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<br />
+
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
 
     <div class="row">
-        <div class="col-md-12">
-
+        <div class='col-md-2'>
             <div class="form-group">
-                @Html.LabelFor(model => model.Name)
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Name)
             </div>
-
-            <div id="fetch" data-mealid = @Model.Id>
-                <input class="no-clear typeahead form-control" type="text" placeholder="Products">
-            </div>
-
-            <br />
-
-            <div class="row">
-                <div class="col-md-12">
-                    @{Html.RenderPartial("IngredientsTable");}
-                </div>
-            </div>
-
-            <p><button type="submit" class="btn btn-primary">Save</button></p>
         </div>
     </div>
+
+    <div class="row">
+        <div class='col-md-2'>
+            <div id="fetch" data-mealid=@Model.Id>
+                <input class="no-clear typeahead form-control" type="text" placeholder="Products">
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="row">
+        <div class="col-md-6">
+            @{Html.RenderPartial("IngredientsTable");}
+        </div>
+    </div>
+
+    <p><button type="submit" class="btn btn-primary">Save</button></p>
 }
 
 <div>@Html.ActionLink("Back to List", "Index", new { htmlAttributes = new { @class = "btn btn-link" } })</div>

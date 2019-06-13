@@ -96,7 +96,7 @@ namespace Trackables.Controllers
 
         public ActionResult UseMeal(int id, DateTime date)
         {
-            Meal meal = _mealServices.GetMeal(id);
+            Meal meal = _mealServices.GetMeal(UserId, id);
 
             foreach (Ingredient ingredient in meal.Ingredients)
             {
