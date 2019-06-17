@@ -7,6 +7,7 @@
     var bloodhound = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace("Name"),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
+        limit: 20,
         prefetch: ProductFetchUrl
     });
 
