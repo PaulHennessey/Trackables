@@ -7,14 +7,14 @@
     var bloodhound = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace("Name"),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        limit: 20,
         prefetch: ProductFetchUrl
     });
 
     $('#fetch .typeahead').typeahead(null, {
-        name: 'countries',
+        name: 'bloodhound',
         displayKey: 'Name',
-        source: bloodhound
+        source: bloodhound,
+        limit: 20
     });
 
 })(jQuery);
