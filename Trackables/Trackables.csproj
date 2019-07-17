@@ -195,6 +195,7 @@
     <Compile Include="Controllers\MicronutrientsController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\TrackablesController.cs" />
+    <Compile Include="Controllers\TrackablesHomeController.cs" />
     <Compile Include="Controllers\TrackablesLogController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -319,7 +320,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_TrackablesLayout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -361,6 +362,8 @@
     <Content Include="Views\Macronutrients\Index.cshtml" />
     <Content Include="Views\Micronutrients\Index.cshtml" />
     <Content Include="Views\FoodLog\MealsTable.cshtml" />
+    <Content Include="Views\Shared\_PublicLayout.cshtml" />
+    <Content Include="Views\TrackablesHome\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

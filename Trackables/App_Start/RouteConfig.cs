@@ -13,6 +13,60 @@ namespace Trackables
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapRoute(
+                name: "Trackables",
+                url: "trackables/trackables",
+                defaults: new { controller = "Trackables", action = "Index" }
+            );
+
+            routes.MapRoute(
+                name: "Meals",
+                url: "trackables/meals",
+                defaults: new { controller = "Meals", action = "Index" }
+            );
+
+            routes.MapRoute(
+                name: "Products",
+                url: "trackables/products",
+                defaults: new { controller = "Products", action = "Index" }
+            );
+
+            routes.MapRoute(
+                name: "Micronutrients",
+                url: "trackables/micronutrients",
+                defaults: new { controller = "Micronutrients", action = "Index" }
+            );
+
+            routes.MapRoute(
+                name: "Macronutrients",
+                url: "trackables/macronutrients",
+                defaults: new { controller = "Macronutrients", action = "Index" }
+            );
+
+            routes.MapRoute(
+                name: "TrackablesLog",
+                url: "trackables/trackableslog",
+                defaults: new { controller = "TrackablesLog", action = "Index" }
+            );
+
+            routes.MapRoute(
+                name: "FoodLog",
+                url: "trackables/foodlog",
+                defaults: new { controller = "FoodLog", action = "Index" }
+            );
+
+            routes.MapRoute(
+                name: "FretwireHome",
+                url: "",
+                defaults: new { controller = "Home", action = "Index" }
+            );
+
+            routes.MapRoute(
+                name: "TrackablesHome",
+                url: "trackables",
+                defaults: new { controller = "TrackablesHome", action = "Index" }
+            );
+
             // Trackable Items
             routes.MapRoute(
                 name: "SaveTrackableItem",
@@ -64,6 +118,8 @@ namespace Trackables
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+
         }
     }
 }
