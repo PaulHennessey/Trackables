@@ -1,7 +1,7 @@
 ﻿@model  Trackables.Models.TrackablesViewModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Trackables ";
     Layout = "~/Views/Shared/_TrackablesLayout.cshtml";
 }
 
@@ -15,7 +15,9 @@
 
 <br />
 
-<p>@Html.ActionLink("Add a new Trackable", "Create")</p>
+<p>
+    <a href="@Url.RouteUrl("CreateTrackable")">Add a new trackable</a>
+</p>
 
 <script src="@Url.Content("~/Scripts/trackables-trackables.js")" type="text/javascript"></script>
 

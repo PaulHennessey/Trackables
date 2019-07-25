@@ -1,6 +1,7 @@
 ﻿@model Trackables.Models.IndexViewModel
 @{
     ViewBag.Title = "Manage";
+    Layout = "~/Views/Shared/_TrackablesLayout.cshtml";
 }
 
 <h2>@ViewBag.Title.</h2>
@@ -15,18 +16,22 @@
             [
             @if (Model.HasPassword)
             {
-                @Html.ActionLink("Change your password", "ChangePassword")
+                @*@Html.ActionLink("Change your password", "ChangePassword")*@
+                <a href="@Url.RouteUrl("TrackablesChangePassword")">Change your password</a>
             }
             else
             {
-                @Html.ActionLink("Create", "SetPassword")
+                @*@Html.ActionLink("Create", "SetPassword")*@
+                <a href="@Url.RouteUrl("TrackablesSetPassword")">Set password</a>
             }
             ]
         </dd>
         <dt>External Logins:</dt>
         <dd>
-            @Model.Logins.Count [
-            @Html.ActionLink("Manage", "ManageLogins") ]
+            @Model.Logins.Count 
+            [
+            <a href="@Url.RouteUrl("TrackablesManageLogins")">Manage</a>
+            ]
         </dd>
         @*
             Phone Numbers can used as a second factor of verification in a two-factor authentication system.

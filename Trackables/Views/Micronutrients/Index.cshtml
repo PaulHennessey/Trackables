@@ -2,6 +2,11 @@
 
 @using Trackables.Models
 
+@{
+    ViewBag.Title = "Micronutrients ";
+    Layout = "~/Views/Shared/_TrackablesLayout.cshtml";
+}
+
 <script src="~/Scripts/Highcharts-4.0.1/js/highcharts.js"></script>
 
 @using (Html.BeginForm("Index", "Charts", FormMethod.Post, new { id = "TheForm" }))

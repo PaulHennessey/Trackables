@@ -2,7 +2,7 @@
 @using Trackables.Domain
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create Product";
     Layout = "~/Views/Shared/_TrackablesLayout.cshtml";
 }
 
@@ -29,7 +29,7 @@
 
             <p><button type="submit" class="btn btn-primary">Create</button></p>
 
-            <div>@Html.ActionLink("Back to List", "Index", new { htmlAttributes = new { @class = "btn btn-link" } })</div>
+            <div><a href="@Url.RouteUrl("Products")">Back to List</a></div>
         </div>
 
         <div class="col-md-6">

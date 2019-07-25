@@ -1,7 +1,7 @@
 ﻿@model  Trackables.Models.ProductsViewModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Products ";
     Layout = "~/Views/Shared/_TrackablesLayout.cshtml";
 }
 
@@ -13,8 +13,8 @@
     </div>
 </div>
 
-<br />
-
-<p>@Html.ActionLink("Add a new Product", "Create")</p>
+<p>
+    <a href="@Url.RouteUrl("CreateProduct")">Add a new product</a>
+</p>
 
 <script src="@Url.Content("~/Scripts/trackables-products.js")" type="text/javascript"></script>

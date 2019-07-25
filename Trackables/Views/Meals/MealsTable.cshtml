@@ -11,8 +11,8 @@
                     <td class="col-md-3">
                         @Html.DisplayFor(modelItem => meal.Name)
                     </td>
-                    <td  class="col-md-1">
-                        @Html.ActionLink("Edit", "Edit", new { id = meal.Id })
+                    <td class="col-md-1">
+                        <a href="@Url.RouteUrl("EditMeal", new { id = meal.Id })">Edit</a>
                         @Html.ActionLink("Delete", "DeleteMeal", null, new { @class = "DeleteMealLink", @data_mealid = meal.Id })
                     </td>
                 </tr>

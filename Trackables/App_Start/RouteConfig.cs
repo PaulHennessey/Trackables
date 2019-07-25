@@ -14,9 +14,57 @@ namespace Trackables
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "TrackablesManageLogins",
+                url: "trackables/manage/managelogins",
+                defaults: new { controller = "Manage", action = "ManageLogins" }
+            );
+
+            routes.MapRoute(
+                name: "TrackablesSetPassword",
+                url: "trackables/manage/setpassword",
+                defaults: new { controller = "Manage", action = "SetPassword" }
+            );
+
+            routes.MapRoute(
+                name: "TrackablesChangePassword",
+                url: "trackables/manage/changepassword",
+                defaults: new { controller = "Manage", action = "ChangePassword" }
+            );
+
+            routes.MapRoute(
+                name: "TrackablesManage",
+                url: "trackables/manage",
+                defaults: new { controller = "Manage", action = "Index" }
+            );
+
+            routes.MapRoute(
+                name: "TrackablesLogin",
+                url: "trackables/login",
+                defaults: new { controller = "Account", action = "Login" }
+            );
+
+            routes.MapRoute(
+                name: "TrackablesRegister",
+                url: "trackables/register",
+                defaults: new { controller = "Account", action = "Register" }
+            );
+
+            routes.MapRoute(
                 name: "Trackables",
                 url: "trackables/trackables",
                 defaults: new { controller = "Trackables", action = "Index" }
+            );
+
+            routes.MapRoute(
+                name: "CreateTrackable",
+                url: "trackables/trackables/create",
+                defaults: new { controller = "Trackables", action = "Create" }
+            );
+
+            routes.MapRoute(
+                name: "EditTrackable",
+                url: "trackables/trackables/edit/{id}",
+                defaults: new { controller = "Trackables", action = "Edit" }
             );
 
             routes.MapRoute(
@@ -26,9 +74,33 @@ namespace Trackables
             );
 
             routes.MapRoute(
+                name: "CreateMeal",
+                url: "trackables/meals/create",
+                defaults: new { controller = "Meals", action = "Create" }
+            );
+
+            routes.MapRoute(
+                name: "EditMeal",
+                url: "trackables/meals/edit/{id}",
+                defaults: new { controller = "Meals", action = "Edit" }
+            );
+
+            routes.MapRoute(
                 name: "Products",
                 url: "trackables/products",
                 defaults: new { controller = "Products", action = "Index" }
+            );
+
+            routes.MapRoute(
+                name: "CreateProduct",
+                url: "trackables/products/create",
+                defaults: new { controller = "Products", action = "Create" }
+            );
+
+            routes.MapRoute(
+                name: "EditProduct",
+                url: "trackables/products/edit/{code}",
+                defaults: new { controller = "Products", action = "Edit" }
             );
 
             routes.MapRoute(
@@ -74,12 +146,12 @@ namespace Trackables
                 defaults: new { controller = "TrackablesLog", action = "Save", id = UrlParameter.Optional, quantity = UrlParameter.Optional }
             );
 
-            // Meals 
-            routes.MapRoute(
-                name: "EditMeal",
-                url: "Meals/Edit/{id}",               
-                defaults: new { controller = "Meals", action = "Edit" }
-            );
+            //// Meals 
+            //routes.MapRoute(
+            //    name: "EditMeal",
+            //    url: "Meals/Edit/{id}",               
+            //    defaults: new { controller = "Meals", action = "Edit" }
+            //);
 
             routes.MapRoute(
                 name: "SaveIngredient",
