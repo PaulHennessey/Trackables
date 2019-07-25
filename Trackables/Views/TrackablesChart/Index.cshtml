@@ -1,0 +1,38 @@
+﻿@model  Trackables.Models.TrackablesChartViewModel
+
+@using Trackables.Models
+
+@{
+    ViewBag.Title = "Trackables Chart ";
+    Layout = "~/Views/Shared/_TrackablesLayout.cshtml";
+}
+
+<script src="~/Scripts/Highcharts-4.0.1/js/highcharts.js"></script>
+
+@using (Html.BeginForm("Index", "Charts", FormMethod.Post, new { id = "TheForm" }))
+{
+    <br />
+
+    <div class="row">
+        <div class='col-md-12'>
+            <div class="form-inline">
+                <input type='text' class="form-control date" id='fromdate' name="fromDate" />
+                <input type='text' class="form-control date" id='todate' name="toDate" />
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    @*<div class="dropdown">
+        @Html.DropDownListFor(m => m.SelectedNutrientId, Model.Nutrients, new { @class = "form-control" })
+    </div>
+
+    <div id="foodChart" class="trackables-chart"></div>
+
+    <p><button id="GenerateChartButton" type="submit" class="btn btn-success">Generate Chart</button></p>*@
+}
+
+<script src="@Url.Content("~/Scripts/trackables-common.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/trackables-macronutrients.js")" type="text/javascript"></script>
+

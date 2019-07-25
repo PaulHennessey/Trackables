@@ -14,6 +14,12 @@ namespace Trackables
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "TrackablesChart",
+                url: "trackables/trackableschart",
+                defaults: new { controller = "TrackablesChart", action = "Index" }
+            );
+
+            routes.MapRoute(
                 name: "TrackablesManageLogins",
                 url: "trackables/manage/managelogins",
                 defaults: new { controller = "Manage", action = "ManageLogins" }

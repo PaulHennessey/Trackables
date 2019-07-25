@@ -194,6 +194,7 @@
     <Compile Include="Controllers\MealsController.cs" />
     <Compile Include="Controllers\MicronutrientsController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\TrackablesChartController.cs" />
     <Compile Include="Controllers\TrackablesController.cs" />
     <Compile Include="Controllers\TrackablesHomeController.cs" />
     <Compile Include="Controllers\TrackablesLogController.cs" />
@@ -223,6 +224,7 @@
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\TrackableItemListViewModel.cs" />
     <Compile Include="Models\TrackableItemViewModel.cs" />
+    <Compile Include="Models\TrackablesChartViewModel.cs" />
     <Compile Include="Models\TrackablesViewModel.cs" />
     <Compile Include="Models\TrackableViewModel.cs" />
     <Compile Include="Models\WeightFirstFoodItemListViewModel.cs" />
@@ -364,6 +366,7 @@
     <Content Include="Views\FoodLog\MealsTable.cshtml" />
     <Content Include="Views\Shared\_PublicLayout.cshtml" />
     <Content Include="Views\TrackablesHome\Index.cshtml" />
+    <Content Include="Views\TrackablesChart\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
