@@ -41,6 +41,30 @@ namespace Trackables.Data.Concrete
             return dataTable;
         }
 
+        public DataTable GetTrackableItem(DateTime dt, int trackableId)
+        {
+            var dataTable = new DataTable();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var cmd = new SqlCommand("GetTrackableItem", connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                cmd.Parameters.Add(new SqlParameter("@dt", SqlDbType.DateTime));
+                cmd.Parameters["@dt"].Value = dt;
+
+                cmd.Parameters.Add(new SqlParameter("@trackableId", SqlDbType.Int));
+                cmd.Parameters["@trackableId"].Value = trackableId;
+
+                var da = new SqlDataAdapter(cmd);
+                da.Fill(dataTable);
+            }
+
+            return dataTable;
+        }
+
 
         public void InsertTrackableItem(int? trackableId, DateTime dt, decimal? quantity)
         {

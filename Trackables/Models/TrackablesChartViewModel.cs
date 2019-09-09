@@ -7,5 +7,6 @@ namespace Trackables.Models
 {
     public class TrackablesChartViewModel
     {
+        public TrackablesViewModel TrackablesList { get; set; }
     }
 }

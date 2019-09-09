@@ -49,14 +49,14 @@ namespace Trackables.Controllers
 
         public ActionResult Index()
         {
-            return View("Index", new MacronutrientsViewModel());
+            return View("Index", new MacronutrientsDropDownListViewModel());
         }
 
         public ActionResult RefreshBarChart(DateTime start, DateTime end, string nutrient)
         {
             List<Day> days = _foodItemServices.GetDays(start, end, UserId).ToList();
             List<Product> products = _productServices.GetProducts(UserId, days).ToList();
-            var viewModel = new ChartViewModel();
+            var viewModel = new BarChartViewModel();
 
             if (nutrient.ToLower() == "macronutrient ratios")
             {
@@ -69,28 +69,47 @@ namespace Trackables.Controllers
                 viewModel.BarNames = _chartServices.GetBarNames(days);
                 viewModel.ChartTitle = _chartServices.GetMacronutrientTitle(nutrient);
                 viewModel.BarData = _chartServices.CalculateAlcoholByProduct(days, products);
-                viewModel.BarNames.Add("RDA");
-                viewModel.BarData.First().Add(_chartServices.GetMacronutrientRDA(nutrient));
+                //viewModel.BarNames.Add("RDA");
+                //viewModel.BarData.Add(_chartServices.GetMacronutrientRDA(nutrient));
             }
             else
             {
                 viewModel.BarNames = _chartServices.GetBarNames(days);
                 viewModel.ChartTitle = _chartServices.GetMacronutrientTitle(nutrient);
-                viewModel.BarData = _chartServices.CalculateMacroNutrientByProduct(days, products, nutrient);
-                viewModel.BarNames.Add("RDA");
-                viewModel.BarData.First().Add(_chartServices.GetMacronutrientRDA(nutrient));
+            //    viewModel.BarData = GetDummyLists();
+                viewModel.BarData = _chartServices.CalculateMacronutrientByProduct(start, end, nutrient, UserId);
+                //viewModel.BarData = _chartServices.CalculateMacroNutrientByProduct(days, products, nutrient);
+                //                viewModel.BarNames.Add("RDA");
+                //              viewModel.BarData.Add(_chartServices.GetMacronutrientRDA(nutrient));
             }
-
 
             return Json(viewModel, JsonRequestBehavior.AllowGet);
         }
 
 
+        private List<List<decimal?>> GetDummyLists()
+        {
+            //return new List<List<decimal?>>
+            //{
+            //    new List<decimal?>{33m},
+            //    new List<decimal?>{44m},
+            //    new List<decimal?>{3m},
+            //    new List<decimal?>{67m},
+            //    new List<decimal?>{31m}
+            //};
+
+            return new List<List<decimal?>>
+            {
+                new List<decimal?>{33m,44m,3m,67m,31m },
+                new List<decimal?>{3m,4m,73m,7m,1m }
+            };
+        }
+
         public ActionResult RefreshLineChart(DateTime start, DateTime end, string nutrient)
         {
             List<Day> days = _foodItemServices.GetDays(start, end, UserId).ToList();
             List<Product> products = _productServices.GetProducts(UserId, days).ToList();
-            var viewModel = new ChartViewModel();
+            var viewModel = new LineChartViewModel();
 
             if (nutrient.ToLower() == "macronutrient ratios")
             {
@@ -109,7 +128,11 @@ namespace Trackables.Controllers
             {
                 viewModel.BarNames = _chartServices.GetDates(days);
                 viewModel.ChartTitle = _chartServices.GetMacronutrientTitle(nutrient);
-                viewModel.BarData = _chartServices.CalculateMacroNutrientByDay(days, products, nutrient);
+                viewModel.BarData = _chartServices.CalculateMacronutrientByDay(start, end, nutrient, UserId);
+
+                //var temp = new List<List<decimal?>>();
+                //temp.Add(_chartServices.CalculateMacroNutrientByDay(days, products, nutrient));
+                //viewModel.BarData = temp;
             }
             return Json(viewModel, JsonRequestBehavior.AllowGet);
         }

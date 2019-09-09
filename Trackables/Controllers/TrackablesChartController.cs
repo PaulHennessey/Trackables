@@ -5,13 +5,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Trackables.Domain;
 using Trackables.Models;
 using Trackables.Services.Abstract;
 
 namespace Trackables.Controllers
 {
+    [Authorize]
     public class TrackablesChartController : Controller
     {
+        private readonly ITrackableItemServices _trackableItemServices;
+        private readonly ITrackablesServices _trackablesServices;
         private readonly IFoodItemServices _foodItemServices;
         private readonly IProductServices _productServices;
         private readonly IChartServices _chartServices;
@@ -36,8 +40,10 @@ namespace Trackables.Controllers
         public TrackablesChartController()
         { }
 
-        public TrackablesChartController(IChartServices chartServices, IFoodItemServices foodItemServices, IProductServices productServices, IUserServices userServices)
+        public TrackablesChartController(ITrackableItemServices trackableItemServices, ITrackablesServices trackablesServices, IChartServices chartServices, IFoodItemServices foodItemServices, IProductServices productServices, IUserServices userServices)
         {
+            _trackableItemServices = trackableItemServices;
+            _trackablesServices = trackablesServices;
             _productServices = productServices;
             _foodItemServices = foodItemServices;
             _chartServices = chartServices;
@@ -46,70 +52,136 @@ namespace Trackables.Controllers
 
         public ActionResult Index()
         {
-            return View("Index", new TrackablesChartViewModel());
+            return View("Index");
+        }
+        
+
+        public ActionResult RefreshTrackableItemsList()
+        {
+            var viewModel = GetTrackablesModel();
+
+            return PartialView("TrackablesList", viewModel);
         }
 
-        //public ActionResult RefreshBarChart(DateTime start, DateTime end, string nutrient)
-        //{
-        //    List<Day> days = _foodItemServices.GetDays(start, end, UserId).ToList();
-        //    List<Product> products = _productServices.GetProducts(UserId, days).ToList();
-        //    var viewModel = new ChartViewModel();
+        public ActionResult RefreshMacronutrientsList()
+        {
+            var viewModel = GetMacronutrientsModel();
 
-        //    if (nutrient.ToLower() == "macronutrient ratios")
-        //    {
-        //        viewModel.BarNames = _chartServices.GetDates(days);
-        //        viewModel.ChartTitle = _chartServices.GetMacronutrientRatioCategories();
-        //        viewModel.BarData = _chartServices.CalculateMacronutrientRatioData(days, products);
-        //    }
-        //    else if (nutrient.ToLower() == "alcohol")
-        //    {
-        //        viewModel.BarNames = _chartServices.GetBarNames(days);
-        //        viewModel.ChartTitle = _chartServices.GetMacronutrientTitle(nutrient);
-        //        viewModel.BarData = _chartServices.CalculateAlcoholByProduct(days, products);
-        //        viewModel.BarNames.Add("RDA");
-        //        viewModel.BarData.First().Add(_chartServices.GetMacronutrientRDA(nutrient));
-        //    }
-        //    else
-        //    {
-        //        viewModel.BarNames = _chartServices.GetBarNames(days);
-        //        viewModel.ChartTitle = _chartServices.GetMacronutrientTitle(nutrient);
-        //        viewModel.BarData = _chartServices.CalculateMacroNutrientByProduct(days, products, nutrient);
-        //        viewModel.BarNames.Add("RDA");
-        //        viewModel.BarData.First().Add(_chartServices.GetMacronutrientRDA(nutrient));
-        //    }
+            return PartialView("MacronutrientsList", viewModel);
+        }
 
 
-        //    return Json(viewModel, JsonRequestBehavior.AllowGet);
-        //}
+        private TrackablesViewModel GetTrackablesModel()
+        {
+            List<Trackable> trackables = _trackablesServices.GetTrackables(UserId).OrderBy(x => x.Name).ToList();
+
+            var viewModel = new TrackablesViewModel()
+            {
+                Trackables = trackables
+            };
+
+            return viewModel;
+        }
 
 
-        //public ActionResult RefreshLineChart(DateTime start, DateTime end, string nutrient)
-        //{
-        //    List<Day> days = _foodItemServices.GetDays(start, end, UserId).ToList();
-        //    List<Product> products = _productServices.GetProducts(UserId, days).ToList();
-        //    var viewModel = new ChartViewModel();
+        private MacronutrientsViewModel GetMacronutrientsModel()
+        {
+            var viewModel = new MacronutrientsViewModel()
+            {
+                Macronutrients = Macronutrients.Nutrients
+            };
 
-        //    if (nutrient.ToLower() == "macronutrient ratios")
-        //    {
-        //        viewModel.BarNames = _chartServices.GetDates(days);
-        //        viewModel.ChartTitle = _chartServices.GetMacronutrientRatioCategories();
-        //        viewModel.BarData = _chartServices.CalculateMacronutrientRatioData(days, products);
+            return viewModel;
+        }
 
-        //    }
-        //    else if (nutrient.ToLower() == "alcohol")
-        //    {
-        //        viewModel.BarNames = _chartServices.GetDates(days);
-        //        viewModel.ChartTitle = _chartServices.GetMacronutrientTitle(nutrient);
-        //        viewModel.BarData = _chartServices.CalculateAlcoholByDay(days, products);
-        //    }
-        //    else
-        //    {
-        //        viewModel.BarNames = _chartServices.GetDates(days);
-        //        viewModel.ChartTitle = _chartServices.GetMacronutrientTitle(nutrient);
-        //        viewModel.BarData = _chartServices.CalculateMacroNutrientByDay(days, products, nutrient);
-        //    }
-        //    return Json(viewModel, JsonRequestBehavior.AllowGet);
-        //}
+
+        // VM:
+        //            List<ChartItemList>:
+        //ChartItemList:
+        //            List<ChartItem>
+        //            Name:
+        //ChartItem:
+        //        Date:
+        //        Quantity:
+
+        /// <summary>
+        /// Note that the two methods are identical right now?
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="selectedIds"></param>
+        /// <returns></returns>
+        public ActionResult RefreshBarChart(DateTime start, DateTime end, TrackablesChartIdentifiers selectedIds)
+        {
+            // Might be nice to fix this null binding issue
+            // https://lostechies.com/jimmybogard/2013/11/07/null-collectionsarrays-from-mvc-model-binding/
+
+            List<ChartItemList> lists = _trackableItemServices.GetTrackableChartItems(start, end, selectedIds.Trackables).ToList();
+            var viewModel = new LineChartViewModel();
+
+            foreach (var list in lists)
+            {
+                viewModel.ChartTitle.Add(list.Name);
+            }
+
+            // Map the dates to the BarNames. You only need to do that once
+            // because they are the same on every list. 
+            foreach (var item in lists.First().ChartItems)
+            {
+                viewModel.BarNames.Add(item.Date.ToShortDateString());
+            }
+
+            // Map the quantities to the BarData.
+            foreach (var list in lists)
+            {
+                var data = new List<decimal?>();
+
+                foreach (var item in list.ChartItems)
+                {
+                    data.Add(item.Quantity);
+                }
+
+                viewModel.BarData.Add(data);
+            }
+
+            return Json(viewModel, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult RefreshLineChart(DateTime start, DateTime end, TrackablesChartIdentifiers selectedIds)
+        {
+            var viewModel = new LineChartViewModel();
+
+            List<ChartItemList> lists = _trackableItemServices.GetTrackableChartItems(start, end, selectedIds.Trackables).ToList();
+            foreach (var list in lists)
+            {
+                viewModel.ChartTitle.Add(list.Name);
+            }
+
+            // Map the dates to the BarNames. You only need to do that once
+            // because they are the same on every list. 
+            foreach (var item in lists.First().ChartItems)
+            {
+                viewModel.BarNames.Add(item.Date.ToShortDateString());
+            }
+
+            // Map the quantities to the BarData.
+            foreach (var list in lists)
+            {
+                var data = new List<decimal?>();
+
+                foreach (var item in list.ChartItems)
+                {
+                    data.Add(item.Quantity);
+                }
+
+                viewModel.BarData.Add(data);
+            }
+
+            return Json(viewModel, JsonRequestBehavior.AllowGet);
+        }
+
+
 
     }
 }

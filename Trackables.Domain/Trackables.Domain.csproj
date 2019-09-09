@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Autocomplete.cs" />
+    <Compile Include="ChartItem.cs" />
+    <Compile Include="ChartItemList.cs" />
     <Compile Include="Day.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Favourite.cs" />
@@ -58,6 +60,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Trackable.cs" />
     <Compile Include="TrackableItem.cs" />
+    <Compile Include="TrackablesChartIdentifiers.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

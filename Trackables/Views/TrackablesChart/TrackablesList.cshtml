@@ -1,0 +1,15 @@
+﻿@model  Trackables.Models.TrackablesViewModel
+@using Trackables.Models
+
+
+<div id="trackablesList">
+    @foreach (var trackable in Model.Trackables)
+    {
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" id=@trackable.Id name="trackables">
+                @trackable.Name
+            </label>
+        </div>
+    }
+</div>

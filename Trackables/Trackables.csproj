@@ -207,14 +207,16 @@
     <Compile Include="Models\AutocompleteViewModel.cs" />
     <Compile Include="Models\CaloriesFirstFoodItemListViewModel.cs" />
     <Compile Include="Models\CaloriesFirstFoodItemViewModel.cs" />
-    <Compile Include="Models\ChartViewModel.cs" />
+    <Compile Include="Models\BarChartViewModel.cs" />
+    <Compile Include="Models\LineChartViewModel.cs" />
     <Compile Include="Models\FavouriteViewModel.cs" />
     <Compile Include="Models\FoodItemListViewModel.cs" />
+    <Compile Include="Models\MacronutrientsViewModel.cs" />
     <Compile Include="Models\MealsTableViewModel.cs" />
     <Compile Include="Models\FoodItemViewModel.cs" />
     <Compile Include="Models\FoodItemTableViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\MacronutrientsViewModel.cs" />
+    <Compile Include="Models\MacronutrientsDropDownListViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MealsViewModel.cs" />
     <Compile Include="Models\MealViewModel.cs" />
@@ -299,6 +301,8 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\trackables-common.js" />
     <Content Include="Scripts\trackables-foodlog.js" />
+    <Content Include="Scripts\experimental.js" />
+    <Content Include="Scripts\trackables-trackableschart.js" />
     <Content Include="Scripts\trackables-micronutrients.js" />
     <Content Include="Scripts\trackables-macronutrients.js" />
     <Content Include="Scripts\trackables-typeahead.js" />
@@ -367,6 +371,8 @@
     <Content Include="Views\Shared\_PublicLayout.cshtml" />
     <Content Include="Views\TrackablesHome\Index.cshtml" />
     <Content Include="Views\TrackablesChart\Index.cshtml" />
+    <Content Include="Views\TrackablesChart\TrackablesList.cshtml" />
+    <Content Include="Views\TrackablesChart\MacronutrientsList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

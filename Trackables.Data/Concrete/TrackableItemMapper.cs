@@ -22,5 +22,26 @@ namespace Trackables.Data.Concrete
                        Quantity = row.GetNullableDecimal("Quantity")
                    };
         }
+
+        public IEnumerable<ChartItem> HydrateTrackableItem(DataTable dataTable)
+        {
+            return from DataRow row in dataTable.Rows
+                   select new ChartItem
+                   {
+                       Quantity = row.GetNullableDecimal("Quantity"),
+                       Date = Convert.ToDateTime(row["Date"])
+                   };
+        }
+
+        public IEnumerable<ChartItem> HydrateTrackable(DataTable dataTable)
+        {
+            return from DataRow row in dataTable.Rows
+                   select new ChartItem
+                   {
+                       Quantity = row.GetNullableDecimal("Quantity"),
+                       Date = Convert.ToDateTime(row["Date"])
+                   };
+        }
+
     }
 }

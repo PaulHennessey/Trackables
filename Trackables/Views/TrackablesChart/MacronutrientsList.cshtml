@@ -1,0 +1,14 @@
+﻿@model  Trackables.Models.MacronutrientsViewModel
+@using Trackables.Models
+
+<div id="macronutrientsList">
+    @foreach (var macronutrient in Model.Macronutrients)
+    {
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" id=@macronutrient.Id name="macronutrients">
+                @macronutrient.Name
+            </label>
+        </div>
+    }
+</div>
