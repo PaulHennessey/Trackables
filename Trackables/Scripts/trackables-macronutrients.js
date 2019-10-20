@@ -16,6 +16,8 @@
     $("#todate").val(sessionStorage["currentDate"]);
 
 
+    /* Event handlers */
+
     $('#GenerateChartButton').click(function (e) {
         e.preventDefault();
 
@@ -26,11 +28,14 @@
             refreshBarChart();
         }
         else {
-            refreshLineChart("Grams");
+            refreshLineChart();
         }
     });
 
-    function refreshBarChart(yAxis) {
+
+    /* Functions */
+
+    function refreshBarChart() {
 
         $.ajax({
             type: "POST",
@@ -44,29 +49,17 @@
             success: function (json) {
 
                 var options = {
-                    chart: {
-                        renderTo: "foodChart",
-                        type: "bar"
-                    },
-                    title: {
-                        text: json.Title
-                    },
-                    xAxis: {
-                        categories: json.BarNames
-                    },
-                    yAxis: {
-                        title: {
-                            text: yAxis
-                        }
-                    },
+                    chart: { renderTo: "foodChart", type: "bar" },
+                    title: { text: "" },
+                    yAxis: { title: { text: "" } },
+                    xAxis: { categories: json.Categories },
                     series: []
-
                 };
 
-                for (i = 0; i < json.BarData.length; i++) {
+                for (i = 0; i < json.Series.length; i++) {
                     options.series.push({
-                        name: json.ChartTitle[i],
-                        data: json.BarData[i]
+                        name: json.Series[i].Name,
+                        data: json.Series[i].Data
                     });
                 }
 
@@ -76,7 +69,7 @@
     }
 
 
-    function refreshLineChart(nutrient, yAxis) {
+    function refreshLineChart() {
 
         $.ajax({
             type: "POST",
@@ -90,29 +83,17 @@
             success: function (json) {
 
                 var options = {
-                    chart: {
-                        renderTo: 'foodChart',
-                        type: 'line'
-                    },
-                    title: {
-                        text: json.Title
-                    },
-                    xAxis: {
-                        categories: json.BarNames
-                    },
-                    yAxis: {
-                        title: {
-                            text: yAxis
-                        }
-                    },
+                    chart: { renderTo: "foodChart", type: "line" },
+                    title: { text: "" },
+                    yAxis: { title: { text: "" } },
+                    xAxis: { categories: json.Categories },
                     series: []
-
                 };
 
-                for (i = 0; i < json.BarData.length; i++) {
+                for (i = 0; i < json.Series.length; i++) {
                     options.series.push({
-                        name: json.ChartTitle[i],
-                        data: json.BarData[i]
+                        name: json.Series[i].Name,
+                        data: json.Series[i].Data
                     });
                 }
 
@@ -120,6 +101,7 @@
             }
         });
     }
+    
 })(jQuery);
 
 

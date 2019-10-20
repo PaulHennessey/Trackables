@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Trackables.Domain
 {
@@ -22,6 +19,11 @@ namespace Trackables.Domain
         public static Nutrient Nutrient(string name)
         {
             return Nutrients.Where(m => m.Name == name).First();
+        }
+
+        public static Nutrient Nutrient(int id)
+        {
+            return Nutrients.Where(m => m.Id == id).First();
         }
 
     }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Web.Mvc;
 using Trackables.Domain;
 
 namespace Trackables.Models
@@ -8,12 +7,34 @@ namespace Trackables.Models
     {
         public BarChartViewModel()
         {
-            ChartTitle = new List<string>();
-            BarNames = new List<string>();
-            BarData = new List<List<decimal?>>();
+            Categories = new List<string>();
+            Series = new List<Series>();
         }
-        public List<string> ChartTitle { get; set; }
-        public List<string> BarNames { get; set; }
-        public List<List<decimal?>> BarData { get; set; }
+        public List<string> Categories { get; set; }
+        public List<Series> Series { get; set; }
+
+        public void MapToSeries(List<List<decimal?>> data, List<string> names)
+        {
+            for (int i = 0; i < names.Count; i++)
+            {
+                Series series = new Series
+                {
+                    Name = names[i],
+                    Data = data[i]
+                };
+                Series.Add(series);
+            }
+        }
+
     }
+
+    //public class Series
+    //{
+    //    public Series()
+    //    {
+    //        Data = new List<decimal?>();
+    //    }
+    //    public string Name { get; set; }
+    //    public List<decimal?> Data { get; set; }
+    //}
 }

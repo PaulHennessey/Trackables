@@ -14,7 +14,8 @@ namespace Trackables.Tests
     {
         private readonly Dictionary<string, decimal> Micronutrients = new Dictionary<string, decimal>()
         {
-            { "Folate", 50.0m }
+            { "Folate", 50.0m },
+            { "Calcium", 50.0m }
         };
 
         Mock<IFoodItemServices> myFoodItemServices = new Mock<IFoodItemServices>();
@@ -37,11 +38,21 @@ namespace Trackables.Tests
                 new Day {Food = new List<FoodItem> {new FoodItem {Code = "XXX", Quantity = 10}}}
             });
 
+            var nutrients = new List<string>
+            {
+                "Folate"
+            };
+
+            var expected = new List<List<decimal?>>
+            {
+                new List<decimal?>{5}
+            };
+
             // Act
-            var result = chartServices.CalculateMicronutrientByProduct(DateTime.Now, DateTime.Now, "Folate", It.IsAny<string>());
+            var actual = chartServices.CalculateMicronutrientByProduct(DateTime.Now, DateTime.Now, nutrients, It.IsAny<string>());
 
             // Assert
-            Assert.AreEqual(5, result[0].Sum());
+            CollectionAssert.AreEqual(expected[0], actual[0]);
         }
 
         [TestMethod]
@@ -65,11 +76,21 @@ namespace Trackables.Tests
                 }}
             });
 
+            var nutrients = new List<string>
+            {
+                "Folate"
+            };
+
+            var expected = new List<List<decimal?>>
+            {
+                new List<decimal?>{15},
+            };
+
             // Act
-            var result = chartServices.CalculateMicronutrientByProduct(DateTime.Now, DateTime.Now, "Folate", It.IsAny<string>());
+            var actual = chartServices.CalculateMicronutrientByProduct(DateTime.Now, DateTime.Now, nutrients, It.IsAny<string>());
 
             // Assert
-            Assert.AreEqual(15, result[0].Sum());
+            CollectionAssert.AreEqual(expected[0], actual[0]);
         }
 
 
@@ -95,88 +116,24 @@ namespace Trackables.Tests
                 }}
             });
 
+            var nutrients = new List<string>
+            {
+                "Folate",
+                "Calcium"
+            };
+
+            var expected = new List<List<decimal?>>
+            {
+                new List<decimal?>{5,10},
+                new List<decimal?>{5,10}
+            };
+
             // Act
-            var result = chartServices.CalculateMicronutrientByProduct(DateTime.Now, DateTime.Now, "Folate", It.IsAny<string>());
+            var actual = chartServices.CalculateMicronutrientByProduct(DateTime.Now, DateTime.Now, nutrients, It.IsAny<string>());
 
             // Assert
-            Assert.AreEqual(15, result[0].Sum());
+            CollectionAssert.AreEqual(expected[0], actual[0]);
+            CollectionAssert.AreEqual(expected[1], actual[1]);
         }
-
-
-
-        //[TestMethod]
-        //public void TestCalculateMicronutrientByProductOneFoodItem()
-        //{
-        //    // Arrange
-        //    var days = new List<Day>
-        //    {
-        //        new Day { Food = new List<FoodItem> {new FoodItem {Code = "XXX", Quantity = 10}}}
-        //    };
-
-        //    var products = new List<Product>
-        //    {
-        //        new Product { Code = "XXX", ProductMicronutrients = productServices.UpdateProductMicronutrients(Micronutrients)}
-        //    };
-
-        //    // Act
-        //    var result = chartServices.CalculateMicronutrientByProduct(days, products, "Folate");
-
-        //    // Assert
-        //    Assert.AreEqual(10, result[0].Sum());
-        //    Assert.AreEqual(1, result.Count());
-        //}
-
-        //[TestMethod]
-        //public void TestCalculateMicronutrientByProductTwoFoodItems()
-        //{
-        //    // Arrange
-        //    var days = new List<Day>
-        //    {
-        //        new Day { Food = new List<FoodItem>
-        //        {
-        //            new FoodItem { Code = "XXX", Quantity = 10 },
-        //            new FoodItem { Code = "XXX", Quantity = 20 }
-        //        }}
-        //    };
-
-        //    var products = new List<Product>
-        //    {
-        //        new Product { Code = "XXX", ProductMicronutrients = productServices.UpdateProductMicronutrients(Micronutrients)}
-        //    };
-
-        //    // Act
-        //    var result = chartServices.CalculateMicronutrientByProduct(days, products, "Folate");
-
-        //    // Assert
-        //    Assert.AreEqual(30, result[0].Sum());
-        //}
-
-
-        //[TestMethod]
-        //public void TestCalculateMicronutrientByProductTwoDifferentFoodItems()
-        //{
-        //    // Arrange
-        //    var days = new List<Day>
-        //    {
-        //        new Day{Food = new List<FoodItem>
-        //        {
-        //            new FoodItem { Code = "XXX", Quantity = 10 },
-        //            new FoodItem { Code = "YYY", Quantity = 20 }
-        //        }}
-        //    };
-
-        //    var products = new List<Product>
-        //    {
-        //        new Product { Code = "XXX", ProductMicronutrients = productServices.UpdateProductMicronutrients(Micronutrients)},
-        //        new Product { Code = "YYY", ProductMicronutrients = productServices.UpdateProductMicronutrients(Micronutrients)}
-        //    };
-
-        //    // Act
-        //    var result = chartServices.CalculateMicronutrientByProduct(days, products, "Folate");
-
-        //    // Assert
-        //    Assert.AreEqual(30, result[0].Sum());
-        //}
-
     }
 }

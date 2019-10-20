@@ -1,7 +1,7 @@
 ﻿var charts = (function ($) {
 
-    var refreshBarChartUrl = "/micronutrients/refreshbarchart/";
-    var refreshLineChartUrl = "/micronutrients/refreshlinechart/";
+    var refreshBarChartUrl = "/macronutrients/refreshbarchart/";
+    var refreshLineChartUrl = "/macronutrients/refreshlinechart/";
 
     /* On page load functions */
 
@@ -30,7 +30,7 @@
         }
     });
 
-    function refreshBarChart() {
+    function refreshBarChart(yAxis) {
 
         $.ajax({
             type: "POST",
@@ -44,11 +44,23 @@
             success: function (json) {
 
                 var options = {
-                    chart: { renderTo: "foodChart", type: "bar" },
-                    title: { text: "" },
-                    yAxis: { title: { text: "" } },
-                    xAxis: { categories: json.BarNames },
+                    chart: {
+                        renderTo: "foodChart",
+                        type: "bar"
+                    },
+                    title: {
+                        text: json.Title
+                    },
+                    xAxis: {
+                        categories: json.BarNames
+                    },
+                    yAxis: {
+                        title: {
+                            text: yAxis
+                        }
+                    },
                     series: []
+
                 };
 
                 for (i = 0; i < json.BarData.length; i++) {
@@ -78,11 +90,23 @@
             success: function (json) {
 
                 var options = {
-                    chart: { renderTo: "foodChart", type: "line" },
-                    title: { text: "" },
-                    yAxis: { title: { text: "" } },
-                    xAxis: { categories: json.BarNames },
+                    chart: {
+                        renderTo: 'foodChart',
+                        type: 'line'
+                    },
+                    title: {
+                        text: json.Title
+                    },
+                    xAxis: {
+                        categories: json.BarNames
+                    },
+                    yAxis: {
+                        title: {
+                            text: yAxis
+                        }
+                    },
                     series: []
+
                 };
 
                 for (i = 0; i < json.BarData.length; i++) {

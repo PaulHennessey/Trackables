@@ -27,208 +27,228 @@ namespace Trackables.Services.Concrete
             _productServices = productServices;
         }
 
-        public List<List<decimal?>> CalculateMacronutrientByProduct(DateTime start, DateTime end, string nutrient, string UserId)
+        public IEnumerable<Series> GetSeries(DateTime start, DateTime end, IEnumerable<int> selectedIds, string UserId)
         {
+            var series = new List<Series>();
             List<Day> days = _foodItemServices.GetDays(start, end, UserId).ToList();
             List<Product> products = _productServices.GetProducts(UserId, days).ToList();
 
-            var productNutrients = new List<List<decimal?>>();
-
-            // Make a big list of all the fooditems from each day.
-            List<FoodItem> foodItems = new List<FoodItem>();
-            foreach (Day day in days)
+            foreach (int id in selectedIds)
             {
-                foodItems.AddRange(day.Food);
+                series.Add(GetSeries(start, end, id, UserId));
             }
+
+            return series;
+        }
+
+        private Series GetSeries(DateTime start, DateTime end, int selectedId, string UserId)
+        {
+            var series = new Series();
+
+            series.Name = Macronutrients.Nutrient(selectedId).Name;
+
+            while (start <= end)
+            {
+                series.Data.Add(GetQuantity(start, selectedId, UserId));
+                start = start.AddDays(1);
+            }
+
+            return series;
+        }
+
+
+        private decimal? GetQuantity(DateTime date, int selectedId, string UserId)
+        {
+            Day day = _foodItemServices.GetDay(date, UserId);
+            List<Product> products = _productServices.GetProducts(UserId, day).ToList();
+
+            var nutrientResults = new List<decimal?>();
+
+            // Make a big list of all the fooditems in the day.
+            List<FoodItem> foodItems = new List<FoodItem>();
+            foodItems.AddRange(day.Food);
 
             // Now group the fooditems to get rid of repeats.
             var groupedFoodItems = foodItems.
                                    GroupBy(f => f.Code).
                                    Select(fg => new { Code = fg.Key, Total = fg.Sum(f => f.Quantity) }).ToList();
 
-            foreach (Day day in days)
+            foreach (var g in groupedFoodItems)
             {
-                var dayNutrients = new List<decimal?>();
-
-                foreach(var g in groupedFoodItems)
+                if (Macronutrients.Nutrient(selectedId).Name.ToLower() == "alcohol")
                 {
-                    dayNutrients.Add(GetTotalMacroNutrient(g.Total, products.Where(p => p.Code == g.Code).First(),nutrient));
+                    nutrientResults.Add(GetTotalAlcoholUnits(g.Total, products.Where(p => p.Code == g.Code).First()));
                 }
-
-                productNutrients.Add(dayNutrients);
+                else
+                {
+                    nutrientResults.Add(GetTotalMacroNutrient(g.Total, products.Where(p => p.Code == g.Code).First(), Macronutrients.Nutrient(selectedId).Name));
+                }
             }
 
-            return productNutrients;
+            return nutrientResults.Sum();
         }
 
-
-        public List<List<decimal?>> CalculateMicronutrientByProduct(DateTime start, DateTime end, string nutrient, string UserId)
+        public List<List<decimal?>> CalculateMacronutrientByProduct(DateTime start, DateTime end, List<string> nutrients, string UserId)
         {
             List<Day> days = _foodItemServices.GetDays(start, end, UserId).ToList();
             List<Product> products = _productServices.GetProducts(UserId, days).ToList();
 
-            var productNutrients = new List<List<decimal?>>();
+            var allResults = new List<List<decimal?>>();
 
-            // Make a big list of all the fooditems from each day.
-            List<FoodItem> foodItems = new List<FoodItem>();
-            foreach (Day day in days)
+            foreach (string nutrient in nutrients)
             {
-                foodItems.AddRange(day.Food);
-            }
+                var nutrientResults = new List<decimal?>();
 
-            // Now group the fooditems to get rid of repeats.
-            var groupedFoodItems = foodItems.
-                                   GroupBy(f => f.Code).
-                                   Select(fg => new { Code = fg.Key, Total = fg.Sum(f => f.Quantity) }).ToList();
-
-            foreach (Day day in days)
-            {
-                var dayNutrients = new List<decimal?>();
-
-                foreach (var g in groupedFoodItems)
+                // Make a big list of all the fooditems from each day.
+                List<FoodItem> foodItems = new List<FoodItem>();
+                foreach (Day day in days)
                 {
-                    dayNutrients.Add(GetTotalMicroNutrient(g.Total, products.Where(p => p.Code == g.Code).First(), nutrient));
+                    foodItems.AddRange(day.Food);
                 }
 
-                productNutrients.Add(dayNutrients);
-            }
-
-            return productNutrients;
-        }
-
-
-        public List<List<decimal?>> CalculateMacronutrientByDay(DateTime start, DateTime end, string nutrient, string UserId)
-        {
-            List<Day> days = _foodItemServices.GetDays(start, end, UserId).ToList();
-            List<Product> products = _productServices.GetProducts(UserId, days).ToList();
-
-            var productNutrients = new List<List<decimal?>>();
-            var dayNutrients = new List<decimal?>();
-
-            foreach (Day day in days)
-            {
-                // Group the fooditems to get rid of repeats.
-                var groupedFoodItems = day.Food.
+                // Now group the fooditems to get rid of repeats.
+                var groupedFoodItems = foodItems.
                                        GroupBy(f => f.Code).
                                        Select(fg => new { Code = fg.Key, Total = fg.Sum(f => f.Quantity) }).ToList();
 
                 foreach (var g in groupedFoodItems)
                 {
-                    dayNutrients.Add(GetTotalMacroNutrient(g.Total, products.Where(p => p.Code == g.Code).First(), nutrient));
+                    if (nutrient.ToLower() == "alcohol")
+                    {
+                        nutrientResults.Add(GetTotalAlcoholUnits(g.Total, products.Where(p => p.Code == g.Code).First()));
+                    }
+                    else
+                    {
+                        nutrientResults.Add(GetTotalMacroNutrient(g.Total, products.Where(p => p.Code == g.Code).First(), nutrient));
+                    }
                 }
+
+                allResults.Add(nutrientResults);
             }
 
-            productNutrients.Add(dayNutrients);
-            return productNutrients;
+            return allResults;
         }
 
 
-        public List<List<decimal?>> CalculateMicronutrientByDay(DateTime start, DateTime end, string nutrient, string UserId)
+        public List<List<decimal?>> CalculateMicronutrientByProduct(DateTime start, DateTime end, List<string> nutrients, string UserId)
         {
             List<Day> days = _foodItemServices.GetDays(start, end, UserId).ToList();
             List<Product> products = _productServices.GetProducts(UserId, days).ToList();
 
-            var productNutrients = new List<List<decimal?>>();
-            var dayNutrients = new List<decimal?>();
+            var allResults = new List<List<decimal?>>();
 
-            foreach (Day day in days)
+            foreach (string nutrient in nutrients)
             {
-                // Group the fooditems to get rid of repeats.
-                var groupedFoodItems = day.Food.
+                var nutrientResults = new List<decimal?>();
+
+                // Make a big list of all the fooditems from each day.
+                List<FoodItem> foodItems = new List<FoodItem>();
+                foreach (Day day in days)
+                {
+                    foodItems.AddRange(day.Food);
+                }
+
+                // Now group the fooditems to get rid of repeats.
+                var groupedFoodItems = foodItems.
                                        GroupBy(f => f.Code).
                                        Select(fg => new { Code = fg.Key, Total = fg.Sum(f => f.Quantity) }).ToList();
 
                 foreach (var g in groupedFoodItems)
                 {
-                    dayNutrients.Add(GetTotalMicroNutrient(g.Total, products.Where(p => p.Code == g.Code).First(), nutrient));
+                    nutrientResults.Add(GetTotalMicroNutrient(g.Total, products.Where(p => p.Code == g.Code).First(), nutrient));
                 }
+
+                allResults.Add(nutrientResults);
             }
 
-            productNutrients.Add(dayNutrients);
-            return productNutrients;
+            return allResults;
         }
 
-        /// <summary>
-        /// Note the alcohol data is stored as ABV, i.e. units of alcohol per 100ml. We want to display 'units', e.g. one 
-        /// pint of Bass (4.2 ABV) is 2.4 units.
-        /// This returns the amount of alcohol per product.
-        /// </summary>
-        /// <param name="days"></param>
-        /// <param name="products"></param>
-        /// <returns></returns>
-        public List<List<decimal?>> CalculateAlcoholByProduct(List<Day> days, List<Product> products)
+
+
+
+        public List<List<decimal?>> CalculateMacronutrientByDay(DateTime start, DateTime end, List<string> nutrients, string UserId)
         {
-            var allNutrients = new List<List<decimal?>>();
-            var nutrients = new List<decimal?>();
+            List<Day> days = _foodItemServices.GetDays(start, end, UserId).ToList();
+            List<Product> products = _productServices.GetProducts(UserId, days).ToList();
 
-            foreach (Day day in days)
+            var allResults = new List<List<decimal?>>();
+            var nutrientResults = new List<decimal?>();
+
+            foreach(string nutrient in nutrients)
             {
-                var groupedFoodItemsByProduct = day.Food.
-                                       GroupBy(f => f.Code).
-                                       Select(fg => new { Code = fg.Key, Total = fg.Sum(f => f.Quantity) }).ToList();
-
-                var alcoholConsumedByProduct = from g in groupedFoodItemsByProduct
-                                               join p in products
-                                               on g.Code equals p.Code
-                                               select new
-                                               {
-                                                   AlcoholUnits = GetTotalAlcoholUnits(g.Total, p)
-                                               };
-
-                // Now convert the anonymous types to a list of objects for the Highchart. 
-                decimal total = 0;
-                foreach (var product in alcoholConsumedByProduct)
+                foreach (Day day in days)
                 {
-                    nutrients.Add(product.AlcoholUnits);
-                    total += product.AlcoholUnits;
+                    var dayResults = new List<decimal?>();
+
+                    // Group the fooditems to get rid of repeats.
+                    var groupedFoodItems = day.Food.
+                                           GroupBy(f => f.Code).
+                                           Select(fg => new { Code = fg.Key, Total = fg.Sum(f => f.Quantity) }).ToList();
+
+                    // Work out the amount of nutrient in each fooditem
+                    foreach (var g in groupedFoodItems)
+                    {
+                        if (nutrient.ToLower() == "alcohol")
+                        {
+                            dayResults.Add(GetTotalAlcoholUnits(g.Total, products.Where(p => p.Code == g.Code).First()));
+                        }
+                        else
+                        {
+                            dayResults.Add(GetTotalMacroNutrient(g.Total, products.Where(p => p.Code == g.Code).First(), nutrient));
+                        }
+
+                    }
+
+                    // Now sum the results to get the total for the day
+                    nutrientResults.Add(dayResults.Sum());
                 }
-
-                nutrients.Add(Math.Round(total, 1));
             }
 
-            allNutrients.Add(nutrients);
-            return allNutrients;
+            allResults.Add(nutrientResults);
+            return allResults;
         }
 
-        /// <summary>
-        /// This is used for the line chart.
-        /// It returns the amount of alcohol per day.
-        /// </summary>
-        /// <param name="days"></param>
-        /// <param name="products"></param>
-        /// <returns></returns>
-        public List<List<decimal?>> CalculateAlcoholByDay(List<Day> days, List<Product> products)
-        {
-            var allNutrients = new List<List<decimal?>>();
-            var nutrients = new List<decimal?>();
 
-            foreach (Day day in days)
+        public List<List<decimal?>> CalculateMicronutrientByDay(DateTime start, DateTime end, List<string> nutrients, string UserId)
+        {
+            List<Day> days = _foodItemServices.GetDays(start, end, UserId).ToList();
+            List<Product> products = _productServices.GetProducts(UserId, days).ToList();
+
+            var allResults = new List<List<decimal?>>();
+            var nutrientResults = new List<decimal?>();
+
+            foreach (string nutrient in nutrients)
             {
-                var groupedFoodItemsByProduct = day.Food.
-                                                GroupBy(f => f.Code).
-                                                Select(fg => new { Code = fg.Key, Total = fg.Sum(f => f.Quantity) }).ToList();
+                foreach (Day day in days)
+                {
+                    var dayResults = new List<decimal?>();
 
-                var alcoholConsumedByProduct = from g in groupedFoodItemsByProduct
-                                               join p in products
-                                               on g.Code equals p.Code
-                                               select new
-                                               {
-                                                   AlcoholUnits = GetTotalAlcoholUnits(g.Total, p)
-                                               };
+                    // Group the fooditems to get rid of repeats.
+                    var groupedFoodItems = day.Food.
+                                           GroupBy(f => f.Code).
+                                           Select(fg => new { Code = fg.Key, Total = fg.Sum(f => f.Quantity) }).ToList();
 
-                decimal alcoholConsumedByDay = alcoholConsumedByProduct.Sum(product => product.AlcoholUnits);
-                nutrients.Add(alcoholConsumedByDay);
+                    foreach (var g in groupedFoodItems)
+                    {
+                        dayResults.Add(GetTotalMicroNutrient(g.Total, products.Where(p => p.Code == g.Code).First(), nutrient));
+                    }
+
+                    // Now sum the results to get the total for the day
+                    nutrientResults.Add(dayResults.Sum());
+                }
             }
 
-            allNutrients.Add(nutrients);
-            return allNutrients;
+            allResults.Add(nutrientResults);
+            return allResults;
         }
 
 
-
-
-        public List<List<decimal?>> CalculateMacronutrientRatioData(List<Day> days, List<Product> products)
+        public List<List<decimal?>> CalculateMacronutrientRatioData(DateTime start, DateTime end, string UserId)
         {
+            List<Day> days = _foodItemServices.GetDays(start, end, UserId).ToList();
+            List<Product> products = _productServices.GetProducts(UserId, days).ToList();
+
             var allNutrients = new List<List<decimal?>>();
             var carbsList = new List<decimal?>();
             var fatList = new List<decimal?>();
@@ -290,22 +310,10 @@ namespace Trackables.Services.Concrete
         }
 
 
-        public List<string> GetBarNames(IEnumerable<FoodItem> foodItems)
+        public List<string> GetProductNames(DateTime start, DateTime end, string UserId)
         {
-            // First group the fooditems in case there are repeats, e.g. two apples.
-            var groupedFoodItems = foodItems.
-                                   GroupBy(f => f.Code).
-                                   Select(fg => new { fg.First().Name });
+            List<Day> days = _foodItemServices.GetDays(start, end, UserId).ToList();
 
-            var names = groupedFoodItems.Select(g => g.Name).ToList();
-            names.Add("Total");
-
-            return names;
-        }
-
-
-        public List<string> GetBarNames(IEnumerable<Day> days)
-        {
             // Make a big list of all the fooditems from each day.
             List<FoodItem> foodItems = new List<FoodItem>();
             foreach (Day day in days)
@@ -318,16 +326,16 @@ namespace Trackables.Services.Concrete
                                    GroupBy(f => f.Code).
                                    Select(fg => fg.First().Name).ToList();
 
-        //    names.Add("Total");
             return names;
         }
 
 
-        public List<string> GetDates(IEnumerable<Day> days)
+        public List<string> GetDates(DateTime start, DateTime end, string UserId)
         {
+            List<Day> days = _foodItemServices.GetDays(start, end, UserId).ToList();
+
             return days.Select(d => d.Date.ToShortDateString()).ToList();
         }
-
 
         public List<string> GetMacronutrientRatioCategories()
         {
@@ -363,6 +371,9 @@ namespace Trackables.Services.Concrete
         }
 
         /// <summary>
+        /// Note the alcohol data is stored as ABV, i.e. units of alcohol per 100ml. We want to display 'units', e.g. one 
+        /// pint of Bass (4.2 ABV) is 2.4 units.
+        /// This returns the amount of alcohol per product.
         /// Alcohol (ALCO). Values are given as g/100 ml. Pure ethyl alcohol has a
         /// specific gravity of 0.789, dividing values by 0.789 converts them to alcohol by
         /// volume(ml/100 ml). 

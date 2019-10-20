@@ -11,7 +11,7 @@ namespace Trackables.Domain
         public int TrackableId { get; set; }
         public string Name { get; set; }
         public decimal? Quantity { get; set; }
-
+        public DateTime Timestamp { get; set; }
         public override bool Equals(Object obj)
         {
             TrackableItem other = obj as TrackableItem;
@@ -22,7 +22,8 @@ namespace Trackables.Domain
             return (this.Id == other.Id) &&
                    (this.TrackableId == other.TrackableId) &&
                    (this.Name == other.Name) &&
-                   (this.Quantity == other.Quantity);
+                   (this.Quantity == other.Quantity) &&
+                   (this.Timestamp == other.Timestamp);
         }
 
         public override int GetHashCode()

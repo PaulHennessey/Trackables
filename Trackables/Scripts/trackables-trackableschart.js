@@ -1,7 +1,6 @@
 ﻿var charts = (function ($) {
 
-    var refreshBarChartUrl = "/trackableschart/refreshbarchart/";
-    var refreshLineChartUrl = "/trackableschart/refreshlinechart/";
+    var refreshChartUrl = "/trackableschart/refreshchart/";
     var refreshTrackableItemsListUrl = "/trackableschart/refreshTrackableItemsList/";
     var refreshMacronutrientsListUrl = "/trackableschart/refreshMacronutrientsList/";
 
@@ -18,6 +17,17 @@
 
     $("#fromdate").val(sessionStorage["currentDate"]);
     $("#todate").val(sessionStorage["currentDate"]);
+
+    /* Event handlers */
+
+    $('#GenerateChartButton').click(function (e) {
+        e.preventDefault();
+
+        var chartType = $('#ChartTypeId :selected').text().toLowerCase();
+        refreshChart(chartType);
+    });
+
+    /* Functions */
 
     function RefreshTrackableItemsList(url) {
 
@@ -43,28 +53,12 @@
         });
     };
 
-    $('#GenerateChartButton').click(function (e) {
-        e.preventDefault();
 
-        var from = $("#fromdate").val();
-        var to = $("#todate").val();
-
-        if (from === to) {
-            refreshChart(refreshBarChartUrl, "bar");
-        }
-        else {
-            refreshChart(refreshLineChartUrl, "line");
-        }
-
-    });
-
-
-
-    function refreshChart(url, chartType) {
+    function refreshChart(chartType) {
 
         $.ajax({
             type: "POST",
-            url: url,
+            url: refreshChartUrl,
             data: {
                 start: $("#fromdate").val(),
                 end: $("#todate").val(),
@@ -73,29 +67,16 @@
             success: function (json) {
 
                 var options = {
-                    chart: {
-                        renderTo: 'trackablesChart',
-                        type: chartType
-                    },
-                    title: {
-                        text: json.Title
-                    },
-                    xAxis: {
-                        categories: json.BarNames
-                    },
-                    yAxis: {
-                        title: {
-                            text: ""
-                        }
-                    },
+                    chart: { renderTo: 'trackablesChart', type: chartType },
+                    title: { text: "" },
+                    xAxis: { categories: json.Categories },
                     series: []
-
                 };
 
-                for (i = 0; i < json.BarData.length; i++) {
+                for (i = 0; i < json.Series.length; i++) {
                     options.series.push({
-                        name: json.ChartTitle[i],
-                        data: json.BarData[i]
+                        name: json.Series[i].Name,
+                        data: json.Series[i].Data
                     });
                 }
 
@@ -103,7 +84,6 @@
             }
         });
     }
-
 
     function checkedBoxes() {
 
@@ -125,6 +105,6 @@
         return selectedIdentifiers;
     }
 
-})(jQuery);
+ })(jQuery);
 
 

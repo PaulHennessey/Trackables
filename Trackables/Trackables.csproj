@@ -205,12 +205,15 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AutocompleteViewModel.cs" />
+    <Compile Include="Models\HighchartsViewModel.cs" />
+    <Compile Include="Models\LineChartViewModel.cs" />
     <Compile Include="Models\CaloriesFirstFoodItemListViewModel.cs" />
     <Compile Include="Models\CaloriesFirstFoodItemViewModel.cs" />
     <Compile Include="Models\BarChartViewModel.cs" />
-    <Compile Include="Models\LineChartViewModel.cs" />
+    <Compile Include="Models\ChartViewModel.cs" />
     <Compile Include="Models\FavouriteViewModel.cs" />
     <Compile Include="Models\FoodItemListViewModel.cs" />
+    <Compile Include="Models\ChartTypeDropDownListViewModel.cs" />
     <Compile Include="Models\MacronutrientsViewModel.cs" />
     <Compile Include="Models\MealsTableViewModel.cs" />
     <Compile Include="Models\FoodItemViewModel.cs" />
@@ -302,6 +305,7 @@
     <Content Include="Scripts\trackables-common.js" />
     <Content Include="Scripts\trackables-foodlog.js" />
     <Content Include="Scripts\experimental.js" />
+    <Content Include="Scripts\trackables-macronutrients - Copy.js" />
     <Content Include="Scripts\trackables-trackableschart.js" />
     <Content Include="Scripts\trackables-micronutrients.js" />
     <Content Include="Scripts\trackables-macronutrients.js" />

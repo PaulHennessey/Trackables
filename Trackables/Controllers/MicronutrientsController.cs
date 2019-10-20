@@ -14,10 +14,8 @@ namespace Trackables.Controllers
     [Authorize]
     public class MicronutrientsController : Controller
     {
-        private readonly IFoodItemServices _foodItemServices;
-        private readonly IProductServices _productServices;
         private readonly IChartServices _chartServices;
-        private readonly IUserServices _userServices;
+
         public ApplicationUserManager UserManager
         {
             get
@@ -37,12 +35,9 @@ namespace Trackables.Controllers
         public MicronutrientsController()
         { }
 
-        public MicronutrientsController(IChartServices chartServices, IFoodItemServices foodItemServices, IProductServices productServices, IUserServices userServices)
+        public MicronutrientsController(IChartServices chartServices)
         {
-            _productServices = productServices;
-            _foodItemServices = foodItemServices;
             _chartServices = chartServices;
-            _userServices = userServices;
         }
 
         public ActionResult Index()
@@ -52,17 +47,13 @@ namespace Trackables.Controllers
 
         public ActionResult RefreshBarChart(DateTime start, DateTime end, string nutrient)
         {
-            List<Day> days = _foodItemServices.GetDays(start, end, UserId).ToList();
-            List<Product> products = _productServices.GetProducts(UserId, days).ToList();
-            var viewModel = new BarChartViewModel();
+            var viewModel = new ChartViewModel();
 
-            viewModel.BarNames = _chartServices.GetBarNames(days);
+            viewModel.BarNames = _chartServices.GetProductNames(start, end, UserId);
             viewModel.ChartTitle = _chartServices.GetMicronutrientTitle(nutrient);
-            viewModel.BarData = _chartServices.CalculateMicronutrientByProduct(start, end, nutrient, UserId);
-            //viewModel.BarData = _chartServices.CalculateMicroNutrientByProduct(days, products, nutrient);
-
-            //viewModel.BarNames.Add("RDA");
-            //viewModel.BarData.Add(_chartServices.GetMicronutrientRDA(nutrient));
+            viewModel.BarData = _chartServices.CalculateMicronutrientByProduct(start, end, new List<string> { nutrient }, UserId);
+            CalculateTotals(ref viewModel);
+            CalculateRDA(ref viewModel, nutrient);
 
             return Json(viewModel, JsonRequestBehavior.AllowGet);
         }
@@ -70,15 +61,35 @@ namespace Trackables.Controllers
 
         public ActionResult RefreshLineChart(DateTime start, DateTime end, string nutrient)
         {
-            List<Day> days = _foodItemServices.GetDays(start, end, UserId).ToList();
-            List<Product> products = _productServices.GetProducts(UserId, days).ToList();
-            var viewModel = new LineChartViewModel();
+            var viewModel = new ChartViewModel();
 
-            viewModel.BarNames = _chartServices.GetDates(days);
+            viewModel.BarNames = _chartServices.GetDates(start, end, UserId);
             viewModel.ChartTitle = _chartServices.GetMicronutrientTitle(nutrient);
-            viewModel.BarData = _chartServices.CalculateMicronutrientByDay(start, end, nutrient, UserId);
+            viewModel.BarData = _chartServices.CalculateMicronutrientByDay(start, end, new List<string> { nutrient }, UserId);
 
             return Json(viewModel, JsonRequestBehavior.AllowGet);
+        }
+
+
+        private void CalculateTotals(ref ChartViewModel viewModel)
+        {
+            foreach (var list in viewModel.BarData)
+            {
+                var total = list.Sum();
+                list.Add(total);
+            }
+
+            viewModel.BarNames.Add("Total");
+        }
+
+        private void CalculateRDA(ref ChartViewModel viewModel, string nutrient)
+        {
+            foreach (var list in viewModel.BarData)
+            {
+                list.Add(Micronutrients.Nutrient(nutrient).RDA);
+            }
+
+            viewModel.BarNames.Add("RDA");
         }
 
     }

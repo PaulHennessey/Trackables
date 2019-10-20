@@ -14,12 +14,9 @@ namespace Trackables.Controllers
     [Authorize]
     public class TrackablesChartController : Controller
     {
-        private readonly ITrackableItemServices _trackableItemServices;
+        private readonly IHighchartsServices _highchartsServices;
         private readonly ITrackablesServices _trackablesServices;
-        private readonly IFoodItemServices _foodItemServices;
-        private readonly IProductServices _productServices;
         private readonly IChartServices _chartServices;
-        private readonly IUserServices _userServices;
 
         public ApplicationUserManager UserManager
         {
@@ -40,21 +37,17 @@ namespace Trackables.Controllers
         public TrackablesChartController()
         { }
 
-        public TrackablesChartController(ITrackableItemServices trackableItemServices, ITrackablesServices trackablesServices, IChartServices chartServices, IFoodItemServices foodItemServices, IProductServices productServices, IUserServices userServices)
+        public TrackablesChartController(ITrackablesServices trackablesServices, IChartServices chartServices, IHighchartsServices highchartsServices)
         {
-            _trackableItemServices = trackableItemServices;
+            _highchartsServices = highchartsServices;
             _trackablesServices = trackablesServices;
-            _productServices = productServices;
-            _foodItemServices = foodItemServices;
             _chartServices = chartServices;
-            _userServices = userServices;
         }
 
         public ActionResult Index()
         {
-            return View("Index");
+            return View("Index", new ChartTypeDropDownListViewModel());
         }
-        
 
         public ActionResult RefreshTrackableItemsList()
         {
@@ -70,6 +63,26 @@ namespace Trackables.Controllers
             return PartialView("MacronutrientsList", viewModel);
         }
 
+        public ActionResult RefreshChart(DateTime start, DateTime end, TrackablesChartIdentifiers selectedIds)
+        {
+            var viewModel = new HighchartsViewModel();
+
+            if (selectedIds.Trackables != null)
+            {
+                var SeriesTrackables = _highchartsServices.GetSeries(start, end, selectedIds.Trackables).ToList();
+                viewModel.Series.AddRange(SeriesTrackables);
+            }
+
+            if (selectedIds.Macronutrients != null)
+            {
+                var SeriesMacronutrients = _chartServices.GetSeries(start, end, selectedIds.Macronutrients, UserId).ToList();
+                viewModel.Series.AddRange(SeriesMacronutrients);
+            }
+
+            viewModel.Categories = _chartServices.GetDates(start, end, UserId);
+
+            return Json(viewModel, JsonRequestBehavior.AllowGet);
+        }
 
         private TrackablesViewModel GetTrackablesModel()
         {
@@ -83,7 +96,6 @@ namespace Trackables.Controllers
             return viewModel;
         }
 
-
         private MacronutrientsViewModel GetMacronutrientsModel()
         {
             var viewModel = new MacronutrientsViewModel()
@@ -93,95 +105,5 @@ namespace Trackables.Controllers
 
             return viewModel;
         }
-
-
-        // VM:
-        //            List<ChartItemList>:
-        //ChartItemList:
-        //            List<ChartItem>
-        //            Name:
-        //ChartItem:
-        //        Date:
-        //        Quantity:
-
-        /// <summary>
-        /// Note that the two methods are identical right now?
-        /// </summary>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        /// <param name="selectedIds"></param>
-        /// <returns></returns>
-        public ActionResult RefreshBarChart(DateTime start, DateTime end, TrackablesChartIdentifiers selectedIds)
-        {
-            // Might be nice to fix this null binding issue
-            // https://lostechies.com/jimmybogard/2013/11/07/null-collectionsarrays-from-mvc-model-binding/
-
-            List<ChartItemList> lists = _trackableItemServices.GetTrackableChartItems(start, end, selectedIds.Trackables).ToList();
-            var viewModel = new LineChartViewModel();
-
-            foreach (var list in lists)
-            {
-                viewModel.ChartTitle.Add(list.Name);
-            }
-
-            // Map the dates to the BarNames. You only need to do that once
-            // because they are the same on every list. 
-            foreach (var item in lists.First().ChartItems)
-            {
-                viewModel.BarNames.Add(item.Date.ToShortDateString());
-            }
-
-            // Map the quantities to the BarData.
-            foreach (var list in lists)
-            {
-                var data = new List<decimal?>();
-
-                foreach (var item in list.ChartItems)
-                {
-                    data.Add(item.Quantity);
-                }
-
-                viewModel.BarData.Add(data);
-            }
-
-            return Json(viewModel, JsonRequestBehavior.AllowGet);
-        }
-
-
-        public ActionResult RefreshLineChart(DateTime start, DateTime end, TrackablesChartIdentifiers selectedIds)
-        {
-            var viewModel = new LineChartViewModel();
-
-            List<ChartItemList> lists = _trackableItemServices.GetTrackableChartItems(start, end, selectedIds.Trackables).ToList();
-            foreach (var list in lists)
-            {
-                viewModel.ChartTitle.Add(list.Name);
-            }
-
-            // Map the dates to the BarNames. You only need to do that once
-            // because they are the same on every list. 
-            foreach (var item in lists.First().ChartItems)
-            {
-                viewModel.BarNames.Add(item.Date.ToShortDateString());
-            }
-
-            // Map the quantities to the BarData.
-            foreach (var list in lists)
-            {
-                var data = new List<decimal?>();
-
-                foreach (var item in list.ChartItems)
-                {
-                    data.Add(item.Quantity);
-                }
-
-                viewModel.BarData.Add(data);
-            }
-
-            return Json(viewModel, JsonRequestBehavior.AllowGet);
-        }
-
-
-
     }
 }

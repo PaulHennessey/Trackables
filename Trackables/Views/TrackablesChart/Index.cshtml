@@ -1,4 +1,6 @@
-﻿@using Trackables.Models
+﻿@model  Trackables.Models.ChartTypeDropDownListViewModel
+
+@using Trackables.Models
 
 @{
     ViewBag.Title = "Trackables Chart ";
@@ -21,6 +23,14 @@
     </div>
 
     <br />
+
+    <div class="row">
+        <div class="dropdown">
+            <div class='col-md-12'>
+                @Html.DropDownListFor(m => m.ChartTypeId, Model.Types, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-2">

@@ -46,6 +46,16 @@ namespace Trackables.Services.Concrete
             return _productMapper.HydrateProducts(dataTable);
         }
 
+        public IEnumerable<Product> GetProducts(string userId, Day day)
+        {
+            IEnumerable<FoodItem> foodItems = new List<FoodItem>();
+
+            foodItems = foodItems.Concat(day.Food);
+
+            DataTable dataTable = _productRepository.GetProducts(userId, foodItems);
+            return _productMapper.HydrateProducts(dataTable);
+        }
+
         public void CreateProduct(Product product, int userId)
         {
             _productRepository.CreateProduct(product, userId);

@@ -34,6 +34,7 @@ namespace Trackables
             ninjectKernel.Bind<IIngredientServices>().To<IngredientServices>();
             ninjectKernel.Bind<IUserServices>().To<UserServices>();
             ninjectKernel.Bind<ITrackablesServices>().To<TrackablesServices>();
+            ninjectKernel.Bind<IHighchartsServices>().To<HighchartsServices>();
             ninjectKernel.Bind<ITrackableItemServices>().To<TrackableItemServices>();
             ninjectKernel.Bind<IProductMapper>().To<ProductMapper>();
             ninjectKernel.Bind<IMealMapper>().To<MealMapper>();

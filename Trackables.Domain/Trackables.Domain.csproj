@@ -42,6 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Autocomplete.cs" />
+    <Compile Include="ChartTypes.cs" />
+    <Compile Include="ChartType.cs" />
+    <Compile Include="Series.cs" />
     <Compile Include="ChartItem.cs" />
     <Compile Include="ChartItemList.cs" />
     <Compile Include="Day.cs" />

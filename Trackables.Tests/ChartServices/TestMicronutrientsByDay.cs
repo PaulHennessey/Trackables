@@ -37,8 +37,13 @@ namespace Trackables.Tests
                 new Day {Food = new List<FoodItem> {new FoodItem {Code = "XXX", Quantity = 10}}}
             });
 
+            var nutrients = new List<string>
+            {
+                "Folate"
+            };
+
             // Act
-            var result = chartServices.CalculateMicronutrientByDay(DateTime.Now, DateTime.Now, "Folate", It.IsAny<string>());
+            var result = chartServices.CalculateMicronutrientByDay(DateTime.Now, DateTime.Now, nutrients, It.IsAny<string>());
 
             // Assert
             Assert.AreEqual(5, result[0].Sum());
@@ -61,8 +66,13 @@ namespace Trackables.Tests
                 new Day {Food = new List<FoodItem> {new FoodItem {Code = "XXX", Quantity = 20}}}
             });
 
+            var nutrients = new List<string>
+            {
+                "Folate"
+            };
+
             // Act
-            var result = chartServices.CalculateMicronutrientByDay(DateTime.Now, DateTime.Now, "Folate", It.IsAny<string>());
+            var result = chartServices.CalculateMicronutrientByDay(DateTime.Now, DateTime.Now, nutrients, It.IsAny<string>());
 
             // Assert
             Assert.AreEqual(15, result[0].Sum());
@@ -86,8 +96,13 @@ namespace Trackables.Tests
                 new Day {Food = new List<FoodItem> {new FoodItem {Code = "YYY", Quantity = 20}}}
             });
 
+            var nutrients = new List<string>
+            {
+                "Folate"
+            };
+
             // Act
-            var result = chartServices.CalculateMicronutrientByDay(DateTime.Now, DateTime.Now, "Folate", It.IsAny<string>());
+            var result = chartServices.CalculateMicronutrientByDay(DateTime.Now, DateTime.Now, nutrients, It.IsAny<string>());
 
             // Assert
             Assert.AreEqual(15, result[0].Sum());
@@ -111,8 +126,13 @@ namespace Trackables.Tests
                 new Day {Food = new List<FoodItem> {new FoodItem {Code = "XXX", Quantity = 20}}}
             });
 
+            var nutrients = new List<string>
+            {
+                "Folate"
+            };
+
             // Act
-            var result = chartServices.CalculateMicronutrientByDay(DateTime.Now, DateTime.Now, "Folate", It.IsAny<string>());
+            var result = chartServices.CalculateMicronutrientByDay(DateTime.Now, DateTime.Now, nutrients, It.IsAny<string>());
 
             // Assert
             Assert.AreEqual(15, result[0].Sum());
@@ -138,8 +158,13 @@ namespace Trackables.Tests
                 new Day {Food = new List<FoodItem> {new FoodItem {Code = "YYY", Quantity = 40}}}
             });
 
+            var nutrients = new List<string>
+            {
+                "Folate"
+            };
+
             // Act
-            var result = chartServices.CalculateMicronutrientByDay(DateTime.Now, DateTime.Now, "Folate", It.IsAny<string>());
+            var result = chartServices.CalculateMicronutrientByDay(DateTime.Now, DateTime.Now, nutrients, It.IsAny<string>());
 
             // Assert
             Assert.AreEqual(50, result[0].Sum());
@@ -170,8 +195,13 @@ namespace Trackables.Tests
                 }}
             });
 
+            var nutrients = new List<string>
+            {
+                "Folate"
+            };
+
             // Act
-            var result = chartServices.CalculateMicronutrientByDay(DateTime.Now, DateTime.Now, "Folate", It.IsAny<string>());
+            var result = chartServices.CalculateMicronutrientByDay(DateTime.Now, DateTime.Now, nutrients, It.IsAny<string>());
 
             // Assert
             Assert.AreEqual(50, result[0].Sum());

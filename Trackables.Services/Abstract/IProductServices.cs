@@ -8,6 +8,7 @@ namespace Trackables.Services.Abstract
         IEnumerable<Product> GetProducts(string userId);
         IEnumerable<Product> GetProducts(string userId, List<FoodItem> foodItems);
         IEnumerable<Product> GetProducts(string userId, List<Day> days);
+        IEnumerable<Product> GetProducts(string userId, Day day);
         List<Product> GetCustomProducts(string userId);
         Product GetProduct(string userId, string code);
         void CreateProduct(Product product, int userId);

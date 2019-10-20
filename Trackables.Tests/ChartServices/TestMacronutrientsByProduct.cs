@@ -14,7 +14,8 @@ namespace Trackables.Tests
     {
         private readonly Dictionary<string, decimal> Macronutrients = new Dictionary<string, decimal>()
         {
-            { "Calories", 50.0m }
+            { "Calories", 50.0m },
+            { "Fat", 50.0m }
         };
 
         Mock<IFoodItemServices> myFoodItemServices = new Mock<IFoodItemServices>();
@@ -37,11 +38,21 @@ namespace Trackables.Tests
                 new Day {Food = new List<FoodItem> {new FoodItem {Code = "XXX", Quantity = 10}}}
             });
 
+            var nutrients = new List<string>
+            {
+                "Calories"
+            };
+
+            var expected = new List<List<decimal?>>
+            {
+                new List<decimal?>{5},
+            };
+
             // Act
-            var result = chartServices.CalculateMacronutrientByProduct(DateTime.Now, DateTime.Now, "Calories", It.IsAny<string>());
+            var actual = chartServices.CalculateMacronutrientByProduct(DateTime.Now, DateTime.Now, nutrients, It.IsAny<string>());
 
             // Assert
-            Assert.AreEqual(5, result[0].Sum());
+            CollectionAssert.AreEqual(expected[0], actual[0]);
         }
 
         [TestMethod]
@@ -65,11 +76,21 @@ namespace Trackables.Tests
                 }}
             });
 
+            var nutrients = new List<string>
+            {
+                "Calories"
+            };
+
+            var expected = new List<List<decimal?>>
+            {
+                new List<decimal?>{15},
+            };
+
             // Act
-            var result = chartServices.CalculateMacronutrientByProduct(DateTime.Now, DateTime.Now, "Calories", It.IsAny<string>());
+            var actual = chartServices.CalculateMacronutrientByProduct(DateTime.Now, DateTime.Now, nutrients, It.IsAny<string>());
 
             // Assert
-            Assert.AreEqual(15, result[0].Sum());
+            CollectionAssert.AreEqual(expected[0], actual[0]);
         }
 
 
@@ -95,11 +116,24 @@ namespace Trackables.Tests
                 }}
             });
 
+            var nutrients = new List<string>
+            {
+                "Calories",
+                "Fat"
+            };
+
+            var expected = new List<List<decimal?>>
+            {
+                new List<decimal?>{5,10},
+                new List<decimal?>{5,10}
+            };
+
             // Act
-            var result = chartServices.CalculateMacronutrientByProduct(DateTime.Now, DateTime.Now, "Calories", It.IsAny<string>());
+            var actual = chartServices.CalculateMacronutrientByProduct(DateTime.Now, DateTime.Now, nutrients, It.IsAny<string>());
 
             // Assert
-            Assert.AreEqual(15, result[0].Sum());
+            CollectionAssert.AreEqual(expected[0], actual[0]);
+            CollectionAssert.AreEqual(expected[1], actual[1]);
         }
     }
 }
