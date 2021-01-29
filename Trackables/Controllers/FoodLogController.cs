@@ -16,7 +16,7 @@ namespace Trackables.Controllers
     [Authorize]
     public class FoodLogController : Controller
     {
-        private readonly IFoodItemServices _foodItemServices;
+        private readonly IServingServices _servingServices;
         private readonly IProductServices _productServices;
         private readonly IMealServices _mealServices;
 
@@ -40,10 +40,10 @@ namespace Trackables.Controllers
         public FoodLogController()
         { }
 
-        public FoodLogController(IFoodItemServices foodItemServices, IProductServices productServices, IMealServices mealServices)
+        public FoodLogController(IServingServices servingServices, IProductServices productServices, IMealServices mealServices)
         {
             _productServices = productServices;
-            _foodItemServices = foodItemServices;
+            _servingServices = servingServices;
             _mealServices = mealServices;
         }
 
@@ -52,11 +52,11 @@ namespace Trackables.Controllers
             return View("Index");
         }
 
-        public ActionResult RefreshFoodItemTable(DateTime date)
+        public ActionResult RefreshServingTable(DateTime date)
         {
-            var viewModel = GetFoodItemTableViewModel(date);
+            var viewModel = GetServingTableViewModel(date);
 
-            return PartialView("FoodItemTable", viewModel);
+            return PartialView("ServingTable", viewModel);
         }
 
         public ActionResult RefreshMealsTable(DateTime date)
@@ -74,22 +74,22 @@ namespace Trackables.Controllers
         /// <returns></returns>
         public ActionResult SelectFood(string Code, DateTime date)
         {
-            _foodItemServices.InsertFoodItem(Code, 0, date, UserId);
+            _servingServices.InsertServing(Code, 0, date, UserId);
 
-            var viewModel = GetFoodItemTableViewModel(date);
+            var viewModel = GetServingTableViewModel(date);
 
-            return PartialView("FoodItemTable", viewModel);
+            return PartialView("ServingTable", viewModel);
         }
 
 
 
         public ActionResult Save(int id, int quantity, DateTime date)
         {
-            _foodItemServices.UpdateFoodItem(id, quantity);
+            _servingServices.UpdateServing(id, quantity);
 
-            var viewModel = GetFoodItemTableViewModel(date);
+            var viewModel = GetServingTableViewModel(date);
 
-            return PartialView("FoodItemTable", viewModel);
+            return PartialView("ServingTable", viewModel);
         }
 
 
@@ -100,34 +100,34 @@ namespace Trackables.Controllers
 
             foreach (Ingredient ingredient in meal.Ingredients)
             {
-                _foodItemServices.InsertFoodItem(ingredient.Code, ingredient.Quantity, date, UserId);
+                _servingServices.InsertServing(ingredient.Code, ingredient.Quantity, date, UserId);
             }
 
-            var viewModel = GetFoodItemTableViewModel(date);
+            var viewModel = GetServingTableViewModel(date);
 
-            return PartialView("FoodItemTable", viewModel);
+            return PartialView("ServingTable", viewModel);
         }
 
 
         public ActionResult Delete(int id, DateTime date)
         {
-            _foodItemServices.DeleteFoodItem(id);
+            _servingServices.DeleteServing(id);
 
-            var viewModel = GetFoodItemTableViewModel(date);
+            var viewModel = GetServingTableViewModel(date);
 
-            return PartialView("FoodItemTable", viewModel);
+            return PartialView("ServingTable", viewModel);
         }
 
 
 
-        private FoodItemTableViewModel GetFoodItemTableViewModel(DateTime date)
+        private ServingTableViewModel GetServingTableViewModel(DateTime date)
         {
-            List<FoodItem> foodItems = _foodItemServices.GetFoodItems(date, UserId).OrderByDescending(x => x.Id).ToList();
-            List<FoodItemViewModel> foodItemViewModel = Mapper.Map<List<FoodItem>, List<FoodItemViewModel>>(foodItems);
+            List<Serving> servings = _servingServices.GetServings(date, UserId).OrderByDescending(x => x.Id).ToList();
+            List<ServingViewModel> servingViewModel = Mapper.Map<List<Serving>, List<ServingViewModel>>(servings);
 
-            var viewModel = new FoodItemTableViewModel()
+            var viewModel = new ServingTableViewModel()
             {
-                FoodItems = foodItemViewModel
+                Servings = servingViewModel
             };
 
             return viewModel;
@@ -151,7 +151,7 @@ namespace Trackables.Controllers
 
         ///// <summary>
         ///// When we favourite something, we also want to save it - otherwise it is possible to edit a quantity, then
-        ///// update the Favourites table without updating the FoodItems.
+        ///// update the Favourites table without updating the Servings.
         ///// </summary>
         ///// <param name="id"></param>
         ///// <param name="quantity"></param>
@@ -160,8 +160,8 @@ namespace Trackables.Controllers
         //{
         //    User user = _userServices.GetUser(User.Identity.Name);
 
-        //    _foodItemServices.UpdateFoodItem(id, quantity);
-        //    _foodItemServices.MergeFavourite(user.Id, id, quantity);
+        //    _servingServices.UpdateServing(id, quantity);
+        //    _servingServices.MergeFavourite(user.Id, id, quantity);
 
         //    return RedirectToAction("Index");
         //}
@@ -171,8 +171,8 @@ namespace Trackables.Controllers
         //{
         //    User user = _userServices.GetUser(User.Identity.Name);
 
-        //    Favourite favourite = _foodItemServices.GetFavourites(user.Id).Where(f => f.Code == Code).First();
-        //    _foodItemServices.InsertFoodItem(Code, favourite.Quantity, date, user.Id);
+        //    Favourite favourite = _servingServices.GetFavourites(user.Id).Where(f => f.Code == Code).First();
+        //    _servingServices.InsertServing(Code, favourite.Quantity, date, user.Id);
 
         //    return RedirectToAction("Index");
         //}
@@ -182,7 +182,7 @@ namespace Trackables.Controllers
         //{
         //    User user = _userServices.GetUser(User.Identity.Name);
 
-        //    _foodItemServices.DeleteFavourite(user.Id, Code);
+        //    _servingServices.DeleteFavourite(user.Id, Code);
 
         //    return RedirectToAction("Index");
         //}
@@ -193,36 +193,36 @@ namespace Trackables.Controllers
         //    User user = new User { Id = 1 };
 
         //    // Favourites
-        //    List<Favourite> favourites = _foodItemServices.GetFavourites(user.Id).OrderBy(x => x.Name).ToList();
+        //    List<Favourite> favourites = _servingServices.GetFavourites(user.Id).OrderBy(x => x.Name).ToList();
         //    var favouritesViewModel = Mapper.Map<IEnumerable<Favourite>, IEnumerable<FavouriteViewModel>>(favourites);
 
         //    // Food items
-        //    List<FoodItem> foodItems = _foodItemServices.GetFoodItems(date, user.Id).OrderByDescending(x => x.Id).ToList();
-        //    List<Product> products = _productServices.GetProducts(foodItems).ToList();
-        //    var foodItemsViewModel = CalculateCaloriesByFoodItem(foodItems, products);
+        //    List<Serving> servings = _servingServices.GetServings(date, user.Id).OrderByDescending(x => x.Id).ToList();
+        //    List<Product> products = _productServices.GetProducts(servings).ToList();
+        //    var servingsViewModel = CalculateCaloriesByServing(servings, products);
 
         //    // Meals
         //    List<Meal> meals = _mealServices.GetMeals(user.Id).OrderBy(x => x.Name).ToList();
         //    var mealsViewModel = Mapper.Map<IEnumerable<Meal>, IEnumerable<MealViewModel>>(meals);
 
 
-        //    var viewModel = new WeightFirstFoodItemListViewModel()
+        //    var viewModel = new WeightFirstServingListViewModel()
         //    {
         //        Favourites = favouritesViewModel,
-        //        FoodItems = foodItemsViewModel,
+        //        Servings = servingsViewModel,
         //        Meals = mealsViewModel,
-        //        TotalCalories = CalculateTotalCalories(foodItemsViewModel)
+        //        TotalCalories = CalculateTotalCalories(servingsViewModel)
         //    };
 
         //    return Json(viewModel, JsonRequestBehavior.AllowGet);
         //}
 
 
-        //private decimal CalculateTotalCalories(List<WeightFirstFoodItemViewModel> foodItemsViewModel)
+        //private decimal CalculateTotalCalories(List<WeightFirstServingViewModel> servingsViewModel)
         //{
         //    decimal total = 0m;
 
-        //    foreach (var item in foodItemsViewModel)
+        //    foreach (var item in servingsViewModel)
         //    {
         //        total += item.Calories;
         //    }
@@ -230,9 +230,9 @@ namespace Trackables.Controllers
         //    return total;
         //}
 
-        //private List<WeightFirstFoodItemViewModel> CalculateCaloriesByFoodItem(List<FoodItem> foodItems, List<Product> products)
+        //private List<WeightFirstServingViewModel> CalculateCaloriesByServing(List<Serving> servings, List<Product> products)
         //{
-        //    List<WeightFirstFoodItemViewModel> viewModel = Mapper.Map<List<FoodItem>, List<WeightFirstFoodItemViewModel>>(foodItems);
+        //    List<WeightFirstServingViewModel> viewModel = Mapper.Map<List<Serving>, List<WeightFirstServingViewModel>>(servings);
 
         //    foreach (var item in viewModel)
         //    {

@@ -4,8 +4,8 @@ using Trackables.Domain;
 
 namespace Trackables.Data.Abstract
 {
-    public interface IFoodItemMapper
+    public interface IServingMapper
     {
-        IEnumerable<FoodItem> HydrateFoodItems(DataTable dataTable);
+        IEnumerable<Serving> HydrateServings(DataTable dataTable);
     }
 }

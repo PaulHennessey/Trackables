@@ -2,7 +2,7 @@
 
 namespace Trackables.Models
 {
-    public class FoodItemViewModel
+    public class WeightFirstServingViewModel
     {
         public int Id { get; set; }
 
@@ -10,5 +10,6 @@ namespace Trackables.Models
         public string Code { get; set; }
         public string Name { get; set; }
         public int Quantity { get; set; }
+        public int Calories { get; set; }
     }
 }

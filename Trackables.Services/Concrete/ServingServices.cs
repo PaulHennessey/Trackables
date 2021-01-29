@@ -8,30 +8,30 @@ using Trackables.Services.Abstract;
 
 namespace Trackables.Services.Concrete
 {
-    public class FoodItemServices : IFoodItemServices
+    public class ServingServices : IServingServices
     {
-        private readonly IFoodItemRepository _foodItemRepository;
-        private readonly IFoodItemMapper _foodItemMapper;
+        private readonly IServingRepository _servingRepository;
+        private readonly IServingMapper _servingMapper;
         private readonly IFavouriteRepository _favouriteRepository;
         private readonly IFavouriteMapper _favouriteMapper;
 
 
-        public FoodItemServices()
+        public ServingServices()
         { }
 
 
-        public FoodItemServices(IFoodItemRepository foodItemRepository, IFoodItemMapper foodItemMapper, IFavouriteRepository favouriteRepository, IFavouriteMapper favouriteMapper)
+        public ServingServices(IServingRepository servingRepository, IServingMapper servingMapper, IFavouriteRepository favouriteRepository, IFavouriteMapper favouriteMapper)
         {
-            _foodItemRepository = foodItemRepository;
-            _foodItemMapper = foodItemMapper;
+            _servingRepository = servingRepository;
+            _servingMapper = servingMapper;
             _favouriteRepository = favouriteRepository;
             _favouriteMapper = favouriteMapper;
         }
 
-        public IEnumerable<FoodItem> GetFoodItems(DateTime dt, string userId)
+        public IEnumerable<Serving> GetServings(DateTime dt, string userId)
         {
-            DataTable foodItems = _foodItemRepository.GetFoodItems(dt, userId);
-            return _foodItemMapper.HydrateFoodItems(foodItems);
+            DataTable servings = _servingRepository.GetServings(dt, userId);
+            return _servingMapper.HydrateServings(servings);
         }
 
         public Day GetDay(DateTime dt, string userId)
@@ -39,7 +39,7 @@ namespace Trackables.Services.Concrete
             return new Day()
             {
                 Date = dt,
-                Food = _foodItemMapper.HydrateFoodItems(_foodItemRepository.GetFoodItems(dt, userId)).ToList()
+                Food = _servingMapper.HydrateServings(_servingRepository.GetServings(dt, userId)).ToList()
             };
         }
 
@@ -55,25 +55,25 @@ namespace Trackables.Services.Concrete
             return days;
         }
 
-        public void InsertFoodItem(string code, int quantity, DateTime dt, int userId)
+        public void InsertServing(string code, int quantity, DateTime dt, int userId)
         {
-            _foodItemRepository.InsertFoodItem(code, quantity, dt, userId);
+            _servingRepository.InsertServing(code, quantity, dt, userId);
         }
 
-        public void InsertFoodItem(string code, int quantity, DateTime dt, string userId)
+        public void InsertServing(string code, int quantity, DateTime dt, string userId)
         {
-            _foodItemRepository.InsertFoodItem(code, quantity, dt, userId);
+            _servingRepository.InsertServing(code, quantity, dt, userId);
         }
 
-        public void UpdateFoodItem(int id, int quantity)
+        public void UpdateServing(int id, int quantity)
         {
-            _foodItemRepository.UpdateFoodItem(id, quantity);
+            _servingRepository.UpdateServing(id, quantity);
         }
 
 
-        public void DeleteFoodItem(int id)
+        public void DeleteServing(int id)
         {
-            _foodItemRepository.DeleteFoodItem(id);
+            _servingRepository.DeleteServing(id);
         }
 
 

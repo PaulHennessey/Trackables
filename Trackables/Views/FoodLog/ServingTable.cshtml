@@ -1,0 +1,28 @@
+﻿@model  Trackables.Models.ServingTableViewModel
+@using Trackables.Models
+
+
+<table id="servingTable" class="table table-hover">
+    <thead>
+    </thead>
+    <tbody>
+        @foreach (var serving in Model.Servings)
+        {
+            <tr>
+                <td class="col-md-4">
+                    @Html.DisplayFor(modelItem => serving.Name)
+                </td>
+                <td class="col-md-1">
+                   <input class="form-control input-sm" id=@serving.Id name=@serving.Quantity type='text' value=@serving.Quantity>
+                </td>
+                <td class="col-md-1">
+                    @Html.ActionLink("Save", "Save", null, new { @class = "SaveLink", @data_id = serving.Id })
+                    @Html.ActionLink("Delete", "Delete", null, new { @class = "DeleteLink", @data_id = serving.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+

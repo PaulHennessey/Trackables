@@ -2,9 +2,9 @@
 
 namespace Trackables.Models
 {
-    public class WeightFirstFoodItemListViewModel
+    public class WeightFirstServingListViewModel
     {
-        public IEnumerable<WeightFirstFoodItemViewModel> FoodItems { get; set; }
+        public IEnumerable<WeightFirstServingViewModel> Servings { get; set; }
         public IEnumerable<FavouriteViewModel> Favourites { get; set; }
         public IEnumerable<MealViewModel> Meals { get; set; }
         public decimal TotalCalories { get; set; }

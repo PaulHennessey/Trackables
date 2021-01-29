@@ -7,12 +7,12 @@ using Trackables.Domain;
 
 namespace Trackables.Data.Concrete
 {
-    public class FoodItemMapper : IFoodItemMapper
+    public class ServingMapper : IServingMapper
     {
-        public IEnumerable<FoodItem> HydrateFoodItems(DataTable dataTable)
+        public IEnumerable<Serving> HydrateServings(DataTable dataTable)
         {
             return from DataRow row in dataTable.Rows
-                   select new FoodItem
+                   select new Serving
                    {
                        Id = Convert.ToInt32(row["Id"]),
                        Code = row["Code"].ToString(),

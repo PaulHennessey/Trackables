@@ -6,7 +6,7 @@ namespace Trackables.Services.Abstract
     public interface ITrackablesServices
     {
         IEnumerable<Trackable> GetTrackables(string userId);
-        //IEnumerable<Product> GetProducts(List<FoodItem> foodItems);
+        //IEnumerable<Product> GetProducts(List<Serving> servings);
         //IEnumerable<Product> GetProducts(List<Day> days);
         //List<Product> GetCustomProducts(int userId);
         Trackable GetTrackable(int id);

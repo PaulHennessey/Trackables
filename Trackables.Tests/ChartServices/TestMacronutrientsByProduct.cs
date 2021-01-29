@@ -18,14 +18,14 @@ namespace Trackables.Tests
             { "Fat", 50.0m }
         };
 
-        Mock<IFoodItemServices> myFoodItemServices = new Mock<IFoodItemServices>();
+        Mock<IServingServices> myServingServices = new Mock<IServingServices>();
         Mock<IProductServices> myProductServices = new Mock<IProductServices>();
 
         [TestMethod]
-        public void TestCalculateMacronutrientByProductOneFoodItem()
+        public void TestCalculateMacronutrientByProductOneServing()
         {
             // Arrange            
-            ChartServices chartServices = new ChartServices(myFoodItemServices.Object, myProductServices.Object);
+            ChartServices chartServices = new ChartServices(myServingServices.Object, myProductServices.Object);
             var productServices = new ProductServices();
 
             myProductServices.Setup(m => m.GetProducts(It.IsAny<string>(), It.IsAny<List<Day>>())).Returns(new List<Product>
@@ -33,9 +33,9 @@ namespace Trackables.Tests
                 new Product { Code = "XXX", ProductMacronutrients = productServices.UpdateProductMacronutrients(Macronutrients)}
             });
 
-            myFoodItemServices.Setup(m => m.GetDays(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<string>())).Returns(new List<Day>
+            myServingServices.Setup(m => m.GetDays(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<string>())).Returns(new List<Day>
             {
-                new Day {Food = new List<FoodItem> {new FoodItem {Code = "XXX", Quantity = 10}}}
+                new Day {Food = new List<Serving> {new Serving {Code = "XXX", Quantity = 10}}}
             });
 
             var nutrients = new List<string>
@@ -56,10 +56,10 @@ namespace Trackables.Tests
         }
 
         [TestMethod]
-        public void TestCalculateMacronutrientByProductTwoFoodItems()
+        public void TestCalculateMacronutrientByProductTwoServings()
         {
             // Arrange            
-            ChartServices chartServices = new ChartServices(myFoodItemServices.Object, myProductServices.Object);
+            ChartServices chartServices = new ChartServices(myServingServices.Object, myProductServices.Object);
             var productServices = new ProductServices();
 
             myProductServices.Setup(m => m.GetProducts(It.IsAny<string>(), It.IsAny<List<Day>>())).Returns(new List<Product>
@@ -67,12 +67,12 @@ namespace Trackables.Tests
                 new Product { Code = "XXX", ProductMacronutrients = productServices.UpdateProductMacronutrients(Macronutrients)}
             });
 
-            myFoodItemServices.Setup(m => m.GetDays(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<string>())).Returns(new List<Day>
+            myServingServices.Setup(m => m.GetDays(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<string>())).Returns(new List<Day>
             {
-                new Day {Food = new List<FoodItem>
+                new Day {Food = new List<Serving>
                 {
-                    new FoodItem {Code = "XXX", Quantity = 10},
-                    new FoodItem {Code = "XXX", Quantity = 20}
+                    new Serving {Code = "XXX", Quantity = 10},
+                    new Serving {Code = "XXX", Quantity = 20}
                 }}
             });
 
@@ -95,10 +95,10 @@ namespace Trackables.Tests
 
 
         [TestMethod]
-        public void TestCalculateMacronutrientByProductTwoDifferentFoodItems()
+        public void TestCalculateMacronutrientByProductTwoDifferentServings()
         {
             // Arrange            
-            ChartServices chartServices = new ChartServices(myFoodItemServices.Object, myProductServices.Object);
+            ChartServices chartServices = new ChartServices(myServingServices.Object, myProductServices.Object);
             var productServices = new ProductServices();
 
             myProductServices.Setup(m => m.GetProducts(It.IsAny<string>(), It.IsAny<List<Day>>())).Returns(new List<Product>
@@ -107,12 +107,12 @@ namespace Trackables.Tests
                 new Product { Code = "YYY", ProductMacronutrients = productServices.UpdateProductMacronutrients(Macronutrients)}
             });
 
-            myFoodItemServices.Setup(m => m.GetDays(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<string>())).Returns(new List<Day>
+            myServingServices.Setup(m => m.GetDays(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<string>())).Returns(new List<Day>
             {
-                new Day {Food = new List<FoodItem>
+                new Day {Food = new List<Serving>
                 {
-                    new FoodItem {Code = "XXX", Quantity = 10},
-                    new FoodItem {Code = "YYY", Quantity = 20}
+                    new Serving {Code = "XXX", Quantity = 10},
+                    new Serving {Code = "YYY", Quantity = 20}
                 }}
             });
 

@@ -2,9 +2,9 @@
 
 namespace Trackables.Domain
 {
-    public class FoodItem
+    public class Serving
     {
-        public FoodItem()
+        public Serving()
         { }
 
         public int Id { get; set; }
@@ -15,7 +15,7 @@ namespace Trackables.Domain
 
         public override bool Equals(Object obj)
         {
-            FoodItem other = obj as FoodItem;
+            Serving other = obj as Serving;
 
             if (other == null)
                 return false;

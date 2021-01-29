@@ -27,32 +27,32 @@ namespace Trackables.Services.Concrete
             return _productMapper.HydrateProducts(dataTable);
         }
 
-        public IEnumerable<Product> GetProducts(string userId, List<FoodItem> foodItems)
+        public IEnumerable<Product> GetProducts(string userId, List<Serving> servings)
         {
-            DataTable dataTable = _productRepository.GetProducts(userId, foodItems);
+            DataTable dataTable = _productRepository.GetProducts(userId, servings);
             return _productMapper.HydrateProducts(dataTable);
         }
 
         public IEnumerable<Product> GetProducts(string userId, List<Day> days)
         {
-            IEnumerable<FoodItem> foodItems = new List<FoodItem>();
+            IEnumerable<Serving> servings = new List<Serving>();
 
             foreach (var day in days)
             {
-                foodItems = foodItems.Concat(day.Food);
+                servings = servings.Concat(day.Food);
             }
 
-            DataTable dataTable = _productRepository.GetProducts(userId, foodItems);
+            DataTable dataTable = _productRepository.GetProducts(userId, servings);
             return _productMapper.HydrateProducts(dataTable);
         }
 
         public IEnumerable<Product> GetProducts(string userId, Day day)
         {
-            IEnumerable<FoodItem> foodItems = new List<FoodItem>();
+            IEnumerable<Serving> servings = new List<Serving>();
 
-            foodItems = foodItems.Concat(day.Food);
+            servings = servings.Concat(day.Food);
 
-            DataTable dataTable = _productRepository.GetProducts(userId, foodItems);
+            DataTable dataTable = _productRepository.GetProducts(userId, servings);
             return _productMapper.HydrateProducts(dataTable);
         }
 

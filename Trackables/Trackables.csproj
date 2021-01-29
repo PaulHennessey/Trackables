@@ -207,17 +207,17 @@
     <Compile Include="Models\AutocompleteViewModel.cs" />
     <Compile Include="Models\HighchartsViewModel.cs" />
     <Compile Include="Models\LineChartViewModel.cs" />
-    <Compile Include="Models\CaloriesFirstFoodItemListViewModel.cs" />
-    <Compile Include="Models\CaloriesFirstFoodItemViewModel.cs" />
+    <Compile Include="Models\CaloriesFirstServingListViewModel.cs" />
+    <Compile Include="Models\CaloriesFirstServingViewModel.cs" />
     <Compile Include="Models\BarChartViewModel.cs" />
     <Compile Include="Models\ChartViewModel.cs" />
     <Compile Include="Models\FavouriteViewModel.cs" />
-    <Compile Include="Models\FoodItemListViewModel.cs" />
+    <Compile Include="Models\ServingListViewModel.cs" />
     <Compile Include="Models\ChartTypeDropDownListViewModel.cs" />
     <Compile Include="Models\MacronutrientsViewModel.cs" />
     <Compile Include="Models\MealsTableViewModel.cs" />
-    <Compile Include="Models\FoodItemViewModel.cs" />
-    <Compile Include="Models\FoodItemTableViewModel.cs" />
+    <Compile Include="Models\ServingViewModel.cs" />
+    <Compile Include="Models\ServingTableViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\MacronutrientsDropDownListViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -232,8 +232,8 @@
     <Compile Include="Models\TrackablesChartViewModel.cs" />
     <Compile Include="Models\TrackablesViewModel.cs" />
     <Compile Include="Models\TrackableViewModel.cs" />
-    <Compile Include="Models\WeightFirstFoodItemListViewModel.cs" />
-    <Compile Include="Models\WeightFirstFoodItemViewModel.cs" />
+    <Compile Include="Models\WeightFirstServingListViewModel.cs" />
+    <Compile Include="Models\WeightFirstServingViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

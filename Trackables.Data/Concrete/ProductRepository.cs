@@ -49,9 +49,9 @@ namespace Trackables.Data.Concrete
         /// Note that the stored procedure will ignore duplicate fooditems, and
         /// only return a single product.
         /// </summary>
-        /// <param name="foodItems"></param>
+        /// <param name="servings"></param>
         /// <returns></returns>
-        public DataTable GetProducts(string userId, IEnumerable<FoodItem> foodItems)
+        public DataTable GetProducts(string userId, IEnumerable<Serving> servings)
         {
             var dataTable = new DataTable();
 
@@ -64,7 +64,7 @@ namespace Trackables.Data.Concrete
                 command.Parameters["@userId"].Value = userId;
 
                 command.Parameters.Add(new SqlParameter("@Food_Codes", SqlDbType.Structured));
-                command.Parameters["@Food_Codes"].Value = CreateCodeTable(foodItems);
+                command.Parameters["@Food_Codes"].Value = CreateCodeTable(servings);
 
                 SqlDataAdapter da = new SqlDataAdapter(command);
                 da.Fill(dataTable);
@@ -539,13 +539,13 @@ namespace Trackables.Data.Concrete
             return dataTable;
         }
 
-        private DataTable CreateCodeTable(IEnumerable<FoodItem> foodItems)
+        private DataTable CreateCodeTable(IEnumerable<Serving> servings)
         {
             var table = new DataTable();
             table.Columns.Add("Food Code", typeof(String));
-            foreach (FoodItem foodItem in foodItems)
+            foreach (Serving serving in servings)
             {
-                table.Rows.Add(foodItem.Code);
+                table.Rows.Add(serving.Code);
             }
             return table;
         }

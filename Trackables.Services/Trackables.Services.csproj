@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IChartServices.cs" />
-    <Compile Include="Abstract\IFoodItemServices.cs" />
+    <Compile Include="Abstract\IServingServices.cs" />
     <Compile Include="Abstract\IIngredientServices.cs" />
     <Compile Include="Abstract\IMealServices.cs" />
     <Compile Include="Abstract\IProductServices.cs" />
@@ -51,7 +51,7 @@
     <Compile Include="Abstract\ITrackablesServices.cs" />
     <Compile Include="Abstract\IUserServices.cs" />
     <Compile Include="Concrete\ChartServices.cs" />
-    <Compile Include="Concrete\FoodItemServices.cs" />
+    <Compile Include="Concrete\ServingServices.cs" />
     <Compile Include="Concrete\IngredientServices.cs" />
     <Compile Include="Concrete\MealServices.cs" />
     <Compile Include="Concrete\ProductServices.cs" />

@@ -2,9 +2,9 @@
 
 namespace Trackables.Models
 {
-    public class FoodItemListViewModel
+    public class ServingListViewModel
     {
-        public IEnumerable<FoodItemViewModel> FoodItems { get; set; }
+        public IEnumerable<ServingViewModel> Servings { get; set; }
         public IEnumerable<FavouriteViewModel> Favourites { get; set; }      
     }
 }

@@ -5,26 +5,26 @@ using Trackables.Data.Abstract;
 
 namespace Trackables.Data.Concrete
 {
-    public class FoodItemRepository : IFoodItemRepository
+    public class ServingRepository : IServingRepository
     {
         private readonly string _connectionString;
 
-        public FoodItemRepository()
+        public ServingRepository()
         {}
 
-        public FoodItemRepository(string connectionString)
+        public ServingRepository(string connectionString)
         {
             _connectionString = connectionString;
         }
 
 
-        public DataTable GetFoodItems(DateTime dt, string userId)
+        public DataTable GetServings(DateTime dt, string userId)
         {
             var dataTable = new DataTable();
 
             using (var connection = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("GetFoodItems", connection)
+                var cmd = new SqlCommand("GetServings", connection)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -42,11 +42,11 @@ namespace Trackables.Data.Concrete
             return dataTable;
         }
 
-        public void InsertFoodItem(string code, int quantity, DateTime dt, int userId)
+        public void InsertServing(string code, int quantity, DateTime dt, int userId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("InsertFoodItem", connection)
+                var cmd = new SqlCommand("InsertServing", connection)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -69,11 +69,11 @@ namespace Trackables.Data.Concrete
         }
 
 
-        public void InsertFoodItem(string code, int quantity, DateTime dt, string userId)
+        public void InsertServing(string code, int quantity, DateTime dt, string userId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("InsertFoodItem", connection)
+                var cmd = new SqlCommand("InsertServing", connection)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -95,11 +95,11 @@ namespace Trackables.Data.Concrete
             }
         }
 
-        public void DeleteFoodItem(int id)
+        public void DeleteServing(int id)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("DeleteFoodItem", connection)
+                var cmd = new SqlCommand("DeleteServing", connection)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -113,11 +113,11 @@ namespace Trackables.Data.Concrete
         }
 
 
-        public void UpdateFoodItem(int id, int quantity)
+        public void UpdateServing(int id, int quantity)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                var cmd = new SqlCommand("UpdateFoodItem", connection)
+                var cmd = new SqlCommand("UpdateServing", connection)
                 {
                     CommandType = CommandType.StoredProcedure
                 };

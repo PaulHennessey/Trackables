@@ -2,7 +2,7 @@
 
     /* Module level state */
 
-    var RefreshFoodItemTableUrl = "/foodlog/refreshfooditemtable";
+    var RefreshServingTableUrl = "/foodlog/refreshfooditemtable";
     var RefreshMealsTableUrl = "/foodlog/refreshmealstable";
     var DeleteUrl = "/foodlog/delete";
     var SaveUrl = "/foodlog/save";
@@ -16,7 +16,7 @@
     /* On page load functions */
 
     SetDateOnLoad();
-    RefreshFoodItemTable(RefreshFoodItemTableUrl, { date: sessionStorage["currentDate"] });
+    RefreshServingTable(RefreshServingTableUrl, { date: sessionStorage["currentDate"] });
     RefreshMealsTable(RefreshMealsTableUrl, { date: sessionStorage["currentDate"] });
 
     /* Date time picker */
@@ -38,7 +38,7 @@
     /* Typeahead */
 
     $('#fetch').on('typeahead:selected', function (event, item) {        
-        RefreshFoodItemTable(SelectFoodUrl, { Code: item.Code, date: sessionStorage["currentDate"] });
+        RefreshServingTable(SelectFoodUrl, { Code: item.Code, date: sessionStorage["currentDate"] });
     });
 
 
@@ -49,11 +49,11 @@
 
     function RefreshDate(d) {
         sessionStorage["currentDate"] = d;
-        RefreshFoodItemTable(RefreshFoodItemTableUrl, { date: sessionStorage["currentDate"] });
+        RefreshServingTable(RefreshServingTableUrl, { date: sessionStorage["currentDate"] });
     };
 
 
-    function RefreshFoodItemTable(url, parameters) {
+    function RefreshServingTable(url, parameters) {
 
         $.ajax({
             type: "POST",
@@ -62,7 +62,7 @@
             data: parameters,
             success: function (response) {
 
-                $("#foodItemTable").html(response);
+                $("#servingTable").html(response);
                 $('.SaveLink').on('click', SaveLinkClick);
                 $('.DeleteLink').on('click', DeleteLinkClick);
             }
@@ -91,12 +91,12 @@
 
         e.preventDefault();
 
-        var foodItemId = $(this).data("id");
+        var servingId = $(this).data("id");
 
         // Now get the quantity - the fooditemid is used as the id of the quantity input field        
-        var quantity = $("#" + foodItemId).val();
+        var quantity = $("#" + servingId).val();
 
-        RefreshFoodItemTable(SaveUrl, { id: foodItemId, quantity: quantity, date: sessionStorage["currentDate"] });
+        RefreshServingTable(SaveUrl, { id: servingId, quantity: quantity, date: sessionStorage["currentDate"] });
     }
 
 
@@ -106,7 +106,7 @@
 
         var mealId = $(this).data("id");
 
-        RefreshFoodItemTable(UseMealUrl, { id: mealId, date: sessionStorage["currentDate"] });
+        RefreshServingTable(UseMealUrl, { id: mealId, date: sessionStorage["currentDate"] });
     }
 
 
@@ -114,10 +114,10 @@
 
         e.preventDefault();
 
-        var foodItemId = $(this).data("id");
+        var servingId = $(this).data("id");
 
         if (confirm("Delete?")) {
-            RefreshFoodItemTable(DeleteUrl, { id: foodItemId, date: sessionStorage["currentDate"] });
+            RefreshServingTable(DeleteUrl, { id: servingId, date: sessionStorage["currentDate"] });
         }
     }
 
@@ -130,10 +130,10 @@
 
     //    // First get the food item id - it is the last bit of the url        
     //    var parsedUrl = this.href.split("/");
-    //    var foodItemId = parsedUrl[parsedUrl.length - 1];
+    //    var servingId = parsedUrl[parsedUrl.length - 1];
 
     //    // Now get the quantity - the fooditemid is used as the id of the quantity input field        
-    //    var quantity = $("#" + foodItemId).val();
+    //    var quantity = $("#" + servingId).val();
 
     //    // Now stick the quantity on the end of the url
     //    var link = this.href + "/" + quantity;

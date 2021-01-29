@@ -10,7 +10,7 @@
 
 using AutoMapper;
 using System.Web;
-using System.Web.Http;
+//using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -30,9 +30,9 @@ namespace Trackables
             {
                 cfg.CreateMap<Product, ProductViewModel>();
                 cfg.CreateMap<ProductViewModel, Product>();
-                cfg.CreateMap<FoodItem, FoodItemViewModel>();
-                cfg.CreateMap<FoodItem, WeightFirstFoodItemViewModel>();
-                cfg.CreateMap<FoodItem, CaloriesFirstFoodItemViewModel>();
+                cfg.CreateMap<Serving, ServingViewModel>();
+                cfg.CreateMap<Serving, WeightFirstServingViewModel>();
+                cfg.CreateMap<Serving, CaloriesFirstServingViewModel>();
                 cfg.CreateMap<Favourite, FavouriteViewModel>();
                 cfg.CreateMap<Product, ProductAutocompleteViewModel>()
                     .ForMember(dest => dest.label, opt => opt.MapFrom(src => src.Name))
